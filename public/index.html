@@ -403,22 +403,48 @@ section{padding:120px 40px}
   background:transparent;color:var(--gray3);cursor:pointer;transition:all .2s;
 }
 .crm-tab.active{background:var(--white);color:var(--black);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-.hs-domain-wrap{
+.hs-bitrix-block{max-width:480px;margin:0 auto 20px}
+.hs-webhook-wrap{
   position:relative;display:flex;align-items:center;
-  max-width:400px;margin:0 auto 20px;
+  max-width:480px;margin:0 auto 16px;
   background:var(--white);border-radius:12px;border:1px solid var(--gray2);
   overflow:hidden;
 }
-.hs-domain{
+.hs-webhook-icon{width:20px;height:20px;margin-left:16px;flex-shrink:0}
+.hs-webhook{
   flex:1;padding:14px 16px;border:none;outline:none;
-  font-family:var(--font);font-size:14px;color:var(--black);
-  background:transparent;text-align:right;
+  font-family:var(--font);font-size:13px;color:var(--black);
+  background:transparent;
 }
-.hs-domain::placeholder{color:var(--gray3);font-weight:300}
-.hs-domain-suffix{
-  padding:14px 16px 14px 0;font-family:var(--font);font-size:14px;
-  color:var(--gray3);white-space:nowrap;pointer-events:none;
+.hs-webhook::placeholder{color:var(--gray3);font-weight:300;font-size:12px}
+.hs-instruction{
+  background:var(--white);border-radius:12px;padding:20px 24px;
+  text-align:left;border:1px solid var(--gray2);
 }
+.hs-instruction-title{font-size:13px;font-weight:600;color:var(--black);margin-bottom:12px}
+.hs-steps{
+  list-style:none;counter-reset:step;padding:0;margin:0 0 12px;
+}
+.hs-steps li{
+  counter-increment:step;position:relative;
+  padding:8px 0 8px 32px;font-size:13px;color:#555;line-height:1.5;
+  border-left:2px solid var(--gray2);margin-left:10px;
+}
+.hs-steps li:last-child{border-left-color:transparent}
+.hs-steps li::before{
+  content:counter(step);position:absolute;left:-11px;top:6px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--amber);color:var(--white);
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.hs-steps li strong{color:var(--black)}
+.hs-tag{
+  display:inline-block;padding:2px 8px;border-radius:4px;
+  background:rgba(237,186,74,0.12);color:var(--amber-dark);
+  font-size:11px;font-weight:600;margin:0 2px;
+}
+.hs-instruction-note{font-size:11px;color:var(--gray3);margin:0}
 .hs-checkbox{
   display:flex;align-items:flex-start;gap:10px;
   max-width:480px;margin:0 auto 24px;text-align:left;
@@ -920,9 +946,21 @@ footer{background:var(--black);color:rgba(255,255,255,0.4);padding:60px 40px 40p
       <button class="crm-tab active" data-crm="amoCRM">amoCRM</button>
       <button class="crm-tab" data-crm="Битрикс24">Битрикс24</button>
     </div>
-    <div class="hs-domain-wrap" id="hsDomainWrap" style="display:none">
-      <input type="text" class="hs-domain" id="hsDomain" placeholder="your-portal">
-      <span class="hs-domain-suffix" id="hsDomainSuffix">.bitrix24.ru</span>
+    <div class="hs-bitrix-block" id="hsBitrixBlock" style="display:none">
+      <div class="hs-webhook-wrap">
+        <svg class="hs-webhook-icon" viewBox="0 0 24 24" fill="var(--gray3)"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+        <input type="url" class="hs-webhook" id="hsWebhook" placeholder="https://your-portal.bitrix24.ru/rest/1/abc123/">
+      </div>
+      <div class="hs-instruction">
+        <p class="hs-instruction-title">Как получить ссылку вебхука за 2 минуты:</p>
+        <ol class="hs-steps">
+          <li>Откройте <strong>Битрикс24</strong> → Меню слева → <strong>Приложения</strong></li>
+          <li>Нажмите <strong>Разработчикам</strong> (внизу) → <strong>Другое</strong> → <strong>Входящий вебхук</strong></li>
+          <li>В разделе <strong>Настройка прав</strong> выберите: <span class="hs-tag">CRM</span> <span class="hs-tag">Пользователи</span> <span class="hs-tag">Задачи</span></li>
+          <li>Нажмите <strong>Сохранить</strong> — скопируйте URL из поля <strong>"Вебхук для вызова rest api"</strong></li>
+        </ol>
+        <p class="hs-instruction-note">Вебхук даёт readonly-доступ. Мы ничего не изменяем в вашей CRM.</p>
+      </div>
     </div>
     <label class="hs-checkbox">
       <input type="checkbox" id="hsConsent">
@@ -1283,18 +1321,16 @@ document.querySelectorAll('#pfList li').forEach(li=>{
   });
 });
 
-// CRM toggle + domain field visibility
+// CRM toggle + Bitrix block visibility
 (function(){
-  const domainWrap=document.getElementById('hsDomainWrap');
-  const domainInput=document.getElementById('hsDomain');
+  const bitrixBlock=document.getElementById('hsBitrixBlock');
+  const webhookInput=document.getElementById('hsWebhook');
   document.querySelectorAll('.crm-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
       document.querySelectorAll('.crm-tab').forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
       const crm=tab.dataset.crm;
-      // Show domain field only for Bitrix24
-      if(domainWrap) domainWrap.style.display=crm==='amoCRM'?'none':'flex';
-      if(domainInput) domainInput.value='';
+      if(bitrixBlock) bitrixBlock.style.display=crm==='amoCRM'?'none':'block';
       validate();
     });
   });
@@ -1313,27 +1349,48 @@ document.querySelectorAll('#pfList li').forEach(li=>{
   function validate(){
     const emailOk=email.value.trim()&&email.validity.valid;
     const crm=getActiveCrm();
-    const domainOk=crm==='amoCRM'||( domainInput&&domainInput.value.trim().length>=2);
-    submit.disabled=!(emailOk&&consent.checked&&domainOk);
+    const webhookOk=crm==='amoCRM'||(webhookInput&&webhookInput.value.trim().includes('bitrix24'));
+    submit.disabled=!(emailOk&&consent.checked&&webhookOk);
   }
   email.addEventListener('input',validate);
   consent.addEventListener('change',validate);
-  if(domainInput) domainInput.addEventListener('input',validate);
+  if(webhookInput) webhookInput.addEventListener('input',validate);
 
-  // Submit → OAuth redirect
+  // Submit handler
   submit.addEventListener('click',function(e){
     e.preventDefault();
     if(submit.disabled) return;
     const userEmail=email.value.trim();
     const crm=getActiveCrm();
-    const uuid=crypto.randomUUID();
-    const state=uuid+'_'+btoa(userEmail);
 
     if(crm==='amoCRM'){
+      // amoCRM: OAuth redirect — no subdomain needed
+      const uuid=crypto.randomUUID();
+      const state=uuid+'_'+btoa(userEmail);
       window.location.href='https://www.amocrm.ru/oauth?client_id=6f41008d-5a18-42e0-ad63-72ae77e6095e&state='+encodeURIComponent(state)+'&mode=post_message';
     } else {
-      const domain=domainInput.value.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'');
-      window.location.href='https://'+domain+'.bitrix24.ru/oauth/authorize/?client_id=local.69a16a68ab5689.49205664&state='+encodeURIComponent(state)+'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/bitrix24');
+      // Bitrix24: POST webhook URL to n8n
+      const wh=webhookInput.value.trim();
+      submit.disabled=true;
+      submit.textContent='Подключение...';
+      fetch('https://audit.agineai.com/webhook/bitrix24-audit',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:userEmail,webhook_url:wh})
+      }).then(r=>r.json()).then(data=>{
+        if(data.success){
+          submit.textContent='Аудит запущен!';
+          submit.style.background='var(--green)';
+        } else {
+          submit.textContent='Ошибка — проверьте URL';
+          submit.style.background='#e74c3c';
+          setTimeout(()=>{submit.textContent='Подключить CRM';submit.style.background='';submit.disabled=false},3000);
+        }
+      }).catch(()=>{
+        submit.textContent='Ошибка соединения';
+        submit.style.background='#e74c3c';
+        setTimeout(()=>{submit.textContent='Подключить CRM';submit.style.background='';submit.disabled=false},3000);
+      });
     }
   });
 })();
