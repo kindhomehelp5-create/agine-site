@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGINE AI — Health Score вашей CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#1C1C1E;
+  --white:#fff;
+  --gray:#f5f5f5;
+  --gray2:#e8e8e8;
+  --gray3:#999;
+  --amber:#EDBA4A;
+  --amber-light:#F2CA6A;
+  --amber-dark:#D9A63E;
+  --brown:#2C1A0E;
+  --brown-light:#4A3020;
+  --green:#22c55e;
+  --font:'Outfit',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  color:var(--black);
+  background:var(--gray);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════
+   NAV
+   ═══════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:64px;padding:0 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:transparent;
+  transition:background .3s,backdrop-filter .3s;
+}
+nav.scrolled{
+  background:rgba(245,245,245,0.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.logo{
+  font-family:var(--font);font-size:22px;
+  color:var(--white);text-decoration:none;font-weight:600;
+  letter-spacing:-0.02em;
+  transition:color .3s;
+}
+.logo b{color:var(--white);font-weight:600}
+nav.scrolled .logo{color:var(--black)}
+nav.scrolled .logo b{color:var(--amber)}
+.nav-links{
+  display:flex;align-items:center;gap:24px;list-style:none;
+}
+.nav-links a{
+  color:var(--white);text-decoration:none;
+  font-size:14px;font-weight:400;opacity:0.6;
+  transition:opacity .3s, color .3s;
+}
+.nav-links a:hover{opacity:1}
+nav.scrolled .nav-links a{color:var(--black)}
+.nav-cta{
+  background:var(--white);
+  color:var(--black) !important;
+  padding:10px 24px;border-radius:50px;
+  font-size:13px;font-weight:500;letter-spacing:0.02em;
+  text-decoration:none;
+  transition:all .3s;opacity:1 !important;
+}
+.nav-cta:hover{background:rgba(255,255,255,0.9)}
+nav.scrolled .nav-cta{background:var(--black);color:var(--white) !important}
+nav.scrolled .nav-cta:hover{background:#333}
+
+/* ═══════════════════════════
+   HERO
+   ═══════════════════════════ */
+.hero{
+  margin:12px 12px 0;
+  border-radius:24px;
+  display:flex;align-items:center;
+  gap:24px;
+  min-height:92vh;
+  padding:100px 60px 60px;
+  position:relative;z-index:2;
+  overflow:visible;
+  background:
+    radial-gradient(ellipse 80% 70% at 15% 35%, #E08A00 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, #F5A623 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 50% 80%, #FFBA40 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 65%, #FFD470 0%, transparent 55%),
+    radial-gradient(ellipse 90% 80% at 35% 50%, #EE9500 0%, transparent 70%),
+    linear-gradient(135deg, #D88500 0%, #F5A623 30%, #FFCA50 60%, #FFE08A 100%);
+}
+.hero-content{position:relative;z-index:1;flex:1;min-width:0}
+.hero-title{
+  font-family:var(--font);
+  font-size:clamp(36px,4.5vw,72px);
+  line-height:1;letter-spacing:-0.01em;
+  font-weight:400;
+  color:var(--white);
+  margin-bottom:24px;
+}
+.hero-sub{
+  font-size:clamp(15px,1.3vw,17px);
+  line-height:1.6;color:rgba(255,255,255,0.7);
+  max-width:480px;margin-bottom:32px;
+  font-weight:300;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;
+  background:var(--white);
+  color:var(--black);
+  padding:14px 36px;border-radius:50px;
+  font-size:13px;font-weight:500;letter-spacing:0.04em;
+  text-transform:uppercase;text-decoration:none;
+  transition:all .3s;
+}
+.hero-cta:hover{background:rgba(255,255,255,0.9);transform:translateY(-2px)}
+
+/* Sticky CTA */
+.sticky-cta{
+  position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(100px);
+  z-index:99;
+  padding:14px 40px;border-radius:50px;
+  background:var(--black);color:var(--white);
+  font-family:var(--font);font-size:13px;font-weight:500;letter-spacing:0.04em;
+  text-transform:uppercase;text-decoration:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+  opacity:0;pointer-events:none;
+}
+.sticky-cta.visible{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.sticky-cta:hover{background:#333;transform:translateX(-50%) translateY(-2px)}
+
+/* ═══════════════════════════
+   DASHBOARD — side panel
+   ═══════════════════════════ */
+.dash{
+  width:680px;min-width:680px;
+  align-self:flex-end;
+  margin-bottom:-120px;margin-right:-36px;
+  height:480px;
+  display:flex;
+  background:rgba(12,14,20,0.85);
+  backdrop-filter:blur(40px) saturate(1.4);-webkit-backdrop-filter:blur(40px) saturate(1.4);
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.06);
+  overflow:hidden;
+  box-shadow:0 8px 60px rgba(0,0,0,0.3);
+}
+.dash-side{
+  width:140px;min-width:140px;
+  border-right:1px solid rgba(255,255,255,0.06);
+  padding:20px 0;
+  display:flex;flex-direction:column;
+}
+.dash-side-head{
+  padding:0 14px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  margin-bottom:6px;
+  font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);
+  letter-spacing:0.04em;
+}
+.dash-nav{list-style:none;padding:4px 6px;flex:1}
+.dash-nav li{
+  padding:7px 10px;border-radius:6px;
+  font-size:11px;color:rgba(255,255,255,0.3);cursor:pointer;
+  transition:all .15s;margin-bottom:1px;
+}
+.dash-nav li:hover{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6)}
+.dash-nav li.active{background:rgba(255,255,255,0.07);color:#fff;font-weight:500}
+.dash-right{flex:1;display:flex;flex-direction:column;min-height:0}
+.dash-body{flex:1;padding:20px 24px;overflow-y:auto;min-height:0}
+.dash-body::-webkit-scrollbar{width:3px}
+.dash-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+.dash-panel{display:none}
+.dash-panel.active{display:block}
+.dash-footer{padding:10px 24px 14px;border-top:1px solid rgba(255,255,255,0.06)}
+.dash-cta{
+  display:block;text-align:center;padding:10px;
+  background:rgba(255,255,255,0.08);border-radius:8px;
+  border:1px solid rgba(255,255,255,0.06);
+  color:#fff;text-decoration:none;
+  font-size:12px;font-weight:500;letter-spacing:0.02em;
+  transition:all .2s;
+}
+.dash-cta:hover{background:rgba(255,255,255,0.14)}
+
+/* Score circles */
+.dash-scores{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:20px;padding-top:4px}
+.dash-sc-block{text-align:center}
+.dash-sc-label{font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px}
+.dash-sc-ring{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 4px;position:relative}
+.dash-sc-ring.r-you{background:conic-gradient(#F5A623 0%,#E08A00 44%,rgba(255,255,255,0.06) 44%,rgba(255,255,255,0.06) 100%)}
+.dash-sc-ring.r-leader{background:conic-gradient(#22c55e 0%,#16a34a 73%,rgba(255,255,255,0.06) 73%,rgba(255,255,255,0.06) 100%)}
+.dash-sc-inner{width:72px;height:72px;border-radius:50%;background:rgba(12,14,20,0.85);display:flex;align-items:center;justify-content:center}
+.dash-sc-num{font-size:26px;font-weight:600;color:#fff;letter-spacing:-0.02em}
+.dash-sc-sub{font-size:9px;color:rgba(255,255,255,0.25)}
+.dash-sc-arrow{display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,0.2)}
+.dash-sc-arrow-line{width:32px;height:1px;background:rgba(255,255,255,0.12);position:relative}
+.dash-sc-arrow-line::after{content:'';position:absolute;right:-1px;top:-3px;border:3px solid transparent;border-left:5px solid rgba(255,255,255,0.15)}
+
+/* Stat rows */
+.d-stat{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px}
+.d-stat .dl{color:rgba(255,255,255,0.4)}
+.d-stat .dv{font-weight:600;color:#fff}
+.d-stat .dv.good{color:#4ade80}
+.d-stat .dv.warn{color:#F5A623}
+.d-stat .dv.bad{color:#f87171}
+.d-stat .db{color:rgba(255,255,255,0.18);font-size:10px;min-width:44px;text-align:right}
+.d-label{font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.2);margin:16px 0 6px;font-weight:600}
+.d-label:first-child{margin-top:0}
+.d-findings{margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06)}
+.d-findings .d-label{margin-top:0}
+.d-finding{display:flex;gap:10px;margin-bottom:8px;align-items:baseline}
+.d-finding-n{font-size:16px;font-weight:600;color:#fff;min-width:42px;letter-spacing:-0.01em}
+.d-finding-t{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.45;font-weight:300}
+.d-bar{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:11px}
+.d-bar .bn{width:80px;color:rgba(255,255,255,0.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-bar .bt{flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.d-bar .bf{height:100%;border-radius:2px}
+.d-bar .bv{width:30px;text-align:right;font-weight:600;color:rgba(255,255,255,0.55);font-size:10px}
+
+/* ═══════════════════════════
+   SECTION BASE
+   ═══════════════════════════ */
+section{padding:120px 40px}
+.sec-center{text-align:center;max-width:800px;margin:0 auto 80px}
+.sec-title{
+  font-family:var(--font);
+  font-size:clamp(36px,4.5vw,64px);
+  line-height:1.05;letter-spacing:-0.02em;
+  font-weight:400;margin-bottom:24px;
+}
+.sec-sub{font-size:18px;line-height:1.6;color:var(--gray3);font-weight:300;max-width:600px;margin:0 auto}
+.sec-cta{
+  display:inline-flex;align-items:center;
+  background:var(--black);color:var(--white);
+  padding:16px 40px;border-radius:50px;
+  font-size:13px;font-weight:600;letter-spacing:0.06em;
+  text-transform:uppercase;text-decoration:none;
+  transition:all .3s;margin-top:40px;
+}
+.sec-cta:hover{background:#333}
+
+/* ═══════════════════════════
+   RESULTS / METRICS
+   ═══════════════════════════ */
+.results{background:var(--gray);padding-top:140px;position:relative;z-index:1}
+.results-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:24px;max-width:1200px;margin:0 auto;
+}
+.stat-card{background:var(--white);border-radius:20px;padding:40px;display:flex;flex-direction:column}
+.stat-label{
+  align-self:flex-end;
+  font-size:11px;font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:6px 16px;border:1px solid var(--gray2);
+  border-radius:50px;margin-bottom:24px;color:var(--gray3);
+}
+.stat-number{font-family:var(--font);font-size:clamp(48px,6vw,96px);line-height:1;letter-spacing:-0.03em;font-weight:400}
+.stat-unit{font-family:var(--font);font-size:clamp(20px,2vw,32px);font-weight:300;vertical-align:baseline}
+.stat-desc{font-size:16px;color:var(--gray3);margin-top:12px;font-weight:300}
+.stat-info{
+  grid-column:2;grid-row:1;
+  background:
+    radial-gradient(ellipse 80% 70% at 20% 30%, #E08A00 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, #FFBA40 0%, transparent 60%),
+    linear-gradient(135deg, #D88500 0%, #F5A623 50%, #FFCA50 100%);
+  border-radius:20px;padding:32px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.stat-chat{
+  grid-column:2;grid-row:2/4;
+  background:var(--white);border-radius:20px;padding:32px;
+  display:flex;flex-direction:column;
+}
+.stat-chat-head{font-size:13px;font-weight:600;letter-spacing:-0.01em;margin-bottom:4px}
+.stat-chat-sub{font-size:12px;color:var(--gray3);font-weight:300;margin-bottom:20px;line-height:1.5}
+.stat-info-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;color:rgba(255,255,255,0.6)}
+.stat-info-text{font-size:16px;line-height:1.7;color:rgba(255,255,255,0.85);font-weight:300}
+
+/* ═══════════════════════════
+   AI CHAT
+   ═══════════════════════════ */
+.chat-msgs{display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
+.chat-msg{max-width:90%;padding:10px 14px;border-radius:14px;font-size:12px;line-height:1.55;opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s;font-weight:300}
+.chat-msg.visible{opacity:1;transform:translateY(0)}
+.chat-msg.user{align-self:flex-end;background:var(--gray);color:var(--black);border-bottom-right-radius:4px;font-weight:400}
+.chat-msg.ai{align-self:flex-start;background:rgba(245,166,35,0.08);color:var(--black);border-bottom-left-radius:4px}
+.chat-msg.ai .ai-name{font-size:9px;font-weight:600;letter-spacing:0.04em;color:var(--amber);margin-bottom:4px;text-transform:uppercase}
+.chat-typing{align-self:flex-start;padding:10px 14px;background:rgba(245,166,35,0.08);border-radius:14px;border-bottom-left-radius:4px;display:none;gap:4px;align-items:center}
+.chat-typing.visible{display:flex}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--amber);opacity:0.4;animation:dotPulse 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:0.2s}
+.chat-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes dotPulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+.chat-input-wrap{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray)}
+.chat-input{flex:1;padding:10px 14px;border:1px solid var(--gray2);border-radius:12px;font-family:var(--font);font-size:12px;outline:none;transition:border-color .2s;background:var(--gray)}
+.chat-input:focus{border-color:var(--amber)}
+.chat-input::placeholder{color:var(--gray3)}
+.chat-send{width:38px;height:38px;border-radius:10px;background:var(--black);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.chat-send:hover{background:#333;transform:scale(1.05)}
+.chat-send svg{width:16px;height:16px;fill:var(--white)}
+.chat-cta-wrap{text-align:center;margin-top:12px}
+.chat-cta{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--gray3);padding:8px 0;font-size:11px;font-weight:500;letter-spacing:0.02em;text-decoration:none;transition:all .3s}
+.chat-cta:hover{color:var(--black)}
+.chat-cta svg{width:14px;height:14px;fill:currentColor}
+
+/* ═══════════════════════════
+   CTA BUTTONS
+   ═══════════════════════════ */
+.cta-duo{
+  margin:0 12px;
+  padding:60px 40px;
+}
+.cta-duo-inner{
+  display:flex;gap:20px;max-width:1100px;margin:0 auto;
+  justify-content:center;flex-wrap:wrap;
+}
+.cta-duo-btn{
+  flex:1;max-width:400px;
+  padding:24px 32px;border-radius:16px;
+  text-decoration:none;
+  display:flex;align-items:center;gap:16px;
+  transition:all .3s;
+  font-size:15px;font-weight:500;
+}
+.cta-duo-btn:hover{transform:translateY(-3px)}
+.cta-duo-btn.outline,.cta-duo-btn.filled{
+  background:var(--gray);color:var(--black);
+  border:1px solid rgba(0,0,0,0.06);
+}
+.cta-duo-btn.outline:hover,.cta-duo-btn.filled:hover{background:#e8e8e8;box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+.cta-duo-btn.accent{
+  background:rgba(237,186,74,0.35);color:var(--amber-dark);border:1px solid rgba(237,186,74,0.3);
+}
+.cta-duo-btn.accent:hover{background:rgba(237,186,74,0.5);box-shadow:0 8px 30px rgba(212,153,58,0.15)}
+.cta-duo-btn svg{width:24px;height:24px;flex-shrink:0}
+.cta-duo-btn.outline svg,.cta-duo-btn.filled svg{fill:var(--black)}
+.cta-duo-btn.accent svg{fill:var(--amber-dark)}
+
+/* ═══════════════════════════
+   HEALTH SCORE FORM
+   ═══════════════════════════ */
+.hs-form{
+  background:var(--white);border-radius:24px;max-width:800px;margin:0 auto;padding:60px;text-align:center;
+  border:1px solid var(--gray2);box-shadow:0 4px 40px rgba(0,0,0,0.04);
+}
+.hs-form h2{font-family:var(--font);font-size:clamp(28px,3vw,40px);font-weight:400;letter-spacing:-0.02em;margin-bottom:12px}
+.hs-form p.sub{font-size:16px;color:var(--gray3);font-weight:300;line-height:1.6;max-width:560px;margin:0 auto 36px}
+.hs-badges{display:flex;justify-content:center;gap:32px;margin-bottom:36px}
+.hs-badge{text-align:center}
+.hs-badge-val{font-size:18px;font-weight:600;margin-bottom:4px}
+.hs-badge-label{font-size:12px;color:var(--gray3);font-weight:300}
+.hs-consent{font-size:12px;color:var(--gray3);line-height:1.6;max-width:480px;margin:0 auto 28px;font-weight:300}
+.hs-consent a{color:var(--amber);text-decoration:none}
+.crm-btns{display:flex;gap:16px;justify-content:center;margin-bottom:20px}
+.crm-btn{
+  padding:14px 32px;border-radius:50px;font-size:13px;font-weight:600;
+  text-decoration:none;transition:all .3s;letter-spacing:0.02em;
+  border:2px solid var(--gray2);color:var(--black);background:var(--white);
+}
+.crm-btn:hover{border-color:var(--amber);background:rgba(212,153,58,0.05)}
+.crm-btn.primary{background:var(--amber);color:var(--white);border-color:var(--amber)}
+.crm-btn.primary:hover{background:var(--amber-dark);border-color:var(--amber-dark)}
+.hs-note{font-size:13px;color:var(--gray3);margin-top:20px;font-weight:300}
+.hs-note a{color:var(--amber);text-decoration:none;font-weight:500}
+.hs-note a:hover{text-decoration:underline}
+.hs-email-wrap{position:relative;max-width:400px;margin:0 auto 20px}
+.hs-email{
+  width:100%;padding:14px 16px 14px 44px;border:1px solid var(--gray2);
+  border-radius:12px;font-family:var(--font);font-size:14px;
+  outline:none;transition:border-color .2s;background:var(--gray);
+}
+.hs-email:focus{border-color:var(--amber)}
+.hs-email::placeholder{color:var(--gray3)}
+.hs-email-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;fill:var(--gray3);pointer-events:none}
+.hs-crm-toggle{display:inline-flex;background:var(--gray);border-radius:12px;padding:4px;margin-bottom:20px}
+.crm-tab{
+  padding:10px 28px;border-radius:10px;border:none;
+  font-family:var(--font);font-size:13px;font-weight:500;
+  background:transparent;color:var(--gray3);cursor:pointer;transition:all .2s;
+}
+.crm-tab.active{background:var(--white);color:var(--black);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.hs-checkbox{
+  display:flex;align-items:flex-start;gap:10px;
+  max-width:480px;margin:0 auto 24px;text-align:left;
+  font-size:12px;color:var(--gray3);line-height:1.5;cursor:pointer;
+}
+.hs-checkbox input{margin-top:2px;accent-color:var(--amber);width:16px;height:16px;flex-shrink:0}
+.hs-submit{
+  display:block;width:100%;max-width:400px;margin:0 auto 20px;
+  padding:16px;border-radius:12px;border:none;
+  background:var(--amber);color:var(--white);
+  font-family:var(--font);font-size:15px;font-weight:600;
+  cursor:pointer;transition:all .3s;letter-spacing:0.02em;
+}
+.hs-submit:hover:not(:disabled){background:var(--amber-dark);transform:translateY(-1px)}
+.hs-submit:disabled{opacity:0.4;cursor:not-allowed}
+.hs-trust{font-size:11px;color:var(--gray3);font-weight:300;margin-top:12px}
+
+/* ═══════════════════════════
+   AI PARTNER — Whoop-style dark
+   ═══════════════════════════ */
+.ai-partner{
+  margin:0 12px;border-radius:24px;
+  background:var(--black);
+  padding:100px 60px;overflow:hidden;
+}
+.partner-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
+}
+.partner-left{}
+.partner-title{
+  font-family:var(--font);font-size:clamp(36px,4.5vw,64px);
+  font-weight:400;letter-spacing:-0.02em;
+  color:var(--white);line-height:1.05;margin-bottom:48px;
+}
+.partner-features-list{list-style:none;margin-bottom:40px}
+.partner-features-list li{
+  padding:14px 0 14px 24px;
+  border-left:3px solid rgba(255,255,255,0.1);
+  font-size:15px;color:rgba(255,255,255,0.35);font-weight:400;
+  transition:all .3s;cursor:default;
+}
+.partner-features-list li.active{
+  border-left-color:var(--amber);
+  color:var(--white);font-weight:600;font-size:17px;
+}
+.partner-features-list li.active .pf-desc{
+  max-height:80px;opacity:1;margin-top:8px;
+}
+.pf-desc{
+  display:block;font-size:14px;font-weight:300;
+  color:rgba(255,255,255,0.5);line-height:1.6;
+  max-height:0;opacity:0;overflow:hidden;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.partner-price{font-size:15px;color:rgba(255,255,255,0.5);margin-bottom:32px;font-weight:400}
+.partner-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--white);color:var(--black);
+  padding:16px 36px;border-radius:50px;
+  font-size:13px;font-weight:600;letter-spacing:0.04em;
+  text-decoration:none;transition:all .3s;
+}
+.partner-cta:hover{background:var(--gray);transform:translateY(-2px)}
+.partner-cta svg{width:18px;height:18px;fill:currentColor}
+/* Right visual — mock AI chat */
+.partner-visual{
+  position:relative;display:flex;flex-direction:column;
+  gap:12px;padding:40px;
+  background:rgba(255,255,255,0.03);border-radius:20px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.pv-header{
+  font-size:11px;font-weight:600;letter-spacing:0.06em;
+  text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px;
+}
+.pv-msg{
+  padding:10px 14px;border-radius:14px;font-size:12.5px;line-height:1.5;font-weight:300;
+}
+.pv-msg.user{
+  align-self:flex-end;background:rgba(255,255,255,0.08);
+  color:rgba(255,255,255,0.7);border-bottom-right-radius:4px;
+  max-width:80%;font-weight:400;
+}
+.pv-msg.ai{
+  align-self:flex-start;background:rgba(212,153,58,0.12);
+  color:rgba(255,255,255,0.8);border-bottom-left-radius:4px;
+  max-width:90%;
+}
+.pv-msg .ai-tag{
+  font-size:9px;font-weight:700;letter-spacing:0.06em;
+  color:var(--amber);text-transform:uppercase;margin-bottom:4px;
+}
+.pv-conv{display:flex;flex-direction:column;gap:10px;animation:pvFadeIn .4s ease}
+@keyframes pvFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.partner-features-list li{cursor:pointer}
+.pv-glow{
+  position:absolute;top:20%;right:-10%;width:300px;height:300px;
+  border-radius:50%;background:radial-gradient(circle,rgba(212,153,58,0.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+/* ═══════════════════════════
+   HOW IT WORKS
+   ═══════════════════════════ */
+.how{background:var(--gray)}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;max-width:1200px;margin:0 auto}
+.how-step{text-align:center;padding:40px 24px}
+.how-num{font-family:var(--font);font-size:64px;color:var(--gray2);margin-bottom:16px}
+.how-title{font-size:18px;font-weight:600;margin-bottom:12px}
+.how-desc{font-size:15px;line-height:1.6;color:var(--gray3);font-weight:300}
+
+/* ═══════════════════════════
+   PRICING
+   ═══════════════════════════ */
+.pricing{background:var(--gray)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
+.price-card{
+  background:rgba(255,255,255,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(0,0,0,0.04);
+  border-radius:20px;padding:40px;display:flex;flex-direction:column;transition:all .3s;
+}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.08)}
+.price-card.featured{background:rgba(255,255,255,0.85);box-shadow:0 4px 30px rgba(0,0,0,0.06)}
+.price-tag{
+  display:inline-block;align-self:flex-start;
+  padding:4px 12px;border-radius:50px;
+  font-size:9px;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;margin-bottom:16px;
+  background:var(--gray);color:var(--gray3);
+}
+.price-name{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;color:var(--gray3)}
+.price-amount{font-family:var(--font);font-size:48px;margin-bottom:32px}
+.price-amount span{font-family:var(--font);font-size:16px;font-weight:300;color:var(--gray3)}
+.price-features{list-style:none;flex:1;margin-bottom:32px}
+.price-features li{
+  padding:8px 0;font-size:14px;color:#555;
+  border-bottom:1px solid var(--gray);
+  display:flex;align-items:center;gap:10px;
+}
+.price-features li::before{content:'✓';color:var(--green);font-weight:700}
+.price-btn{
+  display:block;text-align:center;padding:14px;border-radius:50px;
+  font-size:12px;font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;text-decoration:none;transition:all .3s;
+  border:2px solid var(--black);color:var(--black);
+}
+.price-btn:hover{background:var(--black);color:var(--white)}
+.price-card.featured .price-btn{background:var(--black);color:var(--white);border-color:var(--black)}
+.price-card.featured .price-btn:hover{background:#333;border-color:#333}
+.consult-note{
+  text-align:center;max-width:600px;margin:40px auto 0;
+  font-size:14px;color:var(--gray3);font-weight:300;line-height:1.7;
+}
+.consult-note a{color:var(--amber);text-decoration:none;font-weight:500}
+.consult-note a:hover{text-decoration:underline}
+
+/* ═══════════════════════════
+   SOCIAL PROOF
+   ═══════════════════════════ */
+.proof{background:var(--gray)}
+.proof-logos{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap;max-width:900px;margin:0 auto 60px}
+.proof-logo{font-size:18px;font-weight:700;letter-spacing:0.02em;opacity:0.15}
+.testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
+.testimonial{background:var(--white);border-radius:20px;padding:36px;border:1px solid var(--gray2)}
+.testimonial-text{font-size:16px;line-height:1.7;color:#444;font-weight:300;font-style:italic;margin-bottom:24px}
+.testimonial-author{font-size:14px;font-weight:600}
+.testimonial-role{font-size:13px;color:var(--gray3)}
+
+/* ═══════════════════════════
+   FAQ ACCORDION
+   ═══════════════════════════ */
+.faq{background:var(--gray)}
+.faq-list{max-width:800px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--gray2)}
+.faq-item:first-child{border-top:1px solid var(--gray2)}
+.faq-q{
+  padding:24px 0;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:all .3s;
+}
+.faq-q:hover{padding-left:8px}
+.faq-q-text{font-family:var(--font);font-size:clamp(18px,2vw,24px);font-weight:400}
+.faq-arrow{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--gray);display:flex;align-items:center;justify-content:center;
+  transition:all .4s;flex-shrink:0;font-size:18px;color:var(--gray3);
+}
+.faq-item.open .faq-arrow{transform:rotate(45deg);background:var(--black);color:var(--white)}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s;
+}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:24px}
+.faq-a-text{font-size:15px;line-height:1.7;color:var(--gray3);font-weight:300;max-width:640px}
+
+/* ═══════════════════════════
+   CTA SECTION
+   ═══════════════════════════ */
+.final-cta{background:var(--black);color:var(--white);text-align:center;padding:120px 40px}
+.final-cta .sec-title{color:var(--white)}
+.final-cta .sec-sub{color:rgba(255,255,255,0.5)}
+.final-cta .sec-cta{background:var(--white);color:var(--black)}
+.final-cta .sec-cta:hover{background:var(--gray)}
+
+/* ═══════════════════════════
+   FOOTER
+   ═══════════════════════════ */
+footer{background:var(--black);color:rgba(255,255,255,0.4);padding:60px 40px 40px;font-size:13px}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.footer-logo{font-family:var(--font);font-size:18px;color:var(--white)}
+.footer-logo b{color:var(--amber)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{color:rgba(255,255,255,0.4);text-decoration:none;transition:color .3s}
+.footer-links a:hover{color:var(--white)}
+
+/* ═══════════════════════════
+   RESPONSIVE
+   ═══════════════════════════ */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  section{padding:80px 20px}
+  .results-grid{grid-template-columns:1fr}
+  .stat-info{grid-column:1;grid-row:auto}
+  .stat-chat{grid-column:1;grid-row:auto}
+  .cta-duo-inner{flex-direction:column}
+  .hs-form{padding:40px 24px}
+  .hs-badges{gap:16px}
+  .crm-btns{flex-direction:column;align-items:center}
+  .ai-partner{margin:0;border-radius:0;padding:60px 20px}
+  .partner-inner{grid-template-columns:1fr;gap:40px}
+  .partner-visual{margin-top:20px}
+  .cta-duo{margin:0;border-radius:0}
+  .pricing-grid{grid-template-columns:1fr}
+  .testimonials{grid-template-columns:1fr}
+  .how-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;gap:20px;text-align:center}
+  .footer-links{justify-content:center}
+}
+
+/* ═══════════════════════════
+   ANIMATIONS
+   ═══════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* Staggered delays */
+.fade-in.d1{transition-delay:.1s}
+.fade-in.d2{transition-delay:.2s}
+.fade-in.d3{transition-delay:.3s}
+.fade-in.d4{transition-delay:.4s}
+
+/* Scale-in */
+.scale-in{opacity:0;transform:scale(0.92);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.scale-in.visible{opacity:1;transform:scale(1)}
+
+/* Slide from sides */
+.slide-left{opacity:0;transform:translateX(-40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.slide-left.visible{opacity:1;transform:translateX(0)}
+.slide-right{opacity:0;transform:translateX(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.slide-right.visible{opacity:1;transform:translateX(0)}
+
+/* Counter glow */
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(212,153,58,0)}
+  50%{box-shadow:0 0 30px 10px rgba(212,153,58,0.12)}
+}
+.glow-pulse{animation:pulseGlow 3s ease-in-out infinite}
+
+/* Floating */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.float-anim{animation:float 4s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">AGINE <b>AI</b></a>
+  <ul class="nav-links">
+    <li><a href="#results">Результаты</a></li>
+    <li><a href="#how">Как это работает</a></li>
+    <li><a href="#pricing">Тарифы</a></li>
+    <li><a href="#faq">Вопросы</a></li>
+    <li><a href="https://t.me/AgineAi_bot" target="_blank">Записаться на консультацию</a></li>
+    <li><a href="#health-score" class="nav-cta">Узнать бесплатно</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">AI&#8209;аналитика,<br>созданная для роста продаж</h1>
+    <p class="hero-sub">AGINE AI подключается к&nbsp;CRM, анализирует каждую сделку и&nbsp;за&nbsp;30&nbsp;минут показывает Health Score вашего бизнеса — с&nbsp;конкретным путём к&nbsp;лидерам рынка.</p>
+    <a href="#health-score" class="hero-cta">Узнать бесплатно</a>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dash">
+    <div class="dash-side">
+      <div class="dash-side-head">AGINE AI</div>
+      <ul class="dash-nav">
+        <li class="active" data-tab="score">Health Score</li>
+        <li data-tab="team">Команда</li>
+        <li data-tab="funnel">Воронка</li>
+        <li data-tab="channels">Каналы</li>
+        <li data-tab="actions">План действий</li>
+      </ul>
+    </div>
+    <div class="dash-right">
+    <div class="dash-body">
+      <div class="dash-panel active" id="p-score">
+        <div class="dash-scores">
+          <div class="dash-sc-block">
+            <div class="dash-sc-label">Ваш Score</div>
+            <div class="dash-sc-ring r-you"><div class="dash-sc-inner"><span class="dash-sc-num">44</span></div></div>
+            <div class="dash-sc-sub">из 100</div>
+          </div>
+          <div class="dash-sc-arrow"><div class="dash-sc-arrow-line"></div></div>
+          <div class="dash-sc-block">
+            <div class="dash-sc-label">Лидеры</div>
+            <div class="dash-sc-ring r-leader"><div class="dash-sc-inner"><span class="dash-sc-num">73</span></div></div>
+            <div class="dash-sc-sub">бенчмарк</div>
+          </div>
+        </div>
+        <div class="d-stat"><span class="dl">Конверсия</span><span class="dv warn">36.2%</span><span class="db">20–35%</span></div>
+        <div class="d-stat"><span class="dl">Win Rate</span><span class="dv">14.2%</span><span class="db">1:8</span></div>
+        <div class="d-stat"><span class="dl">Без next step</span><span class="dv bad">48.6%</span><span class="db">&lt;15%</span></div>
+        <div class="d-stat"><span class="dl">Просрочки</span><span class="dv bad">25.6%</span><span class="db">&lt;15%</span></div>
+        <div class="d-findings">
+          <div class="d-label">Ключевые находки</div>
+          <div class="d-finding"><span class="d-finding-n">51%</span><span class="d-finding-t">выручки (471M ₽) не атрибутировано — неизвестно, какой канал приносит деньги</span></div>
+          <div class="d-finding"><span class="d-finding-n">31%</span><span class="d-finding-t">лидов зависают на «Новая заявка» без обработки в первый день. Норма &lt;3%</span></div>
+          <div class="d-finding"><span class="d-finding-n">65</span><span class="d-finding-t">просроченных задач у команды. Средняя просрочка — 15 дней, макс — 57</span></div>
+          <div class="d-finding"><span class="d-finding-n">6.8x</span><span class="d-finding-t">дисбаланс нагрузки — менеджер с WR 17% ведёт больше всех сделок</span></div>
+          <div class="d-finding"><span class="d-finding-n">78.5M</span><span class="d-finding-t">средний чек lost — в 2.1x выше won. Премиум (&gt;50M) = 88.7% потерь</span></div>
+          <div class="d-finding"><span class="d-finding-n">95%</span><span class="d-finding-t">lost-сделок закрыты без причины — невозможно учиться на ошибках</span></div>
+          <div class="d-finding"><span class="d-finding-n">20.5%</span><span class="d-finding-t">сделок без контактов, 48.6% без next step. Гигиена CRM критична</span></div>
+        </div>
+      </div>
+      <div class="dash-panel" id="p-team">
+        <div class="d-label">Win Rate по менеджерам</div>
+        <div class="d-bar"><span class="bn">Дарья Х.</span><div class="bt"><div class="bf" style="width:44%;background:#4ade80"></div></div><span class="bv">44%</span></div>
+        <div class="d-bar"><span class="bn">Олег В.</span><div class="bt"><div class="bf" style="width:38%;background:#4ade80"></div></div><span class="bv">38%</span></div>
+        <div class="d-bar"><span class="bn">Константин Д.</span><div class="bt"><div class="bf" style="width:37%;background:#4ade80"></div></div><span class="bv">37%</span></div>
+        <div class="d-bar"><span class="bn">Дмитрий С.</span><div class="bt"><div class="bf" style="width:33%;background:#F5A623"></div></div><span class="bv">33%</span></div>
+        <div class="d-bar"><span class="bn">Гузель М.</span><div class="bt"><div class="bf" style="width:17%;background:#f87171"></div></div><span class="bv">17%</span></div>
+        <div class="d-label">Нагрузка</div>
+        <div class="d-stat"><span class="dl">К. Дёмин</span><span class="dv bad">75 сделок</span><span class="db">норма 30–40</span></div>
+        <div class="d-stat"><span class="dl">Дисбаланс</span><span class="dv bad">6.8x</span><span class="db"></span></div>
+        <div class="d-findings">
+          <div class="d-label">Вывод</div>
+          <div class="d-finding"><span class="d-finding-n">6.8x</span><span class="d-finding-t">дисбаланс — менеджер с WR 17% ведёт больше всех сделок</span></div>
+          <div class="d-finding"><span class="d-finding-n">42.6%</span><span class="d-finding-t">всех сделок у одного человека при норме 30–40</span></div>
+        </div>
+      </div>
+      <div class="dash-panel" id="p-funnel">
+        <div class="d-label">Воронки продаж</div>
+        <div class="d-stat"><span class="dl">Продажа квартир</span><span class="dv">9 won</span><span class="db">WR 24%</span></div>
+        <div class="d-stat"><span class="dl">Аренда</span><span class="dv good">12 won</span><span class="db">WR 63%</span></div>
+        <div class="d-stat"><span class="dl">Новостройки</span><span class="dv">4 won</span><span class="db">WR 31%</span></div>
+        <div class="d-label">Итого</div>
+        <div class="d-stat"><span class="dl">Всего сделок</span><span class="dv">176</span><span class="db"></span></div>
+        <div class="d-stat"><span class="dl">Выиграно</span><span class="dv good">25</span><span class="db"></span></div>
+        <div class="d-stat"><span class="dl">Проиграно</span><span class="dv bad">44</span><span class="db"></span></div>
+        <div class="d-findings">
+          <div class="d-label">Вывод</div>
+          <div class="d-finding"><span class="d-finding-n">31%</span><span class="d-finding-t">лидов застряли на «Новая заявка» — нет скорости обработки</span></div>
+          <div class="d-finding"><span class="d-finding-n">95%</span><span class="d-finding-t">lost-сделок без причины — невозможно учиться на ошибках</span></div>
+        </div>
+      </div>
+      <div class="dash-panel" id="p-channels">
+        <div class="d-label">Каналы и ROI</div>
+        <div class="d-stat"><span class="dl">Сайт компании</span><span class="dv good">9.7M ₽/лид</span><span class="db">WR 33%</span></div>
+        <div class="d-stat"><span class="dl">Звонок входящий</span><span class="dv good">10.8M ₽/лид</span><span class="db">WR 25%</span></div>
+        <div class="d-stat"><span class="dl">ЦИАН</span><span class="dv">2.6M ₽/лид</span><span class="db">WR 38%</span></div>
+        <div class="d-stat"><span class="dl">Авито</span><span class="dv">1.9M ₽/лид</span><span class="db">WR 29%</span></div>
+        <div class="d-findings">
+          <div class="d-label">Вывод</div>
+          <div class="d-finding"><span class="d-finding-n">51%</span><span class="d-finding-t">выручки не атрибутировано — 56 сделок без источника</span></div>
+          <div class="d-finding"><span class="d-finding-n">78.5M</span><span class="d-finding-t">средний чек lost-сделок — в 2.1x выше won. Теряете крупных</span></div>
+        </div>
+      </div>
+      <div class="dash-panel" id="p-actions">
+        <div class="d-label">Неделя 1 — Защита pipeline</div>
+        <div class="d-stat"><span class="dl">Next step на 52 сделки</span><span class="dv bad">P0</span><span class="db">+160M ₽</span></div>
+        <div class="d-stat"><span class="dl">Закрыть 65 просрочек</span><span class="dv bad">P0</span><span class="db">ритм</span></div>
+        <div class="d-stat"><span class="dl">Ревизия ТОП-10 &gt;50M</span><span class="dv bad">P0</span><span class="db">2 млрд ₽</span></div>
+        <div class="d-label">Неделя 2 — Качество данных</div>
+        <div class="d-stat"><span class="dl">Контакты в 36 сделках</span><span class="dv warn">P1</span><span class="db">связь</span></div>
+        <div class="d-stat"><span class="dl">Источник в 56 сделках</span><span class="dv warn">P1</span><span class="db">51% ₽</span></div>
+        <div class="d-stat"><span class="dl">Причина при закрытии</span><span class="dv warn">P1</span><span class="db">обучение</span></div>
+        <div class="d-label">Неделя 3–4 — Оптимизация</div>
+        <div class="d-stat"><span class="dl">Перераспределить нагрузку</span><span class="dv">P2</span><span class="db">баланс</span></div>
+        <div class="d-stat"><span class="dl">Автозадачи при смене этапа</span><span class="dv">P2</span><span class="db">0 ручных</span></div>
+        <div class="d-findings">
+          <div class="d-label">Результат за 90 дней</div>
+          <div class="d-finding"><span class="d-finding-n">44→75</span><span class="d-finding-t">Health Score · защита 1.61 млрд ₽ pipeline</span></div>
+          <div class="d-finding"><span class="d-finding-n">-30%</span><span class="d-finding-t">цикл сделки: 184 → 120 дней</span></div>
+          <div class="d-finding"><span class="d-finding-n">+300M</span><span class="d-finding-t">рост выручки от конверсии +5–8%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dash-footer">
+      <a href="https://agineai.com/audit-sample.pdf" target="_blank" class="dash-cta">Посмотреть полный отчёт →</a>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="results">
+  <div class="sec-center">
+    <h2 class="sec-title fade-in">Подключите AGINE AI, улучшите показатели</h2>
+    <p class="sec-sub fade-in d1">Компании улучшают ключевые метрики — конверсию, скорость сделок и&nbsp;выручку — с&nbsp;помощью рекомендаций AGINE AI*</p>
+  </div>
+  <div class="results-grid">
+    <div class="stat-card scale-in">
+      <span class="stat-label">Воронка</span>
+      <div class="stat-number">+133<span class="stat-unit">%</span></div>
+      <p class="stat-desc">рост конверсии из лида в сделку</p>
+    </div>
+    <div class="stat-info scale-in d1">
+      <p class="stat-info-label">Почему это важно</p>
+      <p class="stat-info-text">Исследования показывают: компании, которые системно анализируют воронку продаж, конвертируют в&nbsp;2–3&nbsp;раза больше лидов. AGINE AI находит узкие места в&nbsp;каждом этапе воронки и&nbsp;даёт конкретные рекомендации — какие сделки требуют внимания прямо сейчас.</p>
+    </div>
+    <div class="stat-card scale-in d2">
+      <span class="stat-label">Скорость</span>
+      <div class="stat-number">−59<span class="stat-unit">%</span></div>
+      <p class="stat-desc">сокращение цикла сделки</p>
+    </div>
+    <div class="stat-card scale-in d3">
+      <span class="stat-label">Выручка</span>
+      <div class="stat-number">+47<span class="stat-unit">%</span></div>
+      <p class="stat-desc">рост выручки за 3 месяца</p>
+    </div>
+    <div class="stat-chat scale-in d2">
+      <div class="stat-chat-head">AI-партнёр, который знает ваш бизнес</div>
+      <p class="stat-chat-sub">Задайте вопрос — AGINE ответит на основе данных вашей CRM</p>
+      <div class="chat-msgs" id="chatMsgs">
+        <div class="chat-msg user" data-delay="600">Health Score 44. Это критично?</div>
+        <div class="chat-msg ai" data-delay="1800"><div class="ai-name">AGINE AI</div>Pipeline 8.2 млрд ₽ — огромный актив. Но у Гузель М. WR 17% при 45 сделках, а у Дарьи Х. — 44% при 12. Проблема не в бизнесе — в распределении. За 30 дней исправимо.</div>
+        <div class="chat-msg user" data-delay="2400">78 просрочек из 107 сделок. Что делать?</div>
+        <div class="chat-msg ai" data-delay="2000"><div class="ai-name">AGINE AI</div>Сделка «Резиденция Парк» (87М) — без движения 23 дня. Клиент Воронцов ждёт КП. У Дёмина ещё 14 таких. Поставить next step на 52 сделки — это +300–500М выручки.</div>
+        <div class="chat-msg user" data-delay="2000">Дёмин тащит 42% сделок, но выгорает</div>
+        <div class="chat-msg ai" data-delay="2200"><div class="ai-name">AGINE AI</div>Дёмин: 75 сделок, WR 37%. Олег В.: 11 сделок, WR 38%. Дисбаланс 6.8x. Переведи 20 сделок Олегу и Дмитрию — Дёмин станет РОПом. Те же деньги, но без выгорания.</div>
+        <div class="chat-msg user" data-delay="1800">Сколько реально можем вырасти?</div>
+        <div class="chat-msg ai" data-delay="2000"><div class="ai-name">AGINE AI</div>Health Score 44 → 75 за 90 дней. Только по сделке «Лесной Квартал» (120М, клиент Назаров) — закрытие через 2 недели, если Дарья возьмёт. Общий потенциал: +300М выручки.</div>
+      </div>
+      <div class="chat-typing" id="chatTyping"><span></span><span></span><span></span></div>
+      <div class="chat-input-wrap">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Задайте вопрос...">
+        <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+      </div>
+      <div class="chat-cta-wrap">
+        <a href="https://t.me/AgineMoskow_bot" target="_blank" class="chat-cta">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.53 8.16l-1.83 8.63c-.14.62-.5.77-.99.48l-2.75-2.03-1.33 1.28c-.15.15-.27.27-.56.27l.2-2.8 5.1-4.6c.22-.2-.05-.31-.34-.12l-6.31 3.98-2.72-.85c-.59-.19-.6-.59.12-.87l10.63-4.1c.49-.18.92.12.76.87z"/></svg>
+          Попробовать AI-партнёра в Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BUTTONS -->
+<div class="cta-duo">
+  <div class="cta-duo-inner">
+    <a href="https://agineai.com/audit-sample.pdf" target="_blank" class="cta-duo-btn outline slide-left">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zm-3 13v-4h2v4h3l-4 4-4-4h3z"/></svg>
+      Посмотреть отчёт реальной компании
+    </a>
+    <a href="https://t.me/AgineMoskow_bot" target="_blank" class="cta-duo-btn filled slide-right">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Протестировать AI-управленца
+    </a>
+    <a href="https://t.me/AgineAi_bot" target="_blank" class="cta-duo-btn accent slide-right">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.53 8.16l-1.83 8.63c-.14.62-.5.77-.99.48l-2.75-2.03-1.33 1.28c-.15.15-.27.27-.56.27l.2-2.8 5.1-4.6c.22-.2-.05-.31-.34-.12l-6.31 3.98-2.72-.85c-.59-.19-.6-.59.12-.87l10.63-4.1c.49-.18.92.12.76.87z"/></svg>
+      Записаться на консультацию
+    </a>
+  </div>
+</div>
+
+<!-- HEALTH SCORE FORM -->
+<section class="results" id="health-score" style="padding-top:80px;padding-bottom:80px">
+  <div class="hs-form scale-in">
+    <h2>Узнайте Health Score вашей компании</h2>
+    <p class="sub">Подключите CRM — AI проанализирует все данные и&nbsp;пришлёт отчёт с&nbsp;конкретными рекомендациями на&nbsp;ваш&nbsp;email</p>
+    <div class="hs-badges">
+      <div class="hs-badge fade-in"><div class="hs-badge-val">30 минут</div><div class="hs-badge-label">на анализ</div></div>
+      <div class="hs-badge fade-in d1"><div class="hs-badge-val">Readonly</div><div class="hs-badge-label">только чтение</div></div>
+      <div class="hs-badge fade-in d2"><div class="hs-badge-val">Бесплатно</div><div class="hs-badge-label">без обязательств</div></div>
+    </div>
+    <div class="hs-email-wrap">
+      <svg class="hs-email-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <input type="email" class="hs-email" id="hsEmail" placeholder="Ваш email для отчёта">
+    </div>
+    <div class="hs-crm-toggle">
+      <button class="crm-tab active" data-crm="amoCRM">amoCRM</button>
+      <button class="crm-tab" data-crm="Битрикс24">Битрикс24</button>
+    </div>
+    <label class="hs-checkbox">
+      <input type="checkbox" id="hsConsent">
+      <span>Я согласен на обработку персональных данных и предоставляю доступ к чтению данных CRM для AI-анализа. <a href="#" style="color:var(--amber)">Политика конфиденциальности</a></span>
+    </label>
+    <button class="hs-submit" id="hsSubmit" disabled>Подключить CRM</button>
+    <p class="hs-note">Другая CRM или хотите проанализировать финансы? <a href="https://t.me/AgineAi_bot" target="_blank">Запишитесь на консультацию</a></p>
+    <p class="hs-trust">Readonly-доступ. Мы только читаем данные, не изменяем ничего в вашей CRM.</p>
+  </div>
+</section>
+
+<!-- AI PARTNER — Whoop-style -->
+<section class="ai-partner">
+  <div class="partner-inner">
+    <div class="partner-left">
+      <h2 class="partner-title fade-in">AI&#8209;управленец<br>в&nbsp;вашу компанию</h2>
+      <ul class="partner-features-list" id="pfList">
+        <li data-chat="crm" class="fade-in active">Анализ CRM и&nbsp;финансов
+          <span class="pf-desc">Подключается к&nbsp;amoCRM, Битрикс24 и&nbsp;финансовым данным. Видит каждую сделку, задачу и&nbsp;метрику команды.</span>
+        </li>
+        <li data-chat="pnl" class="fade-in d1">P&L, Cash Flow, unit-экономика
+          <span class="pf-desc">Анализирует прибыль, денежный поток и&nbsp;юнит-экономику. Предупреждает о&nbsp;кассовых разрывах заранее.</span>
+        </li>
+        <li data-chat="decisions" class="fade-in d2">Решения на&nbsp;основе данных
+          <span class="pf-desc">Помогает принять грамотные управленческие решения — на&nbsp;основе реальных данных, а&nbsp;не&nbsp;интуиции.</span>
+        </li>
+        <li data-chat="instant" class="fade-in d3">Мгновенные ответы 24/7
+          <span class="pf-desc">Отвечает за секунды в&nbsp;любое время. Не нужно ждать отчёт неделю — спросите и&nbsp;получите ответ сразу.</span>
+        </li>
+        <li data-chat="private" class="fade-in d4">Только для собственника
+          <span class="pf-desc">Доступ только у&nbsp;вас и&nbsp;тех, кому вы&nbsp;его дадите. Конфиденциальность данных гарантирована.</span>
+        </li>
+      </ul>
+      <p class="partner-price fade-in">50 000 ₽ / мес</p>
+      <a href="https://t.me/AgineAi_bot" target="_blank" class="partner-cta fade-in">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.53 8.16l-1.83 8.63c-.14.62-.5.77-.99.48l-2.75-2.03-1.33 1.28c-.15.15-.27.27-.56.27l.2-2.8 5.1-4.6c.22-.2-.05-.31-.34-.12l-6.31 3.98-2.72-.85c-.59-.19-.6-.59.12-.87l10.63-4.1c.49-.18.92.12.76.87z"/></svg>
+        Записаться на консультацию
+      </a>
+    </div>
+    <div class="partner-visual slide-right" id="pvChat">
+      <div class="pv-glow"></div>
+      <div class="pv-header">AGINE AI-партнёр</div>
+
+      <!-- CRM -->
+      <div class="pv-conv" data-conv="crm">
+        <div class="pv-msg user">Сколько сделок без движения?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>52 сделки на 1.6 млрд ₽ без next step. Топ: «Резиденция Парк» 87M (23 дня), «Лесной Квартал» 120M (18 дней). Назначить next step сегодня.</div>
+        <div class="pv-msg user">Win Rate по менеджерам?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Дарья — 44%, Олег — 38%, Дёмин — 37%. Гузель — 17% при 45 сделках. Перераспределение даст +15% к общему WR.</div>
+      </div>
+
+      <!-- P&L -->
+      <div class="pv-conv" data-conv="pnl" style="display:none">
+        <div class="pv-msg user">Cash Flow на следующий месяц?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Прогноз: +2.4M ₽. Но 18 марта — кассовый разрыв 800K. Напомнить «Вектор» и ИП Сидоров о дебиторке до 12 марта.</div>
+        <div class="pv-msg user">Юнит-экономика нового продукта?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>CAC 12.4K, LTV 48.2K — LTV/CAC 3.9x, здоровый. Payback вырос с 2.1 до 3.8 мес из-за роста CPL в Facebook на 34%.</div>
+      </div>
+
+      <!-- Decisions -->
+      <div class="pv-conv" data-conv="decisions" style="display:none">
+        <div class="pv-msg user">Нанять ещё одного менеджера?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Пока нет. У Дёмина 75 сделок, у Олега — 11. Переведите 20 — бесплатно получите эффект нового менеджера.</div>
+        <div class="pv-msg user">Поднять средний чек на 10%?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Даст +82M ₽/квартал. Но эффективнее сначала закрыть 52 сделки без next step — это +300–500M при нулевых затратах.</div>
+      </div>
+
+      <!-- Instant -->
+      <div class="pv-conv" data-conv="instant" style="display:none">
+        <div class="pv-msg user">Что с конверсией на этой неделе?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Упала с 36% до 28%. 14 лидов зависли — Гузель не обработала в первый день. 6 сделок закрыты без причины. Алерт отправлен.</div>
+        <div class="pv-msg user">Сделки, которые закроются на этой неделе?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>3 сделки &gt;80%: «Квартал Центральный» 45M, «Офис Профи» 12M, «Склад Логистик» 8M. Потенциал: 65M ₽.</div>
+      </div>
+
+      <!-- Private -->
+      <div class="pv-conv" data-conv="private" style="display:none">
+        <div class="pv-msg user">Худшие результаты в команде?</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Гузель М.: WR 17%, просрочка 22 дня. Только для вас. Рекомендация: встреча + перевести 15 сделок на Дарью.</div>
+        <div class="pv-msg user">P&L, без доступа команды</div>
+        <div class="pv-msg ai"><div class="ai-tag">AGINE AI</div>Маржинальность 23.4% (цель 30%). Просадка — «Новостройки»: маржа 11%, реклама 1.2M/мес. Данные только для вас.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="sec-center">
+    <h2 class="sec-title fade-in">Как это работает</h2>
+    <p class="sec-sub fade-in d1">От подключения до первых результатов — 30 минут. Без внедрения, без настроек, без обучения команды.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-step fade-in">
+      <div class="how-num">1</div>
+      <h3 class="how-title">Подключите CRM</h3>
+      <p class="how-desc">amoCRM, Битрикс24, HubSpot или Salesforce — подключение в один клик. Доступ нужен только владельцу аккаунта.</p>
+    </div>
+    <div class="how-step fade-in d1">
+      <div class="how-num">2</div>
+      <h3 class="how-title">AI анализирует данные</h3>
+      <p class="how-desc">За 30 минут AGINE AI изучает каждую сделку, находит паттерны и сравнивает с лидерами вашей ниши.</p>
+    </div>
+    <div class="how-step fade-in d2">
+      <div class="how-num">3</div>
+      <h3 class="how-title">Получите Health Score</h3>
+      <p class="how-desc">Конкретный путь роста: от текущего уровня до показателей лидеров рынка. С приоритетами и сроками.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="sec-center">
+    <h2 class="sec-title fade-in">Прозрачные цены</h2>
+    <p class="sec-sub fade-in d1">Первый анализ бесплатно. Без привязки карты.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card fade-in">
+      <span class="price-tag">Популярный</span>
+      <div class="price-name">Экспресс</div>
+      <div class="price-amount">Бесплатно</div>
+      <ul class="price-features">
+        <li>Подключение amoCRM в 2 клика</li>
+        <li>AI-анализ всех сделок, задач, менеджеров</li>
+        <li>Отчёт с рекомендациями на email за 30 мин</li>
+        <li>3 конкретных шага для исправления</li>
+      </ul>
+      <a href="#health-score" class="price-btn">Попробовать бесплатно</a>
+    </div>
+    <div class="price-card featured fade-in d1">
+      <span class="price-tag">Максимум данных</span>
+      <div class="price-name">Полный анализ</div>
+      <div class="price-amount">150 000 ₽</div>
+      <ul class="price-features">
+        <li>Всё из Экспресс +</li>
+        <li>8 блоков глубокого анализа</li>
+        <li>McKinsey-презентация (15 слайдов)</li>
+        <li>Бизнес-расследование видео</li>
+        <li>Экспертный подкаст (8–12 мин)</li>
+        <li>Персональный AI-бот</li>
+      </ul>
+      <a href="https://t.me/AgineAi_bot" target="_blank" class="price-btn">Заказать анализ</a>
+    </div>
+    <div class="price-card fade-in d2">
+      <span class="price-tag">Постоянный контроль</span>
+      <div class="price-name">AI-мониторинг CRM</div>
+      <div class="price-amount">50 000 ₽<span> / мес</span></div>
+      <ul class="price-features">
+        <li>Всё из Полного анализа +</li>
+        <li>Еженедельные AI-отчёты</li>
+        <li>Алерты при отклонениях KPI</li>
+        <li>AI-бот 24/7</li>
+        <li>Ежемесячный обзорный отчёт</li>
+      </ul>
+      <a href="https://t.me/AgineAi_bot" target="_blank" class="price-btn">Подключить мониторинг</a>
+    </div>
+  </div>
+  <p class="consult-note fade-in">Если у вас другая CRM или вы хотите также проанализировать данные из финансов — <a href="https://t.me/AgineAi_bot" target="_blank">запишитесь на консультацию</a></p>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="sec-center">
+    <h2 class="sec-title fade-in">Частые вопросы</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item fade-in">
+      <div class="faq-q"><span class="faq-q-text">Что такое Health Score?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Health Score — это комплексная оценка здоровья вашего бизнеса от 0 до 100. Учитывает конверсию, скорость сделок, нагрузку менеджеров, качество данных в CRM и другие метрики. Средний бизнес — 44, лидеры ниши — 73.</p></div>
+    </div>
+    <div class="faq-item fade-in d1">
+      <div class="faq-q"><span class="faq-q-text">Какие CRM поддерживаются?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Сейчас поддерживаем amoCRM и Битрикс24. Если у вас другая CRM (HubSpot, Salesforce, Pipedrive и др.) или вы хотите проанализировать финансы — <a href="https://t.me/AgineAi_bot" target="_blank" style="color:var(--amber)">запишитесь на консультацию</a>.</p></div>
+    </div>
+    <div class="faq-item fade-in d2">
+      <div class="faq-q"><span class="faq-q-text">Безопасно ли подключать CRM?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Полностью. Мы запрашиваем только доступ на чтение (readonly). Не можем ничего изменить, удалить или отредактировать в вашей CRM. Все данные обрабатываются на защищённых серверах.</p></div>
+    </div>
+    <div class="faq-item fade-in d3">
+      <div class="faq-q"><span class="faq-q-text">Сколько времени занимает анализ?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">30 минут. Подключаете CRM — и через полчаса получаете полный отчёт с Health Score, ключевыми находками и конкретным планом действий на email.</p></div>
+    </div>
+    <div class="faq-item fade-in d4">
+      <div class="faq-q"><span class="faq-q-text">Что входит в бесплатный экспресс-анализ?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">AI-анализ всех сделок, задач и менеджеров. Отчёт с конкретными суммами и 3 шагами для исправления. Health Score с бенчмарками вашей ниши. Без привязки карты и обязательств.</p></div>
+    </div>
+    <div class="faq-item fade-in d4">
+      <div class="faq-q"><span class="faq-q-text">Чем отличается AI-мониторинг от разового анализа?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Разовый анализ — это снимок. Мониторинг — это постоянный контроль: еженедельные отчёты, алерты при отклонениях KPI, AI-бот 24/7 который отвечает на вопросы по вашим данным в реальном времени.</p></div>
+    </div>
+    <div class="faq-item fade-in d4">
+      <div class="faq-q"><span class="faq-q-text">Можно ли анализировать финансы?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p class="faq-a-text">Да. AGINE AI умеет анализировать P&L, Cash Flow, unit-экономику. Это входит в AI-партнёра. <a href="https://t.me/AgineAi_bot" target="_blank" style="color:var(--amber)">Запишитесь на консультацию</a> — расскажем подробнее.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof">
+  <div class="sec-center">
+    <h2 class="sec-title fade-in">Доверяют лидеры рынка</h2>
+    <p class="sec-sub fade-in d1">Компании из недвижимости, авто, клиник и B2B уже используют AGINE AI для системного роста.</p>
+  </div>
+  <div class="proof-logos">
+    <span class="proof-logo">Недвижимость</span>
+    <span class="proof-logo">Автодилеры</span>
+    <span class="proof-logo">Клиники</span>
+    <span class="proof-logo">B2B SaaS</span>
+    <span class="proof-logo">EdTech</span>
+  </div>
+  <div class="testimonials">
+    <div class="testimonial fade-in">
+      <p class="testimonial-text">«Уже в первую неделю увидели зоны роста конверсии на 40%. AGINE AI показал то, что мы не видели в данных.»</p>
+      <p class="testimonial-author">Алексей К.</p>
+      <p class="testimonial-role">Директор по продажам, Недвижимость</p>
+    </div>
+    <div class="testimonial fade-in d1">
+      <p class="testimonial-text">«Цикл сделки сократился с 45 до 19 дней. Менеджеры наконец понимают, на какие сделки тратить время.»</p>
+      <p class="testimonial-author">Мария Д.</p>
+      <p class="testimonial-role">Коммерческий директор, Автодилер</p>
+    </div>
+    <div class="testimonial fade-in d2">
+      <p class="testimonial-text">«Health Score стал нашей главной метрикой. Видим прогресс каждую неделю — от 38 до 67. Раньше летели вслепую.»</p>
+      <p class="testimonial-author">Дмитрий Р.</p>
+      <p class="testimonial-role">CEO, B2B SaaS</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="sec-center" style="margin-bottom:0">
+    <h2 class="sec-title fade-in">Какой Health Score у&nbsp;вашего бизнеса?</h2>
+    <p class="sec-sub fade-in d1">Подключите CRM и узнайте за 30 минут. Бесплатно.</p>
+    <a href="#health-score" class="sec-cta fade-in d2">Узнать бесплатно</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">AGINE <b>AI</b></span>
+    <div class="footer-links">
+      <a href="#results">Результаты</a>
+      <a href="#how">Как это работает</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="https://t.me/AgineAi_bot" target="_blank">Контакты</a>
+    </div>
+    <span>&copy; 2025 AGINE AI. Все права защищены.</span>
+  </div>
+</footer>
+
+<a href="#health-score" class="sticky-cta">Узнать бесплатно</a>
+
+<!-- SCRIPTS -->
+<script>
+// Dashboard tabs
+document.querySelectorAll('.dash-nav li').forEach(li=>{
+  li.addEventListener('click',()=>{
+    document.querySelectorAll('.dash-nav li').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.dash-panel').forEach(x=>x.classList.remove('active'));
+    li.classList.add('active');
+    const p=document.getElementById('p-'+li.dataset.tab);
+    if(p) p.classList.add('active');
+  });
+});
+
+// Scroll animations (fade-in, scale-in, slide-left, slide-right)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.fade-in,.scale-in,.slide-left,.slide-right').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Chat animation
+(function(){
+  const msgs = document.querySelectorAll('.chat-msg');
+  const typing = document.getElementById('chatTyping');
+  if(!msgs.length) return;
+  let started = false;
+  const chatObs = new IntersectionObserver((entries)=>{
+    if(entries[0].isIntersecting && !started){
+      started = true;
+      runChat();
+    }
+  },{threshold:0.3});
+  chatObs.observe(document.getElementById('chatMsgs'));
+
+  function runChat(){
+    let i = 0;
+    function showNext(){
+      if(i >= msgs.length) return;
+      const msg = msgs[i];
+      const delay = parseInt(msg.dataset.delay)||1500;
+      if(msg.classList.contains('ai')){
+        typing.classList.add('visible');
+        setTimeout(()=>{
+          typing.classList.remove('visible');
+          msg.classList.add('visible');
+          i++;
+          setTimeout(showNext, 600);
+        }, delay);
+      } else {
+        setTimeout(()=>{
+          msg.classList.add('visible');
+          i++;
+          setTimeout(showNext, 400);
+        }, i===0 ? 800 : 1200);
+      }
+    }
+    showNext();
+  }
+
+  // Input → Telegram redirect
+  const chatInput = document.getElementById('chatInput');
+  const chatSend = document.getElementById('chatSend');
+  function sendToTg(){
+    const text = chatInput.value.trim();
+    const url = text
+      ? 'https://t.me/AgineMoskow_bot?start=' + encodeURIComponent(text)
+      : 'https://t.me/AgineMoskow_bot';
+    window.open(url, '_blank');
+  }
+  chatSend.addEventListener('click', sendToTg);
+  chatInput.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter') sendToTg();
+  });
+})();
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+
+// AI Partner feature switcher
+document.querySelectorAll('#pfList li').forEach(li=>{
+  li.addEventListener('click',()=>{
+    document.querySelectorAll('#pfList li').forEach(x=>x.classList.remove('active'));
+    li.classList.add('active');
+    const chat=li.dataset.chat;
+    document.querySelectorAll('.pv-conv').forEach(c=>{
+      c.style.display=c.dataset.conv===chat?'flex':'none';
+    });
+  });
+});
+
+// CRM toggle
+document.querySelectorAll('.crm-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.crm-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    // CRM selection updated
+  });
+});
+
+// HS form validation
+(function(){
+  const email=document.getElementById('hsEmail');
+  const consent=document.getElementById('hsConsent');
+  const submit=document.getElementById('hsSubmit');
+  if(!email||!consent||!submit) return;
+  function validate(){
+    submit.disabled=!(email.value.trim()&&email.validity.valid&&consent.checked);
+  }
+  email.addEventListener('input',validate);
+  consent.addEventListener('change',validate);
+})();
+
+// Sticky CTA — appears after hero
+(function(){
+  const btn=document.querySelector('.sticky-cta');
+  const hero=document.getElementById('hero');
+  const hs=document.getElementById('health-score');
+  if(!btn||!hero) return;
+  window.addEventListener('scroll',()=>{
+    const pastHero=window.scrollY>hero.offsetHeight-100;
+    const atForm=hs&&hs.getBoundingClientRect().top<window.innerHeight;
+    btn.classList.toggle('visible',pastHero&&!atForm);
+  });
+})();
+</script>
+
+</body>
+</html>
