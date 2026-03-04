@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AGINE AI — Health Score вашей CRM</title>
+<meta name="description" content="AI-аналитика для собственников бизнеса. Подключите CRM — получите Health Score и рекомендации за 30 минут. Бесплатно.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://agineai.com/">
+<meta property="og:title" content="AGINE AI — Health Score вашей CRM">
+<meta property="og:description" content="AI-аналитика для собственников бизнеса. Подключите CRM — получите Health Score и рекомендации за 30 минут. Бесплатно.">
+<meta property="og:image" content="https://agineai.com/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AGINE AI — Health Score вашей CRM">
+<meta name="twitter:description" content="AI-аналитика для собственников бизнеса. Подключите CRM — получите Health Score и рекомендации за 30 минут.">
+<meta name="twitter:image" content="https://agineai.com/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -391,6 +403,22 @@ section{padding:120px 40px}
   background:transparent;color:var(--gray3);cursor:pointer;transition:all .2s;
 }
 .crm-tab.active{background:var(--white);color:var(--black);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.hs-domain-wrap{
+  position:relative;display:flex;align-items:center;
+  max-width:400px;margin:0 auto 20px;
+  background:var(--white);border-radius:12px;border:1px solid var(--gray2);
+  overflow:hidden;
+}
+.hs-domain{
+  flex:1;padding:14px 16px;border:none;outline:none;
+  font-family:var(--font);font-size:14px;color:var(--black);
+  background:transparent;text-align:right;
+}
+.hs-domain::placeholder{color:var(--gray3);font-weight:300}
+.hs-domain-suffix{
+  padding:14px 16px 14px 0;font-family:var(--font);font-size:14px;
+  color:var(--gray3);white-space:nowrap;pointer-events:none;
+}
 .hs-checkbox{
   display:flex;align-items:flex-start;gap:10px;
   max-width:480px;margin:0 auto 24px;text-align:left;
@@ -892,6 +920,10 @@ footer{background:var(--black);color:rgba(255,255,255,0.4);padding:60px 40px 40p
       <button class="crm-tab active" data-crm="amoCRM">amoCRM</button>
       <button class="crm-tab" data-crm="Битрикс24">Битрикс24</button>
     </div>
+    <div class="hs-domain-wrap" id="hsDomainWrap">
+      <input type="text" class="hs-domain" id="hsDomain" placeholder="yourcompany">
+      <span class="hs-domain-suffix" id="hsDomainSuffix">.amocrm.ru</span>
+    </div>
     <label class="hs-checkbox">
       <input type="checkbox" id="hsConsent">
       <span>Я согласен на обработку персональных данных и предоставляю доступ к чтению данных CRM для AI-анализа. <a href="#" style="color:var(--amber)">Политика конфиденциальности</a></span>
@@ -1251,26 +1283,60 @@ document.querySelectorAll('#pfList li').forEach(li=>{
   });
 });
 
-// CRM toggle
-document.querySelectorAll('.crm-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.crm-tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    // CRM selection updated
-  });
-});
-
-// HS form validation
+// CRM toggle + domain suffix
 (function(){
+  const suffix=document.getElementById('hsDomainSuffix');
+  const domainInput=document.getElementById('hsDomain');
+  document.querySelectorAll('.crm-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.crm-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const crm=tab.dataset.crm;
+      if(suffix) suffix.textContent=crm==='amoCRM'?'.amocrm.ru':'.bitrix24.ru';
+      if(domainInput) domainInput.placeholder=crm==='amoCRM'?'yourcompany':'your-portal';
+      validate();
+    });
+  });
+
+  // HS form validation + submit
   const email=document.getElementById('hsEmail');
   const consent=document.getElementById('hsConsent');
   const submit=document.getElementById('hsSubmit');
   if(!email||!consent||!submit) return;
+
   function validate(){
-    submit.disabled=!(email.value.trim()&&email.validity.valid&&consent.checked);
+    const d=domainInput?domainInput.value.trim():'';
+    submit.disabled=!(email.value.trim()&&email.validity.valid&&consent.checked&&d.length>=2);
   }
   email.addEventListener('input',validate);
   consent.addEventListener('change',validate);
+  if(domainInput) domainInput.addEventListener('input',validate);
+
+  // Submit → OAuth redirect
+  submit.addEventListener('click',function(e){
+    e.preventDefault();
+    if(submit.disabled) return;
+    const userEmail=email.value.trim();
+    const domain=domainInput.value.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'');
+    const activeCrm=document.querySelector('.crm-tab.active');
+    const crm=activeCrm?activeCrm.dataset.crm:'amoCRM';
+    const state=btoa(JSON.stringify({email:userEmail,crm:crm}));
+
+    if(crm==='amoCRM'){
+      const authUrl='https://'+domain+'.amocrm.ru/oauth2/authorize/?'
+        +'client_id=6f41008d-5a18-42e0-ad63-72ae77e6095e'
+        +'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/amocrm')
+        +'&state='+encodeURIComponent(state)
+        +'&mode=popup';
+      window.location.href=authUrl;
+    } else {
+      const authUrl='https://'+domain+'.bitrix24.ru/oauth/authorize/?'
+        +'client_id=local.69a16a68ab5689.49205664'
+        +'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/bitrix24')
+        +'&state='+encodeURIComponent(state);
+      window.location.href=authUrl;
+    }
+  });
 })();
 
 // Sticky CTA — appears after hero
