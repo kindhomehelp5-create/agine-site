@@ -920,9 +920,9 @@ footer{background:var(--black);color:rgba(255,255,255,0.4);padding:60px 40px 40p
       <button class="crm-tab active" data-crm="amoCRM">amoCRM</button>
       <button class="crm-tab" data-crm="Битрикс24">Битрикс24</button>
     </div>
-    <div class="hs-domain-wrap" id="hsDomainWrap">
-      <input type="text" class="hs-domain" id="hsDomain" placeholder="yourcompany">
-      <span class="hs-domain-suffix" id="hsDomainSuffix">.amocrm.ru</span>
+    <div class="hs-domain-wrap" id="hsDomainWrap" style="display:none">
+      <input type="text" class="hs-domain" id="hsDomain" placeholder="your-portal">
+      <span class="hs-domain-suffix" id="hsDomainSuffix">.bitrix24.ru</span>
     </div>
     <label class="hs-checkbox">
       <input type="checkbox" id="hsConsent">
@@ -1283,17 +1283,18 @@ document.querySelectorAll('#pfList li').forEach(li=>{
   });
 });
 
-// CRM toggle + domain suffix
+// CRM toggle + domain field visibility
 (function(){
-  const suffix=document.getElementById('hsDomainSuffix');
+  const domainWrap=document.getElementById('hsDomainWrap');
   const domainInput=document.getElementById('hsDomain');
   document.querySelectorAll('.crm-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
       document.querySelectorAll('.crm-tab').forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
       const crm=tab.dataset.crm;
-      if(suffix) suffix.textContent=crm==='amoCRM'?'.amocrm.ru':'.bitrix24.ru';
-      if(domainInput) domainInput.placeholder=crm==='amoCRM'?'yourcompany':'your-portal';
+      // Show domain field only for Bitrix24
+      if(domainWrap) domainWrap.style.display=crm==='amoCRM'?'none':'flex';
+      if(domainInput) domainInput.value='';
       validate();
     });
   });
@@ -1304,9 +1305,16 @@ document.querySelectorAll('#pfList li').forEach(li=>{
   const submit=document.getElementById('hsSubmit');
   if(!email||!consent||!submit) return;
 
+  function getActiveCrm(){
+    const a=document.querySelector('.crm-tab.active');
+    return a?a.dataset.crm:'amoCRM';
+  }
+
   function validate(){
-    const d=domainInput?domainInput.value.trim():'';
-    submit.disabled=!(email.value.trim()&&email.validity.valid&&consent.checked&&d.length>=2);
+    const emailOk=email.value.trim()&&email.validity.valid;
+    const crm=getActiveCrm();
+    const domainOk=crm==='amoCRM'||( domainInput&&domainInput.value.trim().length>=2);
+    submit.disabled=!(emailOk&&consent.checked&&domainOk);
   }
   email.addEventListener('input',validate);
   consent.addEventListener('change',validate);
@@ -1317,24 +1325,15 @@ document.querySelectorAll('#pfList li').forEach(li=>{
     e.preventDefault();
     if(submit.disabled) return;
     const userEmail=email.value.trim();
-    const domain=domainInput.value.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'');
-    const activeCrm=document.querySelector('.crm-tab.active');
-    const crm=activeCrm?activeCrm.dataset.crm:'amoCRM';
-    const state=btoa(JSON.stringify({email:userEmail,crm:crm}));
+    const crm=getActiveCrm();
+    const uuid=crypto.randomUUID();
+    const state=uuid+'_'+btoa(userEmail);
 
     if(crm==='amoCRM'){
-      const authUrl='https://'+domain+'.amocrm.ru/oauth2/authorize/?'
-        +'client_id=6f41008d-5a18-42e0-ad63-72ae77e6095e'
-        +'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/amocrm')
-        +'&state='+encodeURIComponent(state)
-        +'&mode=popup';
-      window.location.href=authUrl;
+      window.location.href='https://www.amocrm.ru/oauth?client_id=6f41008d-5a18-42e0-ad63-72ae77e6095e&state='+encodeURIComponent(state)+'&mode=post_message';
     } else {
-      const authUrl='https://'+domain+'.bitrix24.ru/oauth/authorize/?'
-        +'client_id=local.69a16a68ab5689.49205664'
-        +'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/bitrix24')
-        +'&state='+encodeURIComponent(state);
-      window.location.href=authUrl;
+      const domain=domainInput.value.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'');
+      window.location.href='https://'+domain+'.bitrix24.ru/oauth/authorize/?client_id=local.69a16a68ab5689.49205664&state='+encodeURIComponent(state)+'&redirect_uri='+encodeURIComponent('https://audit.agineai.com/webhook/bitrix24');
     }
   });
 })();
