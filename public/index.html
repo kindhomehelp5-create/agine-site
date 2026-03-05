@@ -1845,14 +1845,15 @@ document.querySelectorAll('.crm-tab').forEach(tab=>{
     submit.disabled=true;
     submit.textContent='Отправляем...';
 
-    // amoCRM: GET redirect (OAuth flow)
+    // amoCRM: redirect to OAuth authorization page
+    // User authorizes on amoCRM → amoCRM redirects back to n8n webhook with code
     if(crmName==='amoCRM'){
-      const params=new URLSearchParams({
-        email:email.value.trim(),
-        source:'agineai.com',
-        timestamp:new Date().toISOString()
-      });
-      window.location.href=webhookUrl+'?'+params.toString();
+      const amoOAuthUrl=new URL('https://www.amocrm.ru/oauth');
+      amoOAuthUrl.searchParams.set('client_id','6f41008d-5a18-42e0-ad63-72ae77e6095e');
+      amoOAuthUrl.searchParams.set('state',email.value.trim());
+      amoOAuthUrl.searchParams.set('redirect_uri','https://audit.agineai.com/webhook/amocrm');
+      amoOAuthUrl.searchParams.set('mode','post_message');
+      window.location.href=amoOAuthUrl.toString();
       return;
     }
 
