@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGINE AI — Health Score анализ | АвтоПремиум Москва</title>
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0a0a0a;
+  --card: #111111;
+  --card-border: #1a1a1a;
+  --amber: #EDBA4A;
+  --amber-dim: rgba(237, 186, 74, 0.15);
+  --amber-glow: rgba(237, 186, 74, 0.08);
+  --text: #e8e8e8;
+  --text-secondary: #888888;
+  --text-muted: #555555;
+  --label: #666666;
+  --red: #E85D5D;
+  --green: #5DE8A0;
+  --radius: 16px;
+  --radius-sm: 12px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ─── Sample badge ─── */
+.sample-badge {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(237, 186, 74, 0.1);
+  border: 1px solid rgba(237, 186, 74, 0.25);
+  color: var(--amber);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ─── Section label ─── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--label);
+  margin-bottom: 20px;
+}
+
+/* ─── Animations ─── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Header ─── */
+.header {
+  padding: 60px 0 40px;
+  text-align: center;
+}
+
+.logo {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 32px;
+}
+
+.report-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.company-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.company-type {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ─── Divider ─── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+  margin: 40px 0;
+}
+
+/* ─── Overall Score ─── */
+.score-section {
+  text-align: center;
+  padding: 20px 0 40px;
+}
+
+.score-ring-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 28px;
+}
+
+.score-ring-bg {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 8;
+}
+
+.score-ring-value {
+  fill: none;
+  stroke: url(#amberGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 565.48;
+  stroke-dashoffset: 565.48;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.score-ring-value.animated {
+  stroke-dashoffset: 316.67;
+}
+
+.score-ring-benchmark {
+  fill: none;
+  stroke: rgba(237, 186, 74, 0.15);
+  stroke-width: 2;
+  stroke-dasharray: 4 4;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.score-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.score-value {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.score-suffix {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--amber);
+  opacity: 0.6;
+}
+
+.score-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.score-benchmark-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.score-benchmark-text span {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.score-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ─── Score breakdown ─── */
+.breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.breakdown-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.breakdown-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--label);
+  margin-bottom: 12px;
+}
+
+.breakdown-score {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.breakdown-score span {
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+.breakdown-benchmark {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.breakdown-bar {
+  width: 100%;
+  height: 4px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  margin-top: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.breakdown-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), #d4a43a);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.breakdown-bar-mark {
+  position: absolute;
+  top: -2px;
+  height: 8px;
+  width: 1px;
+  background: rgba(237, 186, 74, 0.3);
+}
+
+/* ─── Metrics Dashboard ─── */
+.metrics-section {
+  padding: 20px 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber-dim), transparent);
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.metric-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.metric-value.alert {
+  color: var(--red);
+}
+
+.metric-unit {
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.metric-norm {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.metric-card.wide {
+  grid-column: 1 / -1;
+}
+
+/* ─── Findings ─── */
+.findings-section {
+  padding: 20px 0;
+}
+
+.finding-item {
+  display: flex;
+  gap: 16px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.finding-item:last-child {
+  border-bottom: none;
+}
+
+.finding-number {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--amber-dim);
+  color: var(--amber);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.finding-content h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.finding-content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── Growth Plan ─── */
+.plan-section {
+  padding: 20px 0;
+}
+
+.plan-steps {
+  position: relative;
+}
+
+.plan-steps::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 40px;
+  bottom: 40px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--amber), rgba(237, 186, 74, 0.1));
+}
+
+.plan-step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  position: relative;
+}
+
+.plan-step-number {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--amber-dim);
+  border: 2px solid rgba(237, 186, 74, 0.3);
+  color: var(--amber);
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.plan-step-content {
+  padding-top: 4px;
+}
+
+.plan-step-content h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.plan-step-content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.plan-step-impact {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(93, 232, 160, 0.1);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+/* ─── Benchmark Table ─── */
+.benchmark-section {
+  padding: 20px 0;
+}
+
+.benchmark-table {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.benchmark-header {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.benchmark-header span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.benchmark-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--card-border);
+  align-items: center;
+}
+
+.benchmark-row:last-child {
+  border-bottom: none;
+}
+
+.benchmark-row .label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.benchmark-row .you {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.benchmark-row .median {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.benchmark-row .leaders {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ─── Score Path ─── */
+.path-section {
+  padding: 20px 0;
+}
+
+.score-path {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 32px 0;
+}
+
+.path-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.path-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  transition: all 0.5s ease;
+}
+
+.path-circle.current {
+  background: var(--amber-dim);
+  border: 2px solid var(--amber);
+  color: var(--amber);
+}
+
+.path-circle.future {
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid #2a2a2a;
+  color: var(--text-muted);
+}
+
+.path-circle.target {
+  background: linear-gradient(135deg, rgba(237, 186, 74, 0.2), rgba(237, 186, 74, 0.05));
+  border: 2px solid var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 30px rgba(237, 186, 74, 0.15);
+}
+
+.path-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  max-width: 72px;
+}
+
+.path-label.active {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.path-connector {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--amber-dim), #2a2a2a);
+  margin: 0 4px;
+  margin-bottom: 20px;
+}
+
+.path-connector.dim {
+  background: #1a1a1a;
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.cta-card {
+  background: linear-gradient(135deg, rgba(237, 186, 74, 0.08), rgba(237, 186, 74, 0.02));
+  border: 1px solid rgba(237, 186, 74, 0.15);
+  border-radius: var(--radius);
+  padding: 48px 32px;
+}
+
+.cta-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.cta-title span {
+  color: var(--amber);
+}
+
+.cta-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--amber);
+  color: #0a0a0a;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+.cta-button:hover {
+  background: #f5c85a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(237, 186, 74, 0.3);
+}
+
+.cta-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cta-free {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* ─── Telegram CTA ─── */
+.tg-cta {
+  text-align: center;
+  padding: 20px 0 40px;
+}
+
+.tg-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.tg-button:hover {
+  border-color: rgba(237, 186, 74, 0.3);
+  color: var(--amber);
+  background: var(--amber-glow);
+}
+
+.tg-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ─── Footer ─── */
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--card-border);
+}
+
+.footer-logo {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.footer-copy a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-copy a:hover {
+  color: var(--amber);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .header {
+    padding: 50px 0 32px;
+  }
+
+  .company-name {
+    font-size: 22px;
+  }
+
+  .score-ring-container {
+    width: 180px;
+    height: 180px;
+  }
+
+  .score-value {
+    font-size: 48px;
+  }
+
+  .score-suffix {
+    font-size: 22px;
+  }
+
+  .breakdown {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .breakdown-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 16px 20px;
+  }
+
+  .breakdown-title {
+    margin-bottom: 0;
+    font-size: 12px;
+  }
+
+  .breakdown-score {
+    font-size: 28px;
+  }
+
+  .breakdown-benchmark,
+  .breakdown-bar {
+    display: none;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-value {
+    font-size: 28px;
+  }
+
+  .benchmark-header,
+  .benchmark-row {
+    grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr;
+    padding: 12px 14px;
+  }
+
+  .benchmark-header span {
+    font-size: 9px;
+  }
+
+  .benchmark-row .label {
+    font-size: 12px;
+  }
+
+  .benchmark-row .you,
+  .benchmark-row .median,
+  .benchmark-row .leaders {
+    font-size: 13px;
+  }
+
+  .path-circle {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+  }
+
+  .path-connector {
+    width: 24px;
+  }
+
+  .path-label {
+    font-size: 10px;
+    max-width: 60px;
+  }
+
+  .cta-card {
+    padding: 36px 20px;
+  }
+
+  .cta-title {
+    font-size: 22px;
+  }
+
+  .sample-badge {
+    top: 12px;
+    right: 12px;
+    font-size: 9px;
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .score-path {
+    gap: 0;
+  }
+
+  .path-connector {
+    width: 16px;
+  }
+
+  .path-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Sample Badge -->
+<div class="sample-badge">Пример отчёта</div>
+
+<!-- SVG Gradient Definition -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="amberGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EDBA4A"/>
+      <stop offset="100%" style="stop-color:#d4a43a"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="container">
+
+  <!-- ─── HEADER ─── -->
+  <header class="header fade-in">
+    <div class="logo">AGINE AI</div>
+    <div class="report-meta">HEALTH SCORE АНАЛИЗ</div>
+    <div class="company-name">АвтоПремиум Москва</div>
+    <div class="company-type">Автодилер / amoCRM / 12 менеджеров</div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- ─── OVERALL SCORE ─── -->
+  <section class="score-section fade-in">
+    <div class="section-label">Общий Health Score</div>
+
+    <div class="score-ring-container">
+      <svg width="100%" height="100%" viewBox="0 0 200 200">
+        <!-- Background ring -->
+        <circle class="score-ring-bg" cx="100" cy="100" r="90"/>
+        <!-- Benchmark dashed ring (73%) -->
+        <circle class="score-ring-benchmark" cx="100" cy="100" r="90"
+                stroke-dasharray="4 4"
+                stroke-dashoffset="0"
+                style="stroke-dasharray: 413.2 152.38; transform: rotate(-90deg); transform-origin: center;"/>
+        <!-- Score ring (44%) -->
+        <circle class="score-ring-value" cx="100" cy="100" r="90"/>
+      </svg>
+      <div class="score-number">
+        <div class="score-value" id="mainScore">0</div>
+        <div class="score-label">из 100</div>
+      </div>
+    </div>
+
+    <div class="score-benchmark-text">
+      Лидеры ниши «Авто»: <span>73%</span>
+    </div>
+    <div class="score-date">
+      5 марта 2026 · CRM-данные за 90 дней
+    </div>
+  </section>
+
+  <!-- ─── BREAKDOWN ─── -->
+  <section class="fade-in">
+    <div class="breakdown">
+      <div class="breakdown-card">
+        <div class="breakdown-title">Воронка</div>
+        <div class="breakdown-score" data-target="38">0<span>%</span></div>
+        <div class="breakdown-benchmark">Лидеры: 71%</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-bar-fill" data-width="38"></div>
+          <div class="breakdown-bar-mark" style="left: 71%"></div>
+        </div>
+      </div>
+      <div class="breakdown-card">
+        <div class="breakdown-title">Команда</div>
+        <div class="breakdown-score" data-target="51">0<span>%</span></div>
+        <div class="breakdown-benchmark">Лидеры: 76%</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-bar-fill" data-width="51"></div>
+          <div class="breakdown-bar-mark" style="left: 76%"></div>
+        </div>
+      </div>
+      <div class="breakdown-card">
+        <div class="breakdown-title">Каналы</div>
+        <div class="breakdown-score" data-target="43">0<span>%</span></div>
+        <div class="breakdown-benchmark">Лидеры: 72%</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-bar-fill" data-width="43"></div>
+          <div class="breakdown-bar-mark" style="left: 72%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── KEY METRICS ─── -->
+  <section class="metrics-section fade-in">
+    <div class="section-label">Ключевые метрики</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Конверсия лид → сделка</div>
+        <div class="metric-value">12<span class="metric-unit">%</span></div>
+        <div class="metric-norm">Норма: 22–28%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Сделки без следующего шага</div>
+        <div class="metric-value alert">34<span class="metric-unit">%</span></div>
+        <div class="metric-norm">Норма: < 10%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Просроченные задачи</div>
+        <div class="metric-value alert">47<span class="metric-unit">%</span></div>
+        <div class="metric-norm">Норма: < 15%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Средний цикл сделки</div>
+        <div class="metric-value">45 <span class="metric-unit">дн.</span></div>
+        <div class="metric-norm">Норма: 25–30 дней</div>
+      </div>
+      <div class="metric-card wide">
+        <div class="metric-label">Дисбаланс нагрузки в команде</div>
+        <div class="metric-value">3.2<span class="metric-unit">x</span></div>
+        <div class="metric-norm">Норма: < 1.5x · Разница между самым загруженным и наименее загруженным менеджером</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── KEY FINDINGS ─── -->
+  <section class="findings-section fade-in">
+    <div class="section-label">Ключевые находки</div>
+
+    <div class="finding-item">
+      <div class="finding-number">1</div>
+      <div class="finding-content">
+        <h3>Конверсия воронки ниже бенчмарка в 2 раза</h3>
+        <p>При 12% конверсии лид→сделка вы в зоне роста относительно бенчмарка ниши (22–28%). Основная точка внимания — этап квалификации: 41% лидов не получают первый контакт в течение 2 часов.</p>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">2</div>
+      <div class="finding-content">
+        <h3>Дисбаланс нагрузки 3.2x между менеджерами</h3>
+        <p>Топ-2 менеджера закрывают 68% всех сделок. Остальные 10 работают на 40–60% мощности. Зона роста команды — перераспределение лидов и автоматические правила назначения.</p>
+      </div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-number">3</div>
+      <div class="finding-content">
+        <h3>34% сделок без движения более 14 дней</h3>
+        <p>Каждая третья сделка в воронке не имеет запланированного следующего шага. Это сделки без движения, которые снижают общий Health Score. Автоматические напоминания могут вернуть до 15% из них в активную работу.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── GROWTH PLAN ─── -->
+  <section class="plan-section fade-in">
+    <div class="section-label">План роста · 44% → 73%</div>
+
+    <div class="plan-steps">
+      <div class="plan-step">
+        <div class="plan-step-number">1</div>
+        <div class="plan-step-content">
+          <h3>Оптимизировать этапы воронки</h3>
+          <p>Настроить обязательные поля при переходе между этапами. Подключить автоматический первый контакт в течение 30 минут после заявки. Убрать дублирующие этапы.</p>
+          <span class="plan-step-impact">+9 к Health Score</span>
+        </div>
+      </div>
+
+      <div class="plan-step">
+        <div class="plan-step-number">2</div>
+        <div class="plan-step-content">
+          <h3>Выровнять нагрузку команды</h3>
+          <p>Настроить автоматическое распределение лидов по загруженности менеджеров. Внедрить лимиты на одновременные сделки. Запустить еженедельный дашборд нагрузки.</p>
+          <span class="plan-step-impact">+14 к Health Score</span>
+        </div>
+      </div>
+
+      <div class="plan-step">
+        <div class="plan-step-number">3</div>
+        <div class="plan-step-content">
+          <h3>Автоматизировать follow-up</h3>
+          <p>Подключить автоматические задачи для сделок без движения (> 7 дней). Настроить алерты руководителю при просрочке. Запустить реактивацию спящих сделок.</p>
+          <span class="plan-step-impact">+6 к Health Score</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── BENCHMARK TABLE ─── -->
+  <section class="benchmark-section fade-in">
+    <div class="section-label">Бенчмарк · Ниша «Авто»</div>
+
+    <div class="benchmark-table">
+      <div class="benchmark-header">
+        <span>Метрика</span>
+        <span>Вы</span>
+        <span>Медиана</span>
+        <span>Лидеры</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="label">Health Score</span>
+        <span class="you">44%</span>
+        <span class="median">52%</span>
+        <span class="leaders">73%</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="label">Конверсия</span>
+        <span class="you">12%</span>
+        <span class="median">18%</span>
+        <span class="leaders">28%</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="label">Цикл сделки</span>
+        <span class="you">45 дн.</span>
+        <span class="median">35 дн.</span>
+        <span class="leaders">25 дн.</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="label">Без движения</span>
+        <span class="you">34%</span>
+        <span class="median">18%</span>
+        <span class="leaders">7%</span>
+      </div>
+      <div class="benchmark-row">
+        <span class="label">Баланс</span>
+        <span class="you">3.2x</span>
+        <span class="median">2.0x</span>
+        <span class="leaders">1.3x</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── SCORE PATH ─── -->
+  <section class="path-section fade-in">
+    <div class="section-label">Путь роста</div>
+
+    <div class="score-path">
+      <div class="path-node">
+        <div class="path-circle current">44</div>
+        <div class="path-label active">Сейчас</div>
+      </div>
+      <div class="path-connector"></div>
+      <div class="path-node">
+        <div class="path-circle future">53</div>
+        <div class="path-label">Месяц 1</div>
+      </div>
+      <div class="path-connector dim"></div>
+      <div class="path-node">
+        <div class="path-circle future">67</div>
+        <div class="path-label">Месяц 3</div>
+      </div>
+      <div class="path-connector dim"></div>
+      <div class="path-node">
+        <div class="path-circle target">73</div>
+        <div class="path-label active">Цель</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ─── CTA ─── -->
+  <section class="cta-section fade-in">
+    <div class="cta-card">
+      <div class="cta-title">Хотите вырасти до <span>73%</span>?</div>
+      <div class="cta-subtitle">Получите персональный Health Score анализ вашей CRM.<br>Бесплатно. За 30 минут. Без изменений в CRM.</div>
+      <a href="https://agineai.com" class="cta-button">
+        Получить свой Health Score
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 8h10M9 4l4 4-4 4"/>
+        </svg>
+      </a>
+      <div class="cta-free">Readonly-доступ · Ничего не меняем в вашей CRM</div>
+    </div>
+  </section>
+
+  <!-- ─── TELEGRAM CTA ─── -->
+  <section class="tg-cta fade-in">
+    <a href="https://t.me/agineai_group" class="tg-button">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+      Следить за кейсами
+    </a>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-logo">AGINE AI</div>
+    <div class="footer-copy">
+      &copy; 2024–2026 · <a href="https://agineai.com">agineai.com</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// ─── Intersection Observer for fade-in animations ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.1,
+  rootMargin: '0px 0px -40px 0px'
+});
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ─── Animate main score counter ───
+function animateCounter(element, target, duration = 1800) {
+  const start = performance.now();
+  const update = (now) => {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(eased * target);
+    element.textContent = current;
+    if (progress < 1) requestAnimationFrame(update);
+  };
+  requestAnimationFrame(update);
+}
+
+// ─── Animate score ring ───
+function animateScoreRing() {
+  const ring = document.querySelector('.score-ring-value');
+  if (ring) {
+    setTimeout(() => ring.classList.add('animated'), 300);
+  }
+}
+
+// ─── Animate breakdown scores ───
+function animateBreakdown() {
+  document.querySelectorAll('.breakdown-score[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.querySelector('span').outerHTML;
+    animateCounter({
+      set textContent(val) { el.innerHTML = val + suffix; }
+    }, target, 1600);
+  });
+
+  document.querySelectorAll('.breakdown-bar-fill[data-width]').forEach(bar => {
+    setTimeout(() => {
+      bar.style.width = bar.dataset.width + '%';
+    }, 400);
+  });
+}
+
+// ─── Main score animation on page load ───
+const mainScoreEl = document.getElementById('mainScore');
+const scoreObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(mainScoreEl, 44, 2000);
+      animateScoreRing();
+      setTimeout(animateBreakdown, 400);
+      scoreObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+scoreObserver.observe(document.querySelector('.score-section'));
+</script>
+
+</body>
+</html>
