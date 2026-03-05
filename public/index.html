@@ -1821,10 +1821,10 @@ document.querySelectorAll('.crm-tab').forEach(tab=>{
   email.addEventListener('input',validate);
   consent.addEventListener('change',validate);
 
-  // n8n webhook URLs
+  // n8n webhook URLs (Production)
   const webhooks={
-    'amoCRM':'https://audit.agineai.com/webhook-test/amocrm',
-    'Битрикс24':'https://audit.agineai.com/webhook-test/bitrix24-audit'
+    'amoCRM':'https://audit.agineai.com/webhook/amocrm',
+    'Битрикс24':'https://audit.agineai.com/webhook/bitrix24-audit'
   };
 
   submit.addEventListener('click', async function(){
@@ -1840,7 +1840,18 @@ document.querySelectorAll('.crm-tab').forEach(tab=>{
     submit.disabled=true;
     submit.textContent='Отправляем...';
 
-    // Build payload
+    // amoCRM: GET redirect (OAuth flow)
+    if(crmName==='amoCRM'){
+      const params=new URLSearchParams({
+        email:email.value.trim(),
+        source:'agineai.com',
+        timestamp:new Date().toISOString()
+      });
+      window.location.href=webhookUrl+'?'+params.toString();
+      return;
+    }
+
+    // Битрикс24: POST with JSON payload
     const payload={
       email:email.value.trim(),
       crm:crmName,
@@ -1849,11 +1860,9 @@ document.querySelectorAll('.crm-tab').forEach(tab=>{
     };
 
     // Add Bitrix webhook URL if provided
-    if(crmName==='Битрикс24'){
-      const bxUrl=document.getElementById('bxWebhookUrl');
-      if(bxUrl&&bxUrl.value.trim()){
-        payload.bitrix_webhook=bxUrl.value.trim();
-      }
+    const bxUrl=document.getElementById('bxWebhookUrl');
+    if(bxUrl&&bxUrl.value.trim()){
+      payload.bitrix_webhook=bxUrl.value.trim();
     }
 
     try{
@@ -1878,7 +1887,7 @@ document.querySelectorAll('.crm-tab').forEach(tab=>{
       },3000);
 
     }catch(err){
-      // Error — fallback to Telegram
+      // Error state
       submit.textContent='Ошибка. Попробуйте ещё раз';
       submit.style.background='#f87171';
       submit.disabled=false;
