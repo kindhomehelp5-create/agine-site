@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGINE AI — Вход</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
+  color: #0a0a0a;
+}
+
+/* ── Split layout ── */
+.auth-split {
+  display: flex;
+  height: 100vh;
+}
+
+/* ── Left: Dark + Animation ── */
+.auth-left {
+  flex: 1;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-left canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.auth-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-left-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 40px;
+  opacity: 0;
+  animation: authFadeIn 1s ease-out 0.6s forwards;
+}
+
+.auth-left-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.auth-left-logo svg {
+  width: 28px;
+  height: 28px;
+}
+
+.auth-left-logo span {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.5px;
+}
+
+.auth-left-tagline {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.auth-left-tagline strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.auth-left-footer {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 2;
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ── Right: White form ── */
+.auth-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  position: relative;
+  background: #fff;
+}
+
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 380px;
+  opacity: 0;
+  animation: authSlideIn 0.7s ease-out 0.4s forwards;
+}
+
+.auth-form-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.auth-form-subtitle {
+  font-size: 15px;
+  color: #a3a3a3;
+  margin-bottom: 32px;
+}
+
+/* ── Social buttons ── */
+.auth-social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.auth-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #525252;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-social-btn:hover {
+  border-color: #0a0a0a;
+  color: #0a0a0a;
+}
+
+.auth-social-btn:active {
+  transform: scale(0.97);
+}
+
+.auth-social-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ── Divider ── */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.auth-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e5e5;
+}
+
+.auth-divider-text {
+  font-size: 12px;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Email input ── */
+.auth-field {
+  margin-bottom: 16px;
+}
+
+.auth-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #525252;
+  margin-bottom: 6px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #0a0a0a;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.auth-input:focus {
+  border-color: #0a0a0a;
+}
+
+.auth-input::placeholder {
+  color: #c4c4c4;
+}
+
+/* ── Primary button ── */
+.auth-btn-primary {
+  width: 100%;
+  padding: 14px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #0a0a0a;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  margin-top: 8px;
+}
+
+.auth-btn-primary:hover {
+  background: #1a1a1a;
+}
+
+.auth-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.auth-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Back button (top-left of right panel) ── */
+.auth-back-btn {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #a3a3a3;
+  text-decoration: none;
+  transition: color 0.2s;
+  z-index: 2;
+}
+
+.auth-back-btn:hover {
+  color: #0a0a0a;
+}
+
+.auth-back-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Test platform button ── */
+.auth-btn-test {
+  width: 100%;
+  padding: 14px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #525252;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  margin-top: 8px;
+}
+
+.auth-btn-test:hover {
+  background: #ebebeb;
+  color: #0a0a0a;
+}
+
+.auth-btn-test:active {
+  transform: scale(0.98);
+}
+
+.auth-btn-test svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s;
+}
+
+.auth-test-link:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── Footer ── */
+.auth-form-footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 12px;
+  color: #c4c4c4;
+  line-height: 1.6;
+}
+
+.auth-form-footer a {
+  color: #a3a3a3;
+  text-decoration: none;
+}
+
+.auth-form-footer a:hover {
+  color: #0a0a0a;
+}
+
+/* ── Spinner ── */
+.auth-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: authSpin 0.6s linear infinite;
+}
+
+@keyframes authSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Animations ── */
+@keyframes authFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes authSlideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Mobile: hide left, show only form ── */
+@media (max-width: 768px) {
+  .auth-left { display: none; }
+  .auth-right {
+    flex: 1;
+    padding: 32px 24px;
+  }
+  .auth-badge {
+    top: 20px;
+    right: 20px;
+  }
+  .auth-mobile-logo {
+    display: flex;
+  }
+}
+
+.auth-mobile-logo {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.auth-mobile-logo svg {
+  width: 24px;
+  height: 24px;
+}
+
+.auth-mobile-logo span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0a0a0a;
+}
+</style>
+</head>
+<body>
+
+<div class="auth-split">
+  <!-- Left: Dark side with dot matrix -->
+  <div class="auth-left" id="authBg">
+    <div class="auth-left-overlay"></div>
+    <div class="auth-left-content">
+      <div class="auth-left-logo">
+        <svg viewBox="0 0 100 100" fill="none">
+          <rect x="35" y="16" width="30" height="26" rx="13" fill="#ffffff"/>
+          <rect x="14" y="52" width="30" height="26" rx="13" fill="#ffffff"/>
+          <rect x="56" y="52" width="30" height="26" rx="13" fill="#ffffff"/>
+        </svg>
+        <span>AGINE AI</span>
+      </div>
+      <div class="auth-left-tagline">
+        <strong>Весь бизнес</strong> —<br>в одном окне
+      </div>
+    </div>
+    <div class="auth-left-footer">Тестовый доступ · Данные демонстрационные</div>
+  </div>
+
+  <!-- Right: White form -->
+  <div class="auth-right">
+    <!-- Back button -->
+    <a href="/#results" class="auth-back-btn">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Назад
+    </a>
+
+    <div class="auth-form-wrap">
+      <!-- Mobile logo -->
+      <div class="auth-mobile-logo">
+        <svg viewBox="0 0 100 100" fill="none">
+          <rect x="35" y="16" width="30" height="26" rx="13" fill="#0a0a0a"/>
+          <rect x="14" y="52" width="30" height="26" rx="13" fill="#0a0a0a"/>
+          <rect x="56" y="52" width="30" height="26" rx="13" fill="#0a0a0a"/>
+        </svg>
+        <span>AGINE AI</span>
+      </div>
+
+      <div class="auth-form-title">Войдите или зарегистрируйтесь</div>
+      <div class="auth-form-subtitle">Чтобы начать работу с платформой</div>
+
+      <!-- Social login grid -->
+      <div class="auth-social-grid">
+        <button class="auth-social-btn" onclick="authSocial(this)">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11.96 11.96 0 0 0 1 12c0 1.94.46 3.77 1.18 5.42l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+
+        <button class="auth-social-btn" onclick="authSocial(this)">
+          <svg viewBox="0 0 24 24" fill="#0a0a0a">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          X
+        </button>
+
+        <button class="auth-social-btn" onclick="authSocial(this)">
+          <svg viewBox="0 0 24 24" fill="#0a0a0a">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </button>
+
+        <button class="auth-social-btn" onclick="authSocial(this)">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill="#1877F2"/>
+            <path d="M16.893 14.89l.443-2.89h-2.773v-1.876c0-.79.387-1.562 1.63-1.562h1.26v-2.46s-1.144-.195-2.238-.195c-2.285 0-3.777 1.384-3.777 3.89V12h-2.54v2.89h2.54v6.988a10.07 10.07 0 0 0 3.124 0v-6.987h2.33z" fill="#fff"/>
+          </svg>
+          Facebook
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="auth-divider">
+        <div class="auth-divider-line"></div>
+        <span class="auth-divider-text">или</span>
+        <div class="auth-divider-line"></div>
+      </div>
+
+      <!-- Email field -->
+      <div class="auth-field">
+        <label class="auth-label">Email</label>
+        <input class="auth-input" type="email" id="authEmail" placeholder="name@company.com" autocomplete="email">
+      </div>
+
+      <!-- Two action buttons -->
+      <button class="auth-btn-primary" id="btnLogin" onclick="authLogin()">
+        Войти
+      </button>
+
+      <button class="auth-btn-test" id="btnTest" onclick="authTest()">
+        Тест платформы
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+
+      <!-- Footer -->
+      <div class="auth-form-footer">
+        Нажимая «Войти», вы соглашаетесь с <a href="#">условиями</a> и <a href="#">политикой конфиденциальности</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* ── Dot Matrix Shader ── */
+(function() {
+  var container = document.getElementById('authBg');
+  var w = container.offsetWidth;
+  var h = container.offsetHeight;
+
+  var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.insertBefore(renderer.domElement, container.firstChild);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  var vertexShader = [
+    'varying vec2 vUv;',
+    'void main() {',
+    '  vUv = uv;',
+    '  gl_Position = vec4(position, 1.0);',
+    '}'
+  ].join('\n');
+
+  var fragmentShader = [
+    'precision mediump float;',
+    'varying vec2 vUv;',
+    'uniform float u_time;',
+    'uniform vec2 u_resolution;',
+    '',
+    'float PHI = 1.61803398874989484820459;',
+    '',
+    'float random(vec2 xy) {',
+    '  return fract(tan(distance(xy * PHI, xy) * 0.5) * xy.x);',
+    '}',
+    '',
+    'void main() {',
+    '  vec2 st = vUv * u_resolution;',
+    '  float totalSize = 20.0;',
+    '  float dotSize = 3.0;',
+    '',
+    '  st.x -= abs(floor(mod(u_resolution.x, totalSize) - dotSize) * 0.5);',
+    '  st.y -= abs(floor(mod(u_resolution.y, totalSize) - dotSize) * 0.5);',
+    '',
+    '  float opacity = step(0.0, st.x) * step(0.0, st.y);',
+    '  vec2 gridPos = vec2(floor(st.x / totalSize), floor(st.y / totalSize));',
+    '',
+    '  float frequency = 5.0;',
+    '  float showOffset = random(gridPos);',
+    '  float rand = random(gridPos * floor((u_time / frequency) + showOffset + frequency));',
+    '',
+    '  float opacities[10];',
+    '  opacities[0] = 0.06; opacities[1] = 0.06; opacities[2] = 0.06;',
+    '  opacities[3] = 0.1; opacities[4] = 0.1; opacities[5] = 0.1;',
+    '  opacities[6] = 0.16; opacities[7] = 0.16; opacities[8] = 0.16;',
+    '  opacities[9] = 0.2;',
+    '  opacity *= opacities[int(rand * 10.0)];',
+    '',
+    '  opacity *= 1.0 - step(dotSize / totalSize, fract(st.x / totalSize));',
+    '  opacity *= 1.0 - step(dotSize / totalSize, fract(st.y / totalSize));',
+    '',
+    '  vec2 centerGrid = u_resolution / 2.0 / totalSize;',
+    '  float dist = distance(centerGrid, gridPos);',
+    '  float timing = dist * 0.01 + random(gridPos) * 0.15;',
+    '  float speed = 0.5;',
+    '  opacity *= step(timing, u_time * speed);',
+    '  opacity *= clamp((1.0 - step(timing + 0.1, u_time * speed)) * 1.25, 1.0, 1.25);',
+    '',
+    '  gl_FragColor = vec4(vec3(1.0), opacity);',
+    '}'
+  ].join('\n');
+
+  var material = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    uniforms: {
+      u_time: { value: 0 },
+      u_resolution: { value: new THREE.Vector2(w * renderer.getPixelRatio(), h * renderer.getPixelRatio()) }
+    },
+    transparent: true,
+    blending: THREE.AdditiveBlending
+  });
+
+  var mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+  scene.add(mesh);
+
+  var startTime = Date.now();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    material.uniforms.u_time.value = (Date.now() - startTime) / 1000;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function() {
+    w = container.offsetWidth;
+    h = container.offsetHeight;
+    renderer.setSize(w, h);
+    var pr = renderer.getPixelRatio();
+    material.uniforms.u_resolution.value.set(w * pr, h * pr);
+  });
+})();
+
+/* ── Auth actions ── */
+function showSpinner(btn) {
+  btn.disabled = true;
+  btn.textContent = '';
+  var s = document.createElement('div');
+  s.className = 'auth-spinner';
+  btn.appendChild(s);
+}
+
+function authLogin() {
+  showSpinner(document.getElementById('btnLogin'));
+  setTimeout(function() {
+    window.location.href = 'https://app.agineai.com';
+  }, 900);
+}
+
+function authSocial(btn) {
+  btn.style.opacity = '0.5';
+  btn.style.pointerEvents = 'none';
+  setTimeout(function() {
+    window.location.href = 'https://app.agineai.com';
+  }, 900);
+}
+
+function authTest() {
+  var btn = document.getElementById('btnTest');
+  btn.style.color = '#0a0a0a';
+  btn.style.pointerEvents = 'none';
+  setTimeout(function() {
+    window.location.href = 'https://app.agineai.com';
+  }, 600);
+}
+</script>
+
+</body>
+</html>
