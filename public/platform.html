@@ -3661,22 +3661,22 @@ body {
 }
 .delegate-modal-content {
   position: relative; z-index: 1;
-  max-width: 520px; width: 92%; padding: 24px; border-radius: var(--radius-lg);
-  background: var(--bg-surface); border: 1px solid var(--border);
+  max-width: 520px; width: 92%; padding: 28px; border-radius: 16px;
+  background: #0a0a0a; border: 1px solid rgba(255,255,255,0.1); color: #fff;
   max-height: 85vh; overflow-y: auto;
 }
 .delegate-modal-header {
-  font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;
+  font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px;
 }
 .delegate-modal-sub {
-  font-size: 13px; color: var(--text-tertiary); margin-bottom: 20px;
+  font-size: 13px; color: #888; margin-bottom: 20px;
 }
 .delegate-modal-section {
   margin-bottom: 16px;
 }
 .delegate-modal-label {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: 8px;
+  letter-spacing: 0.5px; color: #888; margin-bottom: 8px;
 }
 
 /* Recipient selector */
@@ -3690,9 +3690,9 @@ body {
   font-size: 12px; color: var(--text-secondary); cursor: pointer;
   transition: all 0.15s; font-family: inherit;
 }
-.delegate-recipient:hover { border-color: var(--accent); color: var(--text-primary); }
+.delegate-recipient:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
 .delegate-recipient.selected {
-  border-color: var(--accent); background: rgba(10,107,242,0.1); color: var(--text-primary);
+  border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.1); color: #fff;
 }
 .delegate-recipient-avatar {
   width: 22px; height: 22px; border-radius: 50%;
@@ -3701,17 +3701,17 @@ body {
   font-size: 10px; font-weight: 700;
 }
 .delegate-recipient.selected .delegate-recipient-avatar {
-  background: rgba(10,107,242,0.2); color: var(--text-primary);
+  background: rgba(255,255,255,0.15); color: #fff;
 }
 
 /* Message textarea */
 .delegate-message-area {
   width: 100%; min-height: 80px; padding: 12px;
-  border-radius: var(--radius-md); border: 1px solid var(--border);
-  background: var(--bg-quaternary); color: var(--text-primary);
+  border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+  background: #111; color: #fff;
   font-size: 13px; font-family: inherit; resize: vertical; line-height: 1.5;
 }
-.delegate-message-area:focus { outline: none; border-color: var(--accent); }
+.delegate-message-area:focus { outline: none; border-color: rgba(255,255,255,0.25); }
 
 /* Actions */
 .delegate-modal-actions {
@@ -3726,13 +3726,13 @@ body {
 }
 .delegate-action-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 .delegate-action-btn.tg {
-  background: rgba(52,152,219,0.12); color: #3498db; border-color: rgba(52,152,219,0.3);
+  background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.15);
 }
-.delegate-action-btn.tg:hover { background: rgba(52,152,219,0.2); }
+.delegate-action-btn.tg:hover { background: rgba(255,255,255,0.15); }
 .delegate-action-btn.copy {
-  background: rgba(10,107,242,0.12); color: var(--text-primary); border-color: rgba(10,107,242,0.3);
+  background: #fff; color: #0a0a0a; border-color: #fff;
 }
-.delegate-action-btn.copy:hover { background: rgba(10,107,242,0.2); }
+.delegate-action-btn.copy:hover { background: rgba(255,255,255,0.85); }
 .delegate-action-btn.close {
   background: transparent; color: var(--text-tertiary); border-color: var(--border);
 }
@@ -6381,6 +6381,26 @@ body {
   text-transform: uppercase;
 }
 
+/* Back to site link */
+.sidebar-back-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  opacity: 0.4;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  cursor: pointer;
+}
+.sidebar-back-link:hover {
+  opacity: 0.7;
+}
+.sidebar-back-link svg {
+  flex-shrink: 0;
+}
+
 /* Cmd+K hint in sidebar */
 .sidebar-shortcut-hint {
   font-size: 10px;
@@ -7968,6 +7988,10 @@ body {
     </button>
   </div>
 
+  <a href="https://agineai.com" class="sidebar-back-link" title="Вернуться на сайт">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <span>На сайт</span>
+  </a>
   <div class="sidebar-shortcut-hint"><kbd>⌘</kbd><kbd>K</kbd> — команды</div>
 </aside>
 
@@ -13134,37 +13158,62 @@ function decisionCRM(id) {
 
 /* ── Delegate Modal v2 ── */
 var delegateCurrentDecision = null;
-var delegateSelectedRecipient = null;
+var delegateSelectedRecipients = [];
 
 function showDelegateModal(decision) {
   delegateCurrentDecision = decision;
-  delegateSelectedRecipient = null;
+  delegateSelectedRecipients = [];
   var modal = document.getElementById('delegateModal');
   if (!modal) return;
 
   // Header
   document.getElementById('delegateTask').textContent = decision.text;
-  document.getElementById('delegateSub').textContent = decision.sphere + ' · ' + (decision.expectedValue || decision.costOfInaction);
+  var subParts = [];
+  if (decision.sphere) subParts.push(decision.sphere);
+  if (decision.expectedValue || decision.costOfInaction) subParts.push(decision.expectedValue || decision.costOfInaction);
+  document.getElementById('delegateSub').textContent = subParts.length ? subParts.join(' · ') : '';
 
-  // Recipients (from hardcoded TEAM_MEMBERS — safe for innerHTML)
+  // Recipients (from hardcoded TEAM_MEMBERS — safe for innerHTML with trusted data)
   var recEl = document.getElementById('delegateRecipients');
-  var rh = '';
+  recEl.textContent = '';
+  // "Select all" button
+  var allBtn = document.createElement('button');
+  allBtn.className = 'delegate-recipient delegate-select-all';
+  allBtn.onclick = function() { toggleAllRecipients(); };
+  allBtn.innerHTML = '<div class="delegate-recipient-avatar" style="font-size:9px">ALL</div>Все';
+  recEl.appendChild(allBtn);
+
+  function createRecipientBtn(m, isSuggested) {
+    var btn = document.createElement('button');
+    btn.className = 'delegate-recipient' + (isSuggested ? ' selected' : '');
+    btn.setAttribute('data-id', m.id);
+    btn.onclick = function() { selectRecipient(btn, m.id); };
+    var av = document.createElement('div');
+    av.className = 'delegate-recipient-avatar';
+    av.textContent = m.avatar;
+    btn.appendChild(av);
+    var nameSpan = document.createTextNode(m.name + ' ');
+    btn.appendChild(nameSpan);
+    if (isSuggested) {
+      var hint = document.createElement('span');
+      hint.style.cssText = 'font-size:10px;color:#888';
+      hint.textContent = 'рекомендован';
+      btn.appendChild(hint);
+    }
+    return btn;
+  }
+
   if (decision.suggestedRecipient) {
     var sg = TEAM_MEMBERS.filter(function(m) { return m.id === decision.suggestedRecipient; })[0];
     if (sg) {
-      rh += '<button class="delegate-recipient selected" data-id="' + sg.id + '" onclick="selectRecipient(this,\'' + sg.id + '\')">';
-      rh += '<div class="delegate-recipient-avatar">' + sg.avatar + '</div>';
-      rh += sg.name + ' <span style="font-size:10px;color:var(--text-tertiary)">рекомендован</span></button>';
-      delegateSelectedRecipient = sg.id;
+      recEl.appendChild(createRecipientBtn(sg, true));
+      delegateSelectedRecipients.push(sg.id);
     }
   }
   TEAM_MEMBERS.forEach(function(m) {
     if (m.id === decision.suggestedRecipient) return;
-    rh += '<button class="delegate-recipient" data-id="' + m.id + '" onclick="selectRecipient(this,\'' + m.id + '\')">';
-    rh += '<div class="delegate-recipient-avatar">' + m.avatar + '</div>';
-    rh += m.name + '</button>';
+    recEl.appendChild(createRecipientBtn(m, false));
   });
-  recEl.innerHTML = rh;
 
   // Message
   var msgEl = document.getElementById('delegateMessage');
@@ -13175,16 +13224,47 @@ function showDelegateModal(decision) {
     msg += dctx.dealName + ' · ' + dctx.dealAmount + ' · ' + dctx.stage + '\n';
     msg += 'Контакт: ' + dctx.contactName + ' · ' + dctx.daysInactive + ' дн. без связи\n\n';
   }
-  msg += 'Рекомендация: ' + decision.rec;
-  msgEl.value = msg;
+  if (decision.rec) msg += 'Рекомендация: ' + decision.rec;
+  msgEl.value = msg.trim();
 
   modal.classList.add('open');
 }
 
 function selectRecipient(el, id) {
-  document.querySelectorAll('.delegate-recipient').forEach(function(r) { r.classList.remove('selected'); });
-  el.classList.add('selected');
-  delegateSelectedRecipient = id;
+  var idx = delegateSelectedRecipients.indexOf(id);
+  if (idx >= 0) {
+    delegateSelectedRecipients.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    delegateSelectedRecipients.push(id);
+    el.classList.add('selected');
+  }
+  updateSelectAllBtn();
+}
+
+function toggleAllRecipients() {
+  var allIds = TEAM_MEMBERS.map(function(m) { return m.id; });
+  var allSelected = allIds.every(function(id) { return delegateSelectedRecipients.indexOf(id) >= 0; });
+  if (allSelected) {
+    delegateSelectedRecipients = [];
+    document.querySelectorAll('.delegate-recipient[data-id]').forEach(function(r) { r.classList.remove('selected'); });
+  } else {
+    delegateSelectedRecipients = allIds.slice();
+    document.querySelectorAll('.delegate-recipient[data-id]').forEach(function(r) { r.classList.add('selected'); });
+  }
+  updateSelectAllBtn();
+}
+
+function updateSelectAllBtn() {
+  var allBtn = document.querySelector('.delegate-select-all');
+  if (!allBtn) return;
+  var allIds = TEAM_MEMBERS.map(function(m) { return m.id; });
+  var allSelected = allIds.every(function(id) { return delegateSelectedRecipients.indexOf(id) >= 0; });
+  if (allSelected) {
+    allBtn.classList.add('selected');
+  } else {
+    allBtn.classList.remove('selected');
+  }
 }
 
 function closeDelegateModal() {
@@ -13193,18 +13273,27 @@ function closeDelegateModal() {
   delegateCurrentDecision = null;
 }
 
+function getSelectedRecipientNames() {
+  var names = [];
+  delegateSelectedRecipients.forEach(function(id) {
+    var m = TEAM_MEMBERS.filter(function(t) { return t.id === id; })[0];
+    if (m) names.push(m.name);
+  });
+  return names;
+}
+
 function delegateSendTelegram() {
   var msg = document.getElementById('delegateMessage').value;
-  var recipient = TEAM_MEMBERS.filter(function(m) { return m.id === delegateSelectedRecipient; })[0];
-  var prefix = recipient ? ('Для: ' + recipient.name + '\n\n') : '';
+  var names = getSelectedRecipientNames();
+  var prefix = names.length ? ('Для: ' + names.join(', ') + '\n\n') : '';
   window.open('https://t.me/share/url?text=' + encodeURIComponent(prefix + msg), '_blank');
   finishDelegation();
 }
 
 function delegateCopyText() {
   var msg = document.getElementById('delegateMessage').value;
-  var recipient = TEAM_MEMBERS.filter(function(m) { return m.id === delegateSelectedRecipient; })[0];
-  var prefix = recipient ? ('Для: ' + recipient.name + '\n\n') : '';
+  var names = getSelectedRecipientNames();
+  var prefix = names.length ? ('Для: ' + names.join(', ') + '\n\n') : '';
   navigator.clipboard.writeText(prefix + msg).then(function() {
     var btn = document.querySelector('.delegate-action-btn.copy');
     if (btn) { btn.textContent = 'Скопировано!'; setTimeout(function() { btn.textContent = 'Копировать'; }, 1500); }
@@ -13216,11 +13305,17 @@ function finishDelegation() {
   if (!delegateCurrentDecision) return;
   var d = delegateCurrentDecision;
   d.status = 'delegated';
-  var recipient = TEAM_MEMBERS.filter(function(m) { return m.id === delegateSelectedRecipient; })[0];
+  var names = getSelectedRecipientNames();
+  var avatars = [];
+  delegateSelectedRecipients.forEach(function(id) {
+    var m = TEAM_MEMBERS.filter(function(t) { return t.id === id; })[0];
+    if (m) avatars.push(m.avatar);
+  });
   delegatedDecisions.push({
     decision: d,
-    recipientName: recipient ? recipient.name : 'Не указан',
-    recipientAvatar: recipient ? recipient.avatar : '?',
+    recipientName: names.length ? names.join(', ') : 'Не указан',
+    recipientAvatar: avatars.length ? avatars[0] : '?',
+    recipientCount: delegateSelectedRecipients.length,
     sentAt: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}),
     status: 'sent'
   });
