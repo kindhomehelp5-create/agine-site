@@ -2862,9 +2862,9 @@ document.querySelectorAll('.faq2-q').forEach(function(q) {
   iframe.addEventListener('load', function() {
     try {
       // Mark onboarding as completed so it doesn't show
-      iframe.contentWindow.localStorage.setItem('agine_onboarding_done', 'true');
+      iframe.contentWindow.localStorage.setItem('agine_onb_done', 'true');
       // Close any visible onboarding overlay
-      var overlay = iframe.contentDocument.querySelector('.onboarding-overlay, .ob-overlay, .onboarding-wrap');
+      var overlay = iframe.contentDocument.querySelector('.onb-overlay, .onboarding-overlay, .ob-overlay, .onboarding-wrap');
       if (overlay) overlay.style.display = 'none';
       // Click "Пропустить всё" if visible
       var skipBtns = iframe.contentDocument.querySelectorAll('button, a, span');
