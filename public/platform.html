@@ -3746,16 +3746,17 @@ body {
 .pulse-action-modal.open { display: flex; }
 .pulse-action-modal-overlay {
   position: absolute; inset: 0;
-  background: rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.6);
   backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
 }
 .pulse-action-modal-content {
   position: relative; z-index: 1;
   max-width: 480px; width: 92%; padding: 28px;
   border-radius: 16px;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  color: #fff;
   max-height: 85vh; overflow-y: auto;
   animation: pamSlideUp 0.3s ease;
 }
@@ -3767,60 +3768,62 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 20px;
 }
-.pam-title { font-size: 16px; font-weight: 700; color: #0a0a0a; }
+.pam-title { font-size: 16px; font-weight: 700; color: #fff; }
 .pam-close {
   width: 32px; height: 32px; border-radius: 50%;
-  border: 1px solid #e0e0e0; background: transparent;
+  border: 1px solid rgba(255,255,255,0.15); background: transparent;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: background 0.15s;
 }
-.pam-close:hover { background: #f5f5f5; }
-.pam-close svg { width: 14px; height: 14px; stroke: #525252; fill: none; stroke-width: 2; stroke-linecap: round; }
+.pam-close:hover { background: rgba(255,255,255,0.08); }
+.pam-close svg { width: 14px; height: 14px; stroke: rgba(255,255,255,0.6); fill: none; stroke-width: 2; stroke-linecap: round; }
 .pam-section { margin-bottom: 16px; }
 .pam-label {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.04em; color: #a3a3a3; margin-bottom: 6px;
+  letter-spacing: 0.04em; color: rgba(255,255,255,0.45); margin-bottom: 6px;
 }
 .pam-select {
   width: 100%; padding: 10px 12px; border-radius: 10px;
-  border: 1px solid #e0e0e0; background: #fafafa;
-  font-size: 13px; color: #0a0a0a; font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.12); background: #111;
+  font-size: 13px; color: #fff; font-family: inherit;
   appearance: none; -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center;
   cursor: pointer;
 }
-.pam-select:focus { outline: none; border-color: #0a0a0a; }
+.pam-select:focus { outline: none; border-color: rgba(255,255,255,0.3); }
+.pam-select option { background: #111; color: #fff; }
 .pam-input {
   width: 100%; padding: 10px 12px; border-radius: 10px;
-  border: 1px solid #e0e0e0; background: #fafafa;
-  font-size: 13px; color: #0a0a0a; font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.12); background: #111;
+  font-size: 13px; color: #fff; font-family: inherit;
 }
-.pam-input:focus { outline: none; border-color: #0a0a0a; }
+.pam-input:focus { outline: none; border-color: rgba(255,255,255,0.3); }
 .pam-textarea {
   width: 100%; padding: 10px 12px; border-radius: 10px;
-  border: 1px solid #e0e0e0; background: #fafafa;
-  font-size: 12px; color: #0a0a0a; font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.12); background: #111;
+  font-size: 12px; color: #fff; font-family: inherit;
   min-height: 80px; resize: vertical; line-height: 1.55;
 }
-.pam-textarea:focus { outline: none; border-color: #0a0a0a; }
+.pam-textarea:focus { outline: none; border-color: rgba(255,255,255,0.3); }
 .pam-channels {
   display: flex; gap: 8px;
 }
 .pam-channel {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
   padding: 12px 8px; border-radius: 12px;
-  border: 1px solid #e0e0e0; background: transparent;
+  border: 1px solid rgba(255,255,255,0.12); background: transparent;
   cursor: pointer; transition: all 0.15s; font-family: inherit;
+  color: rgba(255,255,255,0.7);
 }
-.pam-channel:hover { border-color: #b0b0b0; background: #fafafa; }
-.pam-channel.selected { border-color: #0a0a0a; background: #f5f5f5; }
-.pam-channel svg { width: 20px; height: 20px; }
-.pam-channel-label { font-size: 11px; color: #525252; font-weight: 500; }
-.pam-channel.selected .pam-channel-label { color: #0a0a0a; font-weight: 600; }
+.pam-channel:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
+.pam-channel.selected { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.1); }
+.pam-channel svg { width: 20px; height: 20px; stroke: currentColor; }
+.pam-channel-label { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; }
+.pam-channel.selected .pam-channel-label { color: #fff; font-weight: 600; }
 .pam-submit {
   width: 100%; padding: 12px; border-radius: var(--radius-full);
-  background: #0a0a0a; color: #ffffff; border: none;
+  background: #fff; color: #0a0a0a; border: none;
   font-size: 14px; font-weight: 600; font-family: inherit;
   cursor: pointer; transition: opacity 0.15s;
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -3829,8 +3832,8 @@ body {
 .pam-submit:hover { opacity: 0.85; }
 .pam-submit:disabled { opacity: 0.5; cursor: default; }
 .pam-submit .pam-spinner {
-  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #fff; border-radius: 50%;
+  width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.15);
+  border-top-color: #0a0a0a; border-radius: 50%;
   animation: pamSpin 0.6s linear infinite; display: none;
 }
 .pam-submit.loading .pam-spinner { display: block; }
@@ -8007,7 +8010,7 @@ body {
     <div class="page active" id="page-pulse">
       <div class="page-header">
         <div class="page-header-left">
-          <div class="page-title" style="font-size:18px;display:flex;align-items:center;gap:8px">Pulse <span style="font-size:11px;font-weight:400;color:var(--text-tertiary)">AI Управленец</span></div>
+          <div class="page-title" style="font-size:18px;display:flex;align-items:center;gap:8px">Pulse <span id="pulseSubtitle" style="font-size:11px;font-weight:400;color:var(--text-tertiary)">AI Управленец</span></div>
         </div>
         <div class="pulse-mode-toggle" id="pulseModeToggle">
           <div class="pulse-mode-toggle-slider" id="pulseToggleSlider"></div>
@@ -11226,7 +11229,7 @@ function renderPulseTask(c, idx) {
   } else {
     h += '<button class="pulse-btn primary" aria-label="Взять в работу" onclick="pulseAction(\'done\')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Взять в работу</button>';
     h += '<button class="pulse-btn secondary" aria-label="Уже решено" onclick="pulseSkip(\'solved\')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="16 12 12 8 8 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>Уже решено</button>';
-    h += '<button class="pulse-btn tertiary" aria-label="Делегировать задачу в CRM" onclick="pulseSkip(\'later\')" style="min-width:auto;padding:10px 16px;background:transparent;border:1px solid #e0e0e0;color:var(--text-secondary);font-size:12px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>Делегировать задачу в CRM</button>';
+    h += '<button class="pulse-btn tertiary" aria-label="Делегировать задачу в CRM" onclick="pulseDelegateAction()" style="min-width:auto;padding:10px 16px;background:transparent;border:1px solid #e0e0e0;color:var(--text-secondary);font-size:12px;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>Делегировать задачу в CRM</button>';
   }
   h += '</div>';
   h += '</div>'; // end task card
@@ -12029,9 +12032,8 @@ function pulseDelegateAction() {
   var idx = pulseState.current;
   var t = PULSE_TASKS[idx];
   if (!t) return;
-  // Build delegate text from task data
-  var delegateText = t.problem + '\n\n' + t.rec;
-  var taskObj = { text: t.problem, delegateText: delegateText };
+  // Build delegate data from task
+  var taskObj = { text: t.problem, sphere: t.sphere, expectedValue: t.hsImpact, rec: t.rec ? t.rec.replace(/<[^>]+>/g, '') : '' };
   showDelegateModal(taskObj);
   // After modal closes, mark task as done
   var modal = document.getElementById('delegateModal');
