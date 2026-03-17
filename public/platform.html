@@ -2418,10 +2418,10 @@ body {
 
 .partner-suggestion-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
   width: 100%;
-  max-width: 480px;
+  max-width: 620px;
 }
 
 .partner-suggestion-card {
@@ -11569,7 +11569,6 @@ function renderPartnerWelcome() {
       '</div>';
   });
   return '<div class="partner-welcome-v2" id="partnerWelcome">' +
-    '<div class="partner-welcome-avatar"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="white" stroke="none"/></svg></div>' +
     '<div class="partner-welcome-title">AI Бизнес-партнёр</div>' +
     '<div class="partner-welcome-sub">Стратегический анализ вашего бизнеса<br>на основе данных из CRM</div>' +
     '<div class="partner-suggestion-grid">' + cards + '</div>' +
