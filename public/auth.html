@@ -460,7 +460,7 @@ body {
         <strong>Весь бизнес</strong> —<br>в одном окне
       </div>
     </div>
-    <div class="auth-left-footer">Тестовый доступ · Данные демонстрационные</div>
+    <div class="auth-left-footer">AI-аудит CRM · Готовые рекомендации</div>
   </div>
 
   <!-- Right: White form -->
@@ -693,7 +693,7 @@ function authLogin() {
   }
   showSpinner(document.getElementById('btnLogin'));
   setTimeout(function() {
-    window.location.href = 'https://app.agineai.com';
+    window.location.href = 'https://app.agineai.com/login';
   }, 900);
 }
 
@@ -715,7 +715,7 @@ function authTest() {
   btn.style.color = '#0a0a0a';
   btn.style.pointerEvents = 'none';
   setTimeout(function() {
-    window.location.href = 'https://app.agineai.com?mode=demo';
+    window.location.href = '/platform.html';
   }, 600);
 }
 
