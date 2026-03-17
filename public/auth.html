@@ -507,8 +507,9 @@ body {
 
       <!-- Email field -->
       <div class="auth-field">
-        <label class="auth-label">Email</label>
-        <input class="auth-input" type="email" id="authEmail" placeholder="name@company.com" autocomplete="email">
+        <label class="auth-label" for="authEmail">Email</label>
+        <input class="auth-input" type="email" id="authEmail" name="email" placeholder="name@company.com" autocomplete="email">
+        <div id="authError" style="display:none;color:#e53e3e;font-size:13px;margin-top:6px"></div>
       </div>
 
       <!-- Two action buttons -->
@@ -535,6 +536,7 @@ body {
 <script>
 /* ── Dot Matrix Shader ── */
 (function() {
+  try {
   var container = document.getElementById('authBg');
   var w = container.offsetWidth;
   var h = container.offsetHeight;
@@ -633,18 +635,40 @@ body {
     var pr = renderer.getPixelRatio();
     material.uniforms.u_resolution.value.set(w * pr, h * pr);
   });
+  } catch(e) { console.warn('WebGL not available:', e.message); }
 })();
 
 /* ── Auth actions ── */
 function showSpinner(btn) {
+  btn._origText = btn.textContent;
   btn.disabled = true;
   btn.textContent = '';
   var s = document.createElement('div');
   s.className = 'auth-spinner';
   btn.appendChild(s);
+  // Recovery timeout: restore button after 8s if redirect fails
+  btn._recoveryTimer = setTimeout(function() {
+    btn.disabled = false;
+    btn.textContent = btn._origText || 'Войти';
+    var err = document.getElementById('authError');
+    if (err) { err.textContent = 'Не удалось подключиться. Попробуйте ещё раз.'; err.style.display = 'block'; }
+  }, 8000);
 }
 
 function authLogin() {
+  var email = document.getElementById('authEmail').value.trim();
+  var err = document.getElementById('authError');
+  if (err) { err.style.display = 'none'; err.textContent = ''; }
+  if (!email) {
+    if (err) { err.textContent = 'Введите email'; err.style.display = 'block'; }
+    document.getElementById('authEmail').focus();
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (err) { err.textContent = 'Проверьте формат email'; err.style.display = 'block'; }
+    document.getElementById('authEmail').focus();
+    return;
+  }
   showSpinner(document.getElementById('btnLogin'));
   setTimeout(function() {
     window.location.href = 'https://app.agineai.com';
@@ -654,6 +678,11 @@ function authLogin() {
 function authSocial(btn) {
   btn.style.opacity = '0.5';
   btn.style.pointerEvents = 'none';
+  // Recovery after 5s
+  setTimeout(function() {
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }, 5000);
   setTimeout(function() {
     window.location.href = 'https://app.agineai.com';
   }, 900);
@@ -664,9 +693,14 @@ function authTest() {
   btn.style.color = '#0a0a0a';
   btn.style.pointerEvents = 'none';
   setTimeout(function() {
-    window.location.href = 'https://app.agineai.com';
+    window.location.href = 'https://app.agineai.com?mode=demo';
   }, 600);
 }
+
+// Enter key submits login
+document.getElementById('authEmail').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); authLogin(); }
+});
 </script>
 
 </body>

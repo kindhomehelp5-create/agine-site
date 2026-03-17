@@ -39,7 +39,7 @@
   "@type": "Organization",
   "name": "AGINE",
   "url": "https://agineai.com",
-  "logo": "https://agineai.com/og.jpg",
+  "logo": "https://agineai.com/og.png",
   "description": "Нейросеть для руководителя. Подключается к CRM и финансам — каждое утро говорит, с чего начать день.",
   "foundingDate": "2024",
   "areaServed": {
@@ -81,7 +81,7 @@
     {
       "@type": "Offer",
       "name": "AI-мониторинг",
-      "price": "150000",
+      "price": "49900",
       "priceCurrency": "RUB",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
@@ -186,7 +186,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Wix+Madefor+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -195,7 +195,7 @@
   --gray:#f5f5f5;
   --gray2:#e8e8e8;
   --gray3:#999;
-  --amber:#fff;
+  --amber:#F5A623;
   --amber-light:#ccc;
   --amber-dark:#333;
   --brown:#2C1A0E;
@@ -534,16 +534,16 @@ section{padding:120px 40px}
 .chat-msg.visible{opacity:1;transform:translateY(0)}
 .chat-msg.user{align-self:flex-end;background:var(--gray);color:var(--black);border-bottom-right-radius:4px;font-weight:400}
 .chat-msg.ai{align-self:flex-start;background:rgba(245,166,35,0.08);color:var(--black);border-bottom-left-radius:4px}
-.chat-msg.ai .ai-name{font-size:9px;font-weight:600;letter-spacing:0.04em;color:rgba(255,255,255,0.5);margin-bottom:4px;text-transform:uppercase}
+.chat-msg.ai .ai-name{font-size:9px;font-weight:600;letter-spacing:0.04em;color:rgba(0,0,0,0.4);margin-bottom:4px;text-transform:uppercase}
 .chat-typing{align-self:flex-start;padding:10px 14px;background:rgba(245,166,35,0.08);border-radius:14px;border-bottom-left-radius:4px;display:none;gap:4px;align-items:center}
 .chat-typing.visible{display:flex}
-.chat-typing span{width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.4;animation:dotPulse 1.2s infinite}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:#999;opacity:0.4;animation:dotPulse 1.2s infinite}
 .chat-typing span:nth-child(2){animation-delay:0.2s}
 .chat-typing span:nth-child(3){animation-delay:0.4s}
 @keyframes dotPulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
 .chat-input-wrap{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray)}
 .chat-input{flex:1;padding:10px 14px;border:1px solid var(--gray2);border-radius:12px;font-family:var(--font);font-size:12px;outline:none;transition:border-color .2s;background:var(--gray)}
-.chat-input:focus{border-color:rgba(255,255,255,0.3)}
+.chat-input:focus{border-color:rgba(0,0,0,0.2)}
 .chat-input::placeholder{color:var(--gray3)}
 .chat-send{width:38px;height:38px;border-radius:10px;background:var(--black);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .chat-send:hover{background:#333;transform:scale(1.05)}
@@ -1767,7 +1767,7 @@ body{background:#111;color:#fff}
   <div class="dots-canvas" id="dotsCanvas"></div>
   <div class="cs-wrap">
     <div class="cs-header" id="csHeader">
-      <div class="cycle-line">Каждое утро — ясность.</div>
+      <h1 class="cycle-line">Каждое утро — ясность.</h1>
       <div style="font-size:clamp(15px,2vw,20px);font-weight:400;opacity:0.55;margin-top:20px;letter-spacing:0;line-height:1.6;text-align:center">Нейросеть для руководителя. Знает ваш бизнес и говорит, с чего начать день</div>
       <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:36px;flex-wrap:wrap">
         <a href="#pricing" class="hero-cta">Начать бесплатно</a>
@@ -1780,7 +1780,7 @@ body{background:#111;color:#fff}
         <div class="cs-cta-wrap" id="csCta">
           <a href="https://app.agineai.com" class="cs-cta">
             Увидеть свои цифры
-            <svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
           </a>
           <div style="text-align:center;margin-top:12px;font-size:14px;opacity:0.5;letter-spacing:0.02em">30 минут до первых выводов &middot; amoCRM &middot; Битрикс24 &middot; 1С</div>
         </div>
