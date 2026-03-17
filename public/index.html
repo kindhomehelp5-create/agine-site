@@ -581,7 +581,7 @@ section{padding:120px 40px}
 .cta-duo-btn.accent{
   background:rgba(0,0,0,0.06);color:#333;border:1px solid rgba(0,0,0,0.12);
 }
-.cta-duo-btn.accent:hover{background:rgba(0,0,0,0.5);box-shadow:0 8px 30px rgba(0,0,0,0.15)}
+.cta-duo-btn.accent:hover{background:rgba(0,0,0,0.5);box-shadow:0 8px 30px rgba(0,0,0,0.15);color:#fff}
 .cta-duo-btn svg{width:24px;height:24px;flex-shrink:0}
 .cta-duo-btn.outline svg,.cta-duo-btn.filled svg{fill:var(--black)}
 .cta-duo-btn.accent svg{fill:var(--amber-dark)}
@@ -742,7 +742,7 @@ section{padding:120px 40px}
   background:rgba(255,255,255,0.1);
   transition:background .4s;flex-shrink:0;
 }
-.cta-step.visible .cta-step-border{background:#111}
+.cta-step.visible .cta-step-border{background:#fff}
 .cta-step-content{display:flex;flex-direction:column;gap:8px}
 .cta-step-title{
   font-family:var(--font);font-size:17px;font-weight:600;
@@ -1135,6 +1135,8 @@ nav.menu-open .logo b{color:#fff !important}
 .fade-in.d2{transition-delay:.2s}
 .fade-in.d3{transition-delay:.3s}
 .fade-in.d4{transition-delay:.4s}
+.fade-in.d5{transition-delay:.5s}
+@media(prefers-reduced-motion:reduce){.fade-in,.scale-in,.slide-left,.slide-right{transition:none!important;opacity:1!important;transform:none!important}}
 
 /* Scale-in */
 .scale-in{opacity:0;transform:scale(0.92);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
@@ -1729,8 +1731,8 @@ body{background:#111;color:#fff}
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="#" class="logo"><svg class="logo-icon" viewBox="0 0 40 36" fill="none"><circle cx="20" cy="6" r="6" fill="#F0F4FF"/><circle cx="9" cy="26" r="6" fill="#F0F4FF"/><circle cx="31" cy="26" r="6" fill="#F0F4FF"/></svg><span class="logo-text">AGINE</span></a>
+<nav aria-label="Главная навигация">
+  <a href="#" class="logo" aria-label="AGINE — На главную"><svg class="logo-icon" viewBox="0 0 40 36" fill="none" aria-hidden="true"><circle cx="20" cy="6" r="6" fill="#F0F4FF"/><circle cx="9" cy="26" r="6" fill="#F0F4FF"/><circle cx="31" cy="26" r="6" fill="#F0F4FF"/></svg><span class="logo-text">AGINE</span></a>
   <ul class="nav-links">
     <li><a href="#results">Возможности</a></li>
     <li><a href="#how">Как работает</a></li>
@@ -1793,6 +1795,7 @@ body{background:#111;color:#fff}
 <script>
 // Dotted Surface — exact replica from 21st.dev/efferd
 (function() {
+  try {
   var container = document.getElementById('dotsCanvas');
   var SEPARATION = 150, AMOUNTX = 40, AMOUNTY = 60;
 
@@ -1803,7 +1806,7 @@ body{background:#111;color:#fff}
   camera.position.set(0, 355, 1220);
 
   var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x060610, 0);
   container.appendChild(renderer.domElement);
@@ -1812,7 +1815,7 @@ body{background:#111;color:#fff}
   for (var ix = 0; ix < AMOUNTX; ix++) {
     for (var iy = 0; iy < AMOUNTY; iy++) {
       positions.push(ix * SEPARATION - (AMOUNTX * SEPARATION) / 2, 0, iy * SEPARATION - (AMOUNTY * SEPARATION) / 2);
-      colors.push(200, 200, 200);
+      colors.push(0.78, 0.78, 0.78);
     }
   }
 
@@ -1820,11 +1823,13 @@ body{background:#111;color:#fff}
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   var material = new THREE.PointsMaterial({ size: 8, vertexColors: true, transparent: true, opacity: 0.8, sizeAttenuation: true });
-  scene.add(new THREE.Points(geometry, material));
+  var points = new THREE.Points(geometry, material);
+  scene.add(points);
 
-  var count = 0;
+  var count = 0, rafId = null, isVisible = true;
   function animate() {
-    requestAnimationFrame(animate);
+    if (!isVisible) return;
+    rafId = requestAnimationFrame(animate);
     var posArr = geometry.attributes.position.array;
     var i = 0;
     for (var ix = 0; ix < AMOUNTX; ix++) {
@@ -1838,13 +1843,23 @@ body{background:#111;color:#fff}
     count += 0.1;
   }
 
+  // Visibility-based rendering: pause when hero is offscreen
+  var visObs = new IntersectionObserver(function(entries) {
+    isVisible = entries[0].isIntersecting;
+    if (isVisible && !rafId) animate();
+    else if (!isVisible && rafId) { cancelAnimationFrame(rafId); rafId = null; }
+  }, { threshold: 0.05 });
+  visObs.observe(container);
+
   function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
   window.addEventListener('resize', onResize);
   animate();
+  } catch(e) { console.warn('WebGL not available:', e.message); }
 })();
 
 // Container scroll animation
@@ -2514,42 +2529,42 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
   <div class="faq2-list">
     <div class="faq2-item fade-in">
-      <div class="faq2-q"><span class="faq2-q-text">Как работает Health Score?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Как работает Health Score?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">Одно число от 0 до 100 &mdash; комплексная оценка бизнеса по 7 сферам. Нейросеть анализирует продажи, команду, финансы и ещё 4 направления. Вы видите, где вы сейчас и куда можно вырасти.</p></div>
     </div>
     <div class="faq2-item fade-in d1">
-      <div class="faq2-q"><span class="faq2-q-text">Какие CRM поддерживаются?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Какие CRM поддерживаются?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">amoCRM и Битрикс24. HubSpot, Salesforce, Pipedrive &mdash; в разработке. <a href="https://t.me/AgineAi_bot" target="_blank">Напишите нам</a> &mdash; скажем сроки по вашей CRM.</p></div>
     </div>
     <div class="faq2-item fade-in d2">
-      <div class="faq2-q"><span class="faq2-q-text">Это безопасно?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Это безопасно?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">Readonly &mdash; нейросеть только читает данные, ничего не меняет в вашей системе. Шифрование. Отключение в один клик.</p></div>
     </div>
     <div class="faq2-item fade-in d3">
-      <div class="faq2-q"><span class="faq2-q-text">Чем отличается от ChatGPT?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Чем отличается от ChatGPT?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">ChatGPT отвечает на основе общих знаний. AGINE &mdash; нейросеть, обученная на тысячах бизнес-кейсов, которая работает с вашими реальными данными. Она знает каждую сделку, учится на ваших решениях и с каждым днём предлагает точнее.</p></div>
     </div>
     <div class="faq2-item fade-in d3">
-      <div class="faq2-q"><span class="faq2-q-text">Нейросеть сама делает или я должен?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Нейросеть сама делает или я должен?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">Вы принимаете решения, нейросеть помогает их исполнить. Одно нажатие &mdash; задача назначена сотруднику. Вы руководите, а не исполняете.</p></div>
     </div>
     <div class="faq2-item fade-in d4">
-      <div class="faq2-q"><span class="faq2-q-text">Она становится умнее?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Она становится умнее?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">Да. Нейросеть запоминает ваши решения и их результаты. Чем дольше работаете &mdash; тем точнее рекомендации для роста именно вашего бизнеса.</p></div>
     </div>
     <div class="faq2-item fade-in d4">
-      <div class="faq2-q"><span class="faq2-q-text">Для какого размера бизнеса?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Для какого размера бизнеса?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">От 100 сделок в CRM. Чем больше данных &mdash; тем точнее решения. Если меньше 100 &mdash; пока рано, скажем прямо.</p></div>
     </div>
     <div class="faq2-item fade-in d5">
-      <div class="faq2-q"><span class="faq2-q-text">Что если мне не подойдёт?</span><span class="faq2-arrow">+</span></div>
+      <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Что если мне не подойдёт?</span><span class="faq2-arrow">+</span></div>
       <div class="faq2-a"><p class="faq2-a-text">7 дней бесплатно. Попробуйте &mdash; решите сами. Продукт либо работает для вас &mdash; либо нет. Мы не убеждаем.</p></div>
     </div>
   </div>
 </section>
 
 <!-- ═══ 10. FINAL CTA ═══ -->
-<div class="final2">
+<section class="final2">
   <div class="sec-center" style="margin-bottom:0">
     <h2 class="sec-title fade-in">Через 30 минут вы будете знать,<br>что делать завтра</h2>
     <p class="sec-sub fade-in d1">Подключите данные &mdash; и завтра утром откроете Pulse с готовыми решениями. С суммами. По именам.</p>
@@ -2560,7 +2575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <p class="fade-in d3" style="margin-top:24px;font-size:14px;color:rgba(255,255,255,0.35)">Readonly. Без настроек. 7 дней бесплатно.</p>
     <p class="fade-in d3" style="margin-top:12px;font-size:13px;color:rgba(255,255,255,0.25)">Методология на основе 10 лет работы и 100+ компаний</p>
   </div>
-</div>
+</section>
 
 <!-- Sticky CTA -->
 <a href="#pricing" class="sticky-cta" id="stickyCta">Начать бесплатно</a>
@@ -2723,19 +2738,39 @@ document.querySelectorAll('.num-value').forEach(function(el) { numObs.observe(el
   hsObs.observe(ring.closest('.hs-ring-wrap'));
 })();
 
-// Nav scroll effect
+// Combined scroll handler with rAF throttle
 var navEl2 = document.querySelector('nav');
+var _scrollTicking = false;
 window.addEventListener('scroll', function() {
-  navEl2.classList.toggle('scrolled', window.scrollY > 60);
+  if (!_scrollTicking) {
+    _scrollTicking = true;
+    requestAnimationFrame(function() {
+      _scrollTicking = false;
+      // Nav effect
+      navEl2.classList.toggle('scrolled', window.scrollY > 60);
+      // Tubelight + sticky CTA handled below via same rAF
+      if (window._onScrollCallbacks) window._onScrollCallbacks.forEach(function(cb) { cb(); });
+    });
+  }
 });
 
-// FAQ accordion
+// FAQ accordion with keyboard support
 document.querySelectorAll('.faq2-q').forEach(function(q) {
-  q.addEventListener('click', function() {
+  function toggleFaq() {
     var item = q.parentElement;
     var wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq2-item').forEach(function(i) { i.classList.remove('open'); });
-    if (!wasOpen) item.classList.add('open');
+    document.querySelectorAll('.faq2-item').forEach(function(i) {
+      i.classList.remove('open');
+      i.querySelector('.faq2-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      q.setAttribute('aria-expanded', 'true');
+    }
+  }
+  q.addEventListener('click', toggleFaq);
+  q.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFaq(); }
   });
 });
 
@@ -2929,7 +2964,8 @@ document.querySelectorAll('.faq2-q').forEach(function(q) {
   });
 
   if (sections.length) {
-    window.addEventListener('scroll', function() {
+    window._onScrollCallbacks = window._onScrollCallbacks || [];
+    window._onScrollCallbacks.push(function() {
       var scrollY = window.scrollY + 120;
       var current = null;
       sections.forEach(function(s) {
@@ -2961,11 +2997,21 @@ document.querySelectorAll('.faq2-q').forEach(function(q) {
     document.body.style.overflow = opening ? 'hidden' : '';
   });
   menu.querySelectorAll('.mm-link').forEach(function(a) {
-    a.addEventListener('click', function() {
+    a.addEventListener('click', function(e) {
       burger.classList.remove('open');
       menu.classList.remove('open');
       navMob.classList.remove('menu-open');
       document.body.style.overflow = '';
+      // Scroll with offset for fixed nav
+      var href = a.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        var target = document.querySelector(href);
+        if (target) {
+          var top = target.getBoundingClientRect().top + window.pageYOffset - 80;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      }
     });
   });
 })();
@@ -2975,7 +3021,8 @@ document.querySelectorAll('.faq2-q').forEach(function(q) {
   var sticky = document.getElementById('stickyCta');
   var footer = document.querySelector('.footer2');
   if (!sticky) return;
-  window.addEventListener('scroll', function() {
+  window._onScrollCallbacks = window._onScrollCallbacks || [];
+  window._onScrollCallbacks.push(function() {
     var y = window.scrollY;
     var footerTop = footer ? footer.getBoundingClientRect().top + window.scrollY : Infinity;
     var show = y > 600 && (y + window.innerHeight) < footerTop + 60;
