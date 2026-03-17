@@ -13979,6 +13979,19 @@ function showOnbStep(idx) {
       arrow.className = 'onb-tooltip-arrow top';
     }
 
+    // Clamp tooltip to viewport so it never goes off-screen
+    requestAnimationFrame(function() {
+      var tr = tooltip.getBoundingClientRect();
+      if (tr.bottom > window.innerHeight - 8) {
+        // Move above the target instead
+        tooltip.style.top = Math.max(8, rect.top - tr.height - 16) + 'px';
+        arrow.className = 'onb-tooltip-arrow bottom';
+      }
+      if (tr.right > window.innerWidth - 8) {
+        tooltip.style.left = Math.max(8, window.innerWidth - tr.width - 8) + 'px';
+      }
+    });
+
     // Fill content
     document.getElementById('onbStepNum').textContent = idx + 1;
     document.getElementById('onbStepLabel').textContent = 'Шаг ' + (idx + 1) + ' из ' + ONB_STEPS.length;
