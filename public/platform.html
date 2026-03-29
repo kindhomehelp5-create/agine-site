@@ -9354,6 +9354,7 @@ var SPHERES = [
   {
     id: 'sales', name: 'Продажи', desc: 'Воронка, конверсии и динамика сделок',
     score: 52, goal: 60, change: '+3', direction: 'up',
+    dataSource: 'crm', dataCoverage: 100,
     color: 'var(--accent)',
     icon: '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
     kpis: [
@@ -9367,6 +9368,7 @@ var SPHERES = [
   {
     id: 'finance', name: 'Финансы', desc: 'Выручка, маржинальность и cash flow',
     score: 44, goal: 55, change: '+1', direction: 'up',
+    dataSource: 'no_data', dataCoverage: 0,
     color: 'var(--green)',
     icon: '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
     kpis: [
@@ -9380,6 +9382,7 @@ var SPHERES = [
   {
     id: 'marketing', name: 'Маркетинг', desc: 'Каналы, ROI и стоимость привлечения',
     score: 41, goal: 55, change: '-2', direction: 'down',
+    dataSource: 'no_data', dataCoverage: 0,
     color: 'var(--cyan)',
     icon: '<path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
     kpis: [
@@ -9393,6 +9396,7 @@ var SPHERES = [
   {
     id: 'team', name: 'Команда', desc: 'Эффективность менеджеров и загрузка',
     score: 48, goal: 60, change: '+5', direction: 'up',
+    dataSource: 'crm', dataCoverage: 60,
     color: 'var(--purple)',
     icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
     kpis: [
@@ -9406,6 +9410,7 @@ var SPHERES = [
   {
     id: 'clients', name: 'Клиенты', desc: 'Удержание, NPS и lifetime value',
     score: 38, goal: 50, change: '0', direction: 'neutral',
+    dataSource: 'no_data', dataCoverage: 0,
     color: 'var(--blue)',
     icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/>',
     kpis: [
@@ -9419,6 +9424,7 @@ var SPHERES = [
   {
     id: 'product', name: 'Продукт', desc: 'Качество, доставка и развитие',
     score: 42, goal: 55, change: '+2', direction: 'up',
+    dataSource: 'no_data', dataCoverage: 0,
     color: 'var(--amber)',
     icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>',
     kpis: [
@@ -9432,6 +9438,7 @@ var SPHERES = [
   {
     id: 'ops', name: 'Операционка', desc: 'Процессы, автоматизация и эффективность',
     score: 35, goal: 48, change: '-1', direction: 'down',
+    dataSource: 'no_data', dataCoverage: 0,
     color: 'var(--red)',
     icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
     kpis: [
@@ -10870,7 +10877,7 @@ var AI_AVATAR_SVG = '<svg viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L20 9l-6.2 1
 var PULSE_TASKS = [
   {
     sphere: 'Продажи', sphereColor: '#F87171', sphereBg: 'rgba(248,113,113,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'top', estimatedMinutes: 15,
     whyFirst: 'Наибольший impact на выручку — 3.8M под риском',
     problem: 'Козлова перегружена: 42 сделки, Win Rate упал до 31%',
     impact: 'Win Rate Козловой снизился с <strong class="num">38%</strong> до <strong class="num">31%</strong> за последние 30 дней — это самое резкое падение в команде. Средняя загрузка менеджера в отрасли — 25 сделок, у Козловой — 42. При текущей нагрузке среднее время реакции на входящий лид выросло с 2 до 8 часов, что снижает конверсию первого контакта на <strong>12 п.п.</strong> Под риском <strong class="num">~3.8M</strong> pipeline — 17% месячного объёма. Иванов и Петрова загружены на 60% — есть ресурс для перераспределения без потери качества.',
@@ -10883,7 +10890,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Продажи', sphereColor: '#F87171', sphereBg: 'rgba(248,113,113,0.1)',
-    type: 'crm', assignee: 'Сидорова М.',
+    type: 'crm', assignee: 'Сидорова М.', tier: 'top', estimatedMinutes: 10,
     whyFirst: 'Сделка без движения 14 дней — риск потери',
     problem: 'ООО «Рассвет» — 1.2M сделка замерла',
     impact: 'Сделка на <strong class="num">1.2M</strong> не двигается 14 дней — это на 9 дней больше среднего цикла для этапа «Переговоры». Контакт — Михайлов (коммерческий директор), последний разговор 26 февраля, тема — запрос доработки КП. Менеджер Сидорова не зафиксировала следующий шаг. По данным amoCRM, 73% сделок без активности >10 дней на этом этапе теряются. Конкурент «Альфа-Сервис» активно работает в этом сегменте — 2 их предложения зафиксированы у клиента за последний месяц.',
@@ -10896,7 +10903,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Маркетинг', sphereColor: '#60A5FA', sphereBg: 'rgba(96,165,250,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'top', estimatedMinutes: 60,
     whyFirst: 'Холодные звонки сжигают бюджет — ROMI в 5.7x ниже контекста',
     problem: 'Холодные звонки ROMI 1.2x — контекст даёт 6.8x',
     impact: 'Ежемесячные затраты на холодный обзвон: <strong class="num">~450K</strong> (2 оператора + телефония + база). Текущий ROMI холодных звонков — <strong class="num">1.2x</strong>, контекстная реклама — <strong class="num">6.8x</strong>, разница в 5.7 раз. За последние 60 дней холодные звонки привели 12 сделок со средним чеком 180K, контекст — 34 сделки со средним чеком 220K. Конверсия холодного обзвона в квалифицированный лид — 2.1%, контекста — 8.7%. При переносе бюджета ожидаемый возврат <strong class="num">+3.1M</strong> в квартал.',
@@ -10909,7 +10916,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Команда', sphereColor: '#A78BFA', sphereBg: 'rgba(167,139,250,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'quick', estimatedMinutes: 15,
     whyFirst: '3 менеджера без обучения >30 дней — влияет на конверсию',
     problem: 'Обучение команды: 3 менеджера не прошли тренинг',
     impact: 'Иванов, Сидорова, Ким — не прошли продуктовый тренинг, который остальные 5 менеджеров завершили 15 февраля. Конверсия необученных: <strong class="num">22%</strong> vs <strong class="num">38%</strong> у обученных — разница в <strong>16 п.п.</strong> В совокупности эти 3 менеджера ведут 68 активных сделок на общую сумму <strong class="num">14.2M</strong>. При выравнивании конверсии до уровня обученных — потенциал роста: <strong class="num">+860K/мес</strong>. Причина пропуска: Иванов — отпуск, Сидорова — загрузка проектами, Ким — новый сотрудник (вышел после тренинга).',
@@ -10922,7 +10929,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Финансы', sphereColor: '#F59E0B', sphereBg: 'rgba(245,158,11,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'quick', estimatedMinutes: 20,
     whyFirst: 'Дебиторка растёт 3-й месяц подряд',
     problem: 'Дебиторская задолженность: 2.4M просрочено >30 дней',
     impact: 'Просроченная дебиторка выросла на <strong class="num">+18%</strong> за месяц (было 2.03M, стало 2.4M) — третий месяц подряд рост. Три клиента формируют 80% долга: ООО «Альфа» — <strong class="num">780K</strong> (просрочка 45 дней, ранее платили в срок), ИП Козин — <strong class="num">620K</strong> (просрочка 38 дней, запросил рассрочку), ООО «Стройком» — <strong class="num">540K</strong> (просрочка 32 дня, не выходит на связь). Остальные 460K — мелкие клиенты со средней просрочкой 15 дней. При текущем тренде кэш-разрыв возможен в середине апреля — остаток на счету покроет операционку только на 28 дней.',
@@ -10936,7 +10943,7 @@ var PULSE_TASKS = [
   // ── Дополнительные задачи (после checkpoint) ──
   {
     sphere: 'Клиенты', sphereColor: '#34D399', sphereBg: 'rgba(52,211,153,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'backlog', estimatedMinutes: 30,
     whyFirst: 'NPS упал на 8 пунктов за месяц',
     problem: 'NPS снизился с 62 до 54 — клиенты недовольны',
     impact: 'NPS упал с <strong class="num">62</strong> до <strong class="num">54</strong> за последние 30 дней — самое резкое падение за полгода. Основная причина: время ответа на обращения выросло с <strong class="num">2ч</strong> до <strong class="num">6ч</strong> из-за увольнения одного сотрудника поддержки и роста входящих на 23%. 3 негативных отзыва на Яндекс.Картах за неделю (средняя оценка упала с 4.7 до 4.4). Детракторы жалуются на: долгое ожидание ответа (67%), некомпетентность (22%), отсутствие обратной связи по решению (11%). 4 клиента из топ-20 по выручке поставили оценку ниже 6 — риск оттока на <strong class="num">~2.8M</strong> годовой выручки.',
@@ -10949,7 +10956,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Продукт', sphereColor: '#60A5FA', sphereBg: 'rgba(96,165,250,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'backlog', estimatedMinutes: 30,
     whyFirst: 'Срок доставки вырос — клиенты жалуются',
     problem: 'Среднее время доставки выросло с 3 до 5 дней',
     impact: 'Среднее время доставки увеличилось с <strong class="num">3</strong> до <strong class="num">5 дней</strong> за последние 2 недели. Причина — смена логистического партнёра с 1 марта (СДЭК → Boxberry) и необходимость перенастройки маршрутов. <strong class="num">12 клиентов</strong> оставили жалобы в CRM, <strong class="num">2 отмены</strong> заказов на сумму <strong class="num">380K</strong>. Больше всего задержек в МО (среднее +3 дня) и Санкт-Петербурге (+2 дня). По Москве ситуация стабильна — среднее 2 дня. Конверсия повторных заказов снизилась на 8% у клиентов, столкнувшихся с задержкой.',
@@ -10962,7 +10969,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Операционка', sphereColor: '#A78BFA', sphereBg: 'rgba(167,139,250,0.1)',
-    type: 'owner',
+    type: 'owner', tier: 'quick', estimatedMinutes: 10,
     whyFirst: 'CRM заполнена на 68% — данные неполные',
     problem: 'Качество данных в CRM: 68% полей заполнены',
     impact: 'Менеджеры не заполняют <strong class="num">32%</strong> обязательных полей, что напрямую снижает точность прогнозов AI и Health Score. Самые проблемные поля: источник лида (не заполнен у 41% сделок), бюджет сделки (пусто у 38%), следующий шаг (отсутствует у 29%). Хуже всех — Ким (заполненность 52%) и Иванов (61%). Лучший — Петрова (89%). Из-за неполных данных AI-прогноз конверсии имеет погрешность <strong class="num">±22%</strong> вместо целевых ±8%. Это значит, что рекомендации по приоритизации сделок могут быть неточными — менеджеры тратят время на менее перспективные лиды.',
@@ -10975,7 +10982,7 @@ var PULSE_TASKS = [
   },
   {
     sphere: 'Продажи', sphereColor: '#F87171', sphereBg: 'rgba(248,113,113,0.1)',
-    type: 'crm', assignee: 'Сидорова М.',
+    type: 'crm', assignee: 'Сидорова М.', tier: 'backlog', estimatedMinutes: 10,
     whyFirst: 'ИП Каримов — нет связи 11 дней',
     problem: 'ИП Каримов — сделка 340K без контакта 11 дней',
     impact: 'Последний контакт с Каримовым — <strong class="num">11 дней</strong> назад (звонок, 4 минуты, обсуждение условий КП). Сделка на этапе «Согласование КП», сумма <strong class="num">340K</strong>. Менеджер Сидорова не зафиксировала причину молчания и не запланировала follow-up. По статистике amoCRM, сделки без контакта >7 дней на этом этапе закрываются в сделку только в 18% случаев (vs 52% при регулярном контакте). Каримов ранее реагировал на сообщения в WhatsApp быстрее, чем на звонки (среднее время ответа: 2ч vs 1 день).',
@@ -11183,7 +11190,9 @@ function renderPulseWelcome(c) {
   h += '</div>'; // end pulse-welcome-hero
   // CTA — immediately after hero (ABOVE FOLD)
   h += '<div style="text-align:center;margin-top:8px">';
-  h += '<div style="font-size:var(--font-base);color:var(--text-secondary);margin-bottom:var(--sp-3)">Сегодня <strong style="color:var(--text-primary)">' + pulseState.total + ' решений</strong> от AI Управленца</div>';
+  var topCount = PULSE_TASKS.filter(function(t){return t.tier==='top'}).length;
+  var quickCount = PULSE_TASKS.filter(function(t){return t.tier==='quick'}).length;
+  h += '<div style="font-size:var(--font-base);color:var(--text-secondary);margin-bottom:var(--sp-3)">Сегодня <strong style="color:var(--text-primary)">' + topCount + ' приоритетных</strong> решений + ' + quickCount + ' быстрых действий</div>';
   h += '<button class="pulse-btn primary" style="display:inline-flex;flex:0;padding:12px 32px;font-size:var(--font-base)" onclick="pulseOnboard();pulseNext()"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Начать</button>';
   h += '</div>';
   // Yesterday's tasks (below CTA — secondary info)
@@ -11255,9 +11264,19 @@ function renderPulseTask(c, idx) {
   // #3 P0: Swipe background hints for visual feedback
   h += '<div class="decision-swipe-bg right">✓ Взять</div>';
   h += '<div class="decision-swipe-bg left">Отложить →</div>';
-  // Sphere tag
+  // Sphere tag + tier badge + estimated time
+  h += '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">';
   h += '<div class="pulse-task-sphere" style="background:' + t.sphereBg + ';color:' + t.sphereColor + '">';
   h += t.sphere + '</div>';
+  if (t.tier === 'top') {
+    h += '<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(239,68,68,0.1);color:#ef4444;font-weight:600">Приоритет</div>';
+  } else if (t.tier === 'quick') {
+    h += '<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.1);color:#22c55e;font-weight:600">Быстрое действие</div>';
+  }
+  if (t.estimatedMinutes) {
+    h += '<div style="font-size:10px;color:var(--text-tertiary)">~' + t.estimatedMinutes + ' мин</div>';
+  }
+  h += '</div>';
   // Problem (main headline)
   h += '<div class="pulse-task-problem">' + t.problem + '</div>';
   // Stakes row — directly under headline
@@ -12699,6 +12718,13 @@ function buildSphereGrid() {
     var pct = Math.round((s.score / s.goal) * 100);
     var arrow = s.direction === 'up' ? '↑' : s.direction === 'down' ? '↓' : '';
 
+    // Data source badge — all data from hardcoded SPHERES array (no user input), safe for innerHTML
+    var isDegraded = (s.dataCoverage || 0) < 50;
+    var sourceLabel = s.dataSource === 'crm' ? 'amoCRM' : s.dataSource === 'google_sheets' ? 'Google Sheets' : s.dataSource === 'ai_estimate' ? 'AI-оценка' : 'Нет источника';
+    var sourceBadge = isDegraded
+      ? '<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(245,158,11,0.1);color:#f59e0b;margin-top:4px;display:inline-block">' + sourceLabel + ' · ' + (s.dataCoverage || 0) + '% данных</div>'
+      : '<div style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.1);color:#22c55e;margin-top:4px;display:inline-block">' + sourceLabel + '</div>';
+
     card.innerHTML =
       '<div class="hs-sphere-card-header">' +
         '<div class="hs-sphere-card-icon"><svg viewBox="0 0 24 24">' + s.icon + '</svg></div>' +
@@ -12706,7 +12732,8 @@ function buildSphereGrid() {
         '<div class="hs-sphere-card-score">' + s.score + '<span class="hs-sphere-card-target">/' + s.goal + '</span></div>' +
       '</div>' +
       '<div class="hs-sphere-card-bar"><div class="hs-sphere-card-bar-fill" style="width:0%" data-target="' + pct + '"></div></div>' +
-      '<div class="hs-sphere-card-change ' + s.direction + '">' + arrow + ' ' + s.change + ' за месяц</div>';
+      '<div class="hs-sphere-card-change ' + s.direction + '">' + arrow + ' ' + s.change + ' за месяц</div>' +
+      sourceBadge;
 
     var detail = document.createElement('div');
     detail.className = 'hs-sphere-card-detail';
