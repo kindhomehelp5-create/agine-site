@@ -96,8 +96,9 @@ html {
 }
 
 /* #9 Focus visible — branded focus ring (keyboard only) */
+/* #14 P2: Focus outline — monochrome black instead of blue */
 :focus-visible {
-  outline: 2px solid rgba(10,107,242,0.5);
+  outline: 2px solid rgba(10,10,10,0.5);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -218,7 +219,7 @@ html {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgba(10,10,10,0.5);
   outline-offset: 2px;
 }
 
@@ -878,13 +879,16 @@ body {
   z-index: 1;
 }
 
+/* #8 P1: Progress counter — centered, slightly larger for visibility */
 .pulse-progress-count {
   font-family: 'PT Sans', sans-serif;
-  font-size: 11px;
-  color: var(--text-tertiary);
-  text-align: right;
-  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #737373);
+  text-align: center;
+  margin-top: 6px;
   margin-bottom: 8px;
+  letter-spacing: 0.5px;
 }
 
 /* ── AI Avatar + Name header ── */
@@ -3652,10 +3656,11 @@ body {
 /* ══════════════ END DECISION TIMELINE v2 ══════════════ */
 
 /* ── Delegate Modal v2 ── */
+/* #9 P1: Modal stacking — smooth transitions to prevent flashing */
 .delegate-modal {
   display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000;
 }
-.delegate-modal.open { display: flex; align-items: center; justify-content: center; }
+.delegate-modal.open { display: flex; align-items: center; justify-content: center; animation: modal-fade-in 0.2s ease; }
 .delegate-modal-overlay {
   position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
 }
@@ -3680,8 +3685,10 @@ body {
 }
 
 /* Recipient selector */
+/* #30 P2: Delegation recipients — scrollable on overflow */
 .delegate-recipients {
   display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;
+  max-height: 150px; overflow-y: auto;
 }
 .delegate-recipient {
   display: flex; align-items: center; gap: 6px;
@@ -3763,6 +3770,11 @@ body {
 @keyframes pamSlideUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+/* #9 P1: Modal fade-in to prevent flash on rapid switching */
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .pam-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -5946,6 +5958,48 @@ body {
   color: var(--amber);
   font-weight: 600;
 }
+/* #28 P2: Code blocks styling in AI responses */
+.ai-msg-ai code {
+  background: rgba(255,255,255,0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+}
+.ai-msg-ai pre {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  margin: 8px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.ai-msg-ai pre code {
+  background: none;
+  padding: 0;
+}
+/* #29 P2: Tables scroll on mobile in AI responses */
+.ai-msg-ai table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin: 8px 0;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.ai-msg-ai th, .ai-msg-ai td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  text-align: left;
+  white-space: nowrap;
+}
+.ai-msg-ai th {
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
 /* Feedback buttons */
 .ai-msg-feedback {
@@ -6311,6 +6365,11 @@ body {
   .ai-panel { position: fixed; right: 0; top: 56px; bottom: 0; z-index: 150; width: 0; }
   .ai-panel.open { width: 100%; }
   .cmd-palette { width: calc(100vw - 32px); }
+  /* #10 P1: AI panel padding for small mobile (380px) */
+  .ai-panel-header { padding: 12px 14px; }
+  .ai-msg { padding: 10px 14px; font-size: 13px; }
+  .ai-input-wrap { padding: 8px 10px; }
+  .ai-input textarea { font-size: 14px; }
 }
 
 /* ═══════════════════════════════════════════════
@@ -6596,12 +6655,12 @@ body {
 
 /* Accessibility — focus visible */
 *:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgba(10,10,10,0.5);
   outline-offset: 2px;
 }
 button:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgba(10,10,10,0.5);
   outline-offset: 2px;
 }
 
@@ -8051,6 +8110,8 @@ body {
               <div class="hs-score-verbal" id="hsVerbal">Ниже среднего</div>
               <div class="hs-score-trend" id="hsTrend">↑ +3 за месяц</div>
             </div>
+            <!-- #26 P2: Benchmark industry label -->
+            <div style="font-size:11px;color:var(--text-tertiary);margin-top:6px;font-weight:500" id="hsBenchmark">Индустрия: Авто-дилеры · Средний: 52</div>
           </div>
 
           <!-- Quick Stats -->
@@ -10028,10 +10089,12 @@ document.getElementById('integTabs').addEventListener('click', function(e) {
 });
 
 // ─── Search ───
-document.getElementById('integSearch').addEventListener('input', function() {
+// #19 P2: Debounce integration search
+document.getElementById('integSearch').addEventListener('input', debounce(function() {
   var activeTab = document.querySelector('.integ-tab.active');
-  renderConnectorGrid(activeTab ? activeTab.dataset.cat : 'all', this.value);
-});
+  var searchEl = document.getElementById('integSearch');
+  renderConnectorGrid(activeTab ? activeTab.dataset.cat : 'all', searchEl ? searchEl.value : '');
+}, 150));
 
 // ─── Connect modal (OAuth stepper simulation) ───
 var integModalConnector = null;
@@ -11048,6 +11111,8 @@ function renderPulse(skipTransition) {
   }
 
   function doRender() {
+    // #7 P1: Graceful error handling for Pulse rendering
+    try {
     if (pulseState.current === -1) {
       renderPulseWelcome(c);
     } else if (pulseState.current === 'checkpoint') {
@@ -11056,6 +11121,10 @@ function renderPulse(skipTransition) {
       renderPulseComplete(c);
     } else {
       renderPulseTask(c, pulseState.current);
+    }
+    } catch(err) {
+      console.error('Pulse render error:', err);
+      c.textContent = 'Не удалось загрузить задачи. Обновите страницу.';
     }
     c.style.opacity = '1';
     c.style.transform = 'translateY(0)';
@@ -11170,6 +11239,9 @@ function renderPulseTask(c, idx) {
   }
   // Task card
   h += '<div class="pulse-task-card card-enter" id="pulseTaskCard">';
+  // #3 P0: Swipe background hints for visual feedback
+  h += '<div class="decision-swipe-bg right">✓ Взять</div>';
+  h += '<div class="decision-swipe-bg left">Отложить →</div>';
   // Sphere tag
   h += '<div class="pulse-task-sphere" style="background:' + t.sphereBg + ';color:' + t.sphereColor + '">';
   h += t.sphere + '</div>';
@@ -11203,7 +11275,8 @@ function renderPulseTask(c, idx) {
   }
   // Prompt input inside card — above actions so dialog can inform decision
   h += '<div class="pulse-input" style="margin-top:12px;margin-bottom:12px">';
-  h += '<textarea rows="1" placeholder="Обсудить с управленцем..." id="pulseCardInput" aria-label="Обсудить с управленцем" oninput="this.style.height=\'auto\';this.style.height=Math.min(this.scrollHeight,160)+\'px\'"></textarea>';
+  // #20 P2: maxlength on textarea to prevent excessive input
+  h += '<textarea rows="1" placeholder="Обсудить с управленцем..." id="pulseCardInput" aria-label="Обсудить с управленцем" maxlength="2000" oninput="this.style.height=\'auto\';this.style.height=Math.min(this.scrollHeight,160)+\'px\'"></textarea>';
   h += '<div class="pulse-input-actions">';
   h += '<button class="pulse-input-mic" aria-label="Голосовой ввод" onclick="toggleVoiceInput(this,event)"><svg viewBox="0 0 24 24"><rect x="9" y="1" width="6" height="11" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg><div class="pulse-voice-dots"><div class="pulse-voice-dot"></div><div class="pulse-voice-dot"></div><div class="pulse-voice-dot"></div></div></button>';
   h += '<button class="pulse-input-send" aria-label="Отправить" onclick="sendPulseQuestion()"><svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>';
@@ -11578,7 +11651,7 @@ function renderPartnerWelcome() {
 function renderPartnerInput() {
   return '<div class="partner-input-area">' +
     '<div class="partner-input">' +
-    '<textarea id="partnerInput" placeholder="Спросить AI партнёра..." rows="1" onkeydown="partnerInputKeydown(event)" oninput="this.style.height=\'auto\';this.style.height=Math.min(this.scrollHeight,160)+\'px\'"></textarea>' +
+    '<textarea id="partnerInput" placeholder="Спросить AI партнёра..." rows="1" maxlength="2000" onkeydown="partnerInputKeydown(event)" oninput="this.style.height=\'auto\';this.style.height=Math.min(this.scrollHeight,160)+\'px\'"></textarea>' +
     '<div class="pulse-input-actions">' +
     '<button class="pulse-input-mic" aria-label="Голосовой ввод" onclick="toggleVoiceInput(this,event)"><svg viewBox="0 0 24 24"><rect x="9" y="1" width="6" height="11" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg><div class="pulse-voice-dots"><div class="pulse-voice-dot"></div><div class="pulse-voice-dot"></div><div class="pulse-voice-dot"></div></div></button>' +
     '<button class="partner-input-send" onclick="sendPartnerMessage()"><svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>' +
@@ -12439,8 +12512,12 @@ document.addEventListener('keydown', function(e) {
   if (!pulsePage || !pulsePage.classList.contains('active')) return;
   if (partnerState.mode === 'partner') return;
   var cur = pulseState.current;
+  // #11 P1: Arrow keys for navigation, D for delegate
+  if (e.key === 'ArrowLeft') { pulseNavPrev(); e.preventDefault(); return; }
+  if (e.key === 'ArrowRight') { pulseNavNext(); e.preventDefault(); return; }
   if (typeof cur === 'number' && cur >= 0 && cur < pulseState.total) {
     if (e.key === 'Enter') { var _t = PULSE_TASKS[cur]; if (_t && _t.type === 'owner') { pulseDelegateAction(); } else { pulseAction('done'); } e.preventDefault(); }
+    else if (e.key.toLowerCase() === 'd') { pulseDelegateAction(); e.preventDefault(); }
     else if (e.key.toLowerCase() === 'l') { pulseSkip('later'); e.preventDefault(); }
     else if (e.key.toLowerCase() === 'n') { pulseSkip('notmine'); e.preventDefault(); }
     else if (e.key.toLowerCase() === 's') { pulseSkip('solved'); e.preventDefault(); }
@@ -12639,10 +12716,13 @@ function buildSphereGrid() {
     });
     kpiHtml += '</div>';
 
+    // #2 P0: Sphere Detail — graceful fallback if rec is empty/undefined
+    var recContent = s.rec || 'Не удалось загрузить рекомендацию. Попробуйте обновить страницу.';
+    // Note: s.rec is a hardcoded string from SPHERES array (not user input), safe for innerHTML
     detail.innerHTML = kpiHtml +
       '<div class="sphere-detail-rec">' +
         '<div class="sphere-detail-rec-label">AI Рекомендация</div>' +
-        '<div class="sphere-detail-rec-text">' + s.rec + '</div>' +
+        '<div class="sphere-detail-rec-text">' + recContent + '</div>' +
         '<button class="hs-create-task-btn" onclick="event.stopPropagation();navigate(\'pulse\')"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Создать решение</button>' +
       '</div>';
 
@@ -12652,6 +12732,8 @@ function buildSphereGrid() {
       document.querySelectorAll('.hs-sphere-card-detail').forEach(function(d) { d.classList.remove('open'); });
       if (!isOpen) {
         card.classList.add('expanded');
+        // #16 Scroll sphere detail into view
+        setTimeout(function() { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
         detail.classList.add('open');
       }
     });
@@ -12669,10 +12751,17 @@ function buildSphereGrid() {
 }
 
 function renderHealthScore() {
+  // #7 P1: Graceful error handling for HS rendering
+  try {
   buildHsHero();
   buildAiSummary();
   buildStatusCards();
   buildSphereGrid();
+  } catch(err) {
+    console.error('HS render error:', err);
+    var grid = document.getElementById('sphereGrid');
+    if (grid) grid.textContent = 'Не удалось загрузить данные Health Score. Обновите страницу.';
+  }
 
   // Animate big score number
   var num = document.getElementById('hsNumber');
@@ -12788,7 +12877,9 @@ function buildTimelineCard(d) {
 
   // Top row
   h += '<div class="dtl-card-top">';
-  h += '<span class="dtl-sphere">' + d.sphere + '</span>';
+  // #23 P2: Color-coded sphere tag
+  var sColor = d.sphereColor || '#525252';
+  h += '<span class="dtl-sphere" style="color:' + sColor + ';background:' + sColor + '14">' + d.sphere + '</span>';
   if (isPending && d.priority) {
     h += '<span class="dtl-priority ' + d.priority + '">' + ({critical:'Срочное',high:'Важное',medium:'Плановое'}[d.priority] || '') + '</span>';
   }
@@ -12894,12 +12985,34 @@ function renderDecisionTimeline() {
   container.innerHTML = h;
 }
 
+// #21 P2: Persist decision status changes to localStorage
+function saveDecisionStates() {
+  var states = {};
+  DECISIONS.forEach(function(d) { states[d.id] = { status: d.status, completedDate: d.completedDate || null }; });
+  lsSet('agine_decision_states', JSON.stringify(states));
+}
+function loadDecisionStates() {
+  var raw = lsGet('agine_decision_states');
+  if (!raw) return;
+  try {
+    var states = JSON.parse(raw);
+    DECISIONS.forEach(function(d) {
+      if (states[d.id]) {
+        d.status = states[d.id].status;
+        if (states[d.id].completedDate) d.completedDate = states[d.id].completedDate;
+      }
+    });
+  } catch(e) {}
+}
+loadDecisionStates();
+
 function dtlExecute(id) {
   var d = findDecision(id);
   if (!d) return;
   d.status = 'completed';
   d.completedDate = '2026-03-14';
   d.result = { status: 'tracking', metrics: [], revenueImpact: null, projectionText: 'Отслеживаем результат...', progressToGoal: 0 };
+  saveDecisionStates();
   var card = document.getElementById('dec-' + id);
   if (card) {
     card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
@@ -12913,6 +13026,7 @@ function dtlSkip(id) {
   var d = findDecision(id);
   if (!d) return;
   d.status = 'skipped_later';
+  saveDecisionStates();
   var card = document.getElementById('dec-' + id);
   if (card) {
     card.style.transition = 'opacity 0.3s ease';
@@ -13137,6 +13251,24 @@ function showCrmToast(text, color) {
   toastText.textContent = text;
   toastText.style.color = color === 'green' ? '#22c55e' : color === 'red' ? '#ef4444' : '';
   toast.classList.add('show');
+  // #15 P2: Visual countdown bar on toast
+  var bar = toast.querySelector('.toast-countdown');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.className = 'toast-countdown';
+    bar.style.cssText = 'position:absolute;bottom:0;left:0;height:2px;background:#0a0a0a;width:100%;transform-origin:left;transition:transform 3s linear;';
+    toast.style.position = 'relative';
+    toast.style.overflow = 'hidden';
+    toast.appendChild(bar);
+  }
+  bar.style.transition = 'none';
+  bar.style.transform = 'scaleX(1)';
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      bar.style.transition = 'transform 3s linear';
+      bar.style.transform = 'scaleX(0)';
+    });
+  });
   clearTimeout(toastTimer);
   toastTimer = setTimeout(function() {
     toast.classList.remove('show');
