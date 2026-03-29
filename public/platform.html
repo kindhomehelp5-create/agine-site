@@ -357,11 +357,13 @@ body {
   border-radius: 3px;
 }
 
+/* A11y: min-height 44px for touch targets */
 .sidebar-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
+  min-height: 44px;
   border-radius: var(--radius-md);
   cursor: pointer;
   color: var(--text-secondary);
@@ -7964,7 +7966,7 @@ body {
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- Sidebar -->
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Главное меню">
   <a href="agine-whoop.html" class="sidebar-logo" style="text-decoration:none;color:inherit;">
     <svg viewBox="0 0 100 100" fill="none" width="22" height="22" style="flex-shrink:0"><rect x="35" y="16" width="30" height="26" rx="13" fill="#ffffff"/><rect x="14" y="52" width="30" height="26" rx="13" fill="#ffffff"/><rect x="56" y="52" width="30" height="26" rx="13" fill="#ffffff"/></svg>
     <span>AGINE AI</span>
@@ -7972,23 +7974,24 @@ body {
   </a>
 
   <!-- Main Navigation — 4 items -->
-  <div class="sidebar-item active" data-page="pulse">
+  <!-- A11y: role=button + tabindex for keyboard nav -->
+  <div class="sidebar-item active" data-page="pulse" role="button" tabindex="0" aria-label="Pulse — утренний брифинг">
     <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
     Pulse
   </div>
 
-  <div class="sidebar-item" data-page="health">
+  <div class="sidebar-item" data-page="health" role="button" tabindex="0" aria-label="Health Score — карта бизнеса">
     <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
     Health Score
   </div>
 
-  <div class="sidebar-item" data-page="tasks">
+  <div class="sidebar-item" data-page="tasks" role="button" tabindex="0" aria-label="Решения — список задач">
     <span class="icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
     Решения
     <span class="badge">8</span>
   </div>
 
-  <div class="sidebar-item" data-page="integrations">
+  <div class="sidebar-item" data-page="integrations" role="button" tabindex="0" aria-label="Интеграции — подключения">
     <span class="icon"><svg viewBox="0 0 24 24" style="transform:rotate(90deg)"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
     Интеграции
     <span class="badge">2</span>
@@ -7996,7 +7999,7 @@ body {
 
   <div class="sidebar-divider"></div>
 
-  <div class="sidebar-item" data-page="settings">
+  <div class="sidebar-item" data-page="settings" role="button" tabindex="0" aria-label="Настройки">
     <span class="icon"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></span>
     Настройки
   </div>
@@ -8058,7 +8061,7 @@ body {
 </aside>
 
 <!-- Main -->
-<main class="main">
+<main class="main" role="main" aria-label="Основной контент">
   <div class="main-content">
     <div class="main-bg">
       <div class="orb orb-1"></div>
@@ -8079,7 +8082,7 @@ body {
       </div>
       <div class="page-content">
         <div id="pulseProgressContainer" style="padding:0 32px;flex-shrink:0"></div>
-        <div class="pulse-v4" id="pulseV4">
+        <div class="pulse-v4" id="pulseV4" aria-live="polite" aria-label="Pulse — задачи на сегодня">
           <!-- Rendered by JS state machine -->
         </div>
       </div>
@@ -10285,6 +10288,12 @@ function debounce(fn, delay) {
   };
 }
 
+// Security: HTML escape for untrusted text → prevents XSS when used with innerHTML
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 // Safe localStorage with schema versioning
 var STORAGE_VERSION = 1;
 function safeStorageGet(key) {
@@ -10382,6 +10391,10 @@ window.addEventListener('hashchange', handleHash);
 
 sidebarItems.forEach(function(item) {
   item.addEventListener('click', function() { navigate(item.dataset.page); });
+  // A11y: Enter/Space activates sidebar items (role=button)
+  item.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(item.dataset.page); }
+  });
 });
 
 burger.addEventListener('click', function() {
@@ -11725,6 +11738,7 @@ function sendPartnerMessage(text) {
   }, 800 + Math.random() * 700);
 }
 
+// Security: escapeHtml on each line before building HTML structure
 function formatPartnerText(text) {
   var paragraphs = text.split('\n\n');
   var html = '';
@@ -11732,12 +11746,13 @@ function formatPartnerText(text) {
     var lines = p.split('\n');
     var pHtml = '';
     lines.forEach(function(line) {
-      if (line.trim().indexOf('• ') === 0 || line.trim().indexOf('· ') === 0) {
-        pHtml += '<div style="padding-left:16px;margin:3px 0">• ' + line.trim().substring(2) + '<\/div>';
-      } else if (/^\d+\.\s/.test(line.trim())) {
-        pHtml += '<div style="padding-left:16px;margin:3px 0">' + line.trim() + '<\/div>';
+      var safe = escapeHtml(line.trim());
+      if (safe.indexOf('• ') === 0 || safe.indexOf('· ') === 0) {
+        pHtml += '<div style="padding-left:16px;margin:3px 0">• ' + safe.substring(2) + '<\/div>';
+      } else if (/^\d+\.\s/.test(safe)) {
+        pHtml += '<div style="padding-left:16px;margin:3px 0">' + safe + '<\/div>';
       } else {
-        pHtml += (pHtml ? '<br>' : '') + line;
+        pHtml += (pHtml ? '<br>' : '') + safe;
       }
     });
     html += '<div style="margin-bottom:10px">' + pHtml + '<\/div>';
