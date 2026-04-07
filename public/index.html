@@ -37,10 +37,10 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "AGINE",
+  "name": "AGINE AI",
   "url": "https://agineai.com",
   "logo": "https://agineai.com/og.png",
-  "description": "Нейросеть для руководителя. Подключается к CRM и финансам — каждое утро говорит, с чего начать день.",
+  "description": "AGINE AI — превращаем данные в решения. Подключаем CRM, считаем Health Score по продажам, финансам и команде, каждое утро даём конкретные шаги для роста бизнеса.",
   "foundingDate": "2024",
   "areaServed": {
     "@type": "Country",
@@ -65,39 +65,43 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "AGINE — нейросеть для руководителя",
+  "name": "AGINE AI — превращаем данные в решения",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "description": "Нейросеть для руководителя. Подключается к CRM и финансам, рассчитывает Health Score бизнеса от 0 до 100, даёт конкретные решения каждое утро.",
+  "description": "AGINE AI подключается к CRM, рассчитывает Health Score по продажам, финансам и команде, каждое утро даёт конкретные шаги для роста бизнеса.",
   "url": "https://agineai.com",
   "offers": [
     {
       "@type": "Offer",
-      "name": "Экспресс-анализ",
-      "price": "0",
+      "name": "Starter",
+      "price": "19900",
       "priceCurrency": "RUB",
-      "description": "AI-анализ CRM за 30 минут. Health Score, ключевые находки и решения с суммами. 7 дней бесплатно."
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "billingDuration": "P1M"
+      },
+      "description": "Health Score по 3 сферам, базовый Pulse, нейросеть 5 запросов/день. 7 дней бесплатно с привязкой карты."
     },
     {
       "@type": "Offer",
-      "name": "AI-мониторинг",
+      "name": "Pro",
       "price": "49900",
       "priceCurrency": "RUB",
       "priceSpecification": {
         "@type": "UnitPriceSpecification",
         "billingDuration": "P1M"
       },
-      "description": "Еженедельные отчёты, алерты при отклонениях KPI, AI-бот 24/7."
+      "description": "Полный Pulse, нейросеть без лимитов, проактивные алерты, P&L и Cash Flow."
     }
   ],
   "featureList": [
     "AI-анализ amoCRM и Битрикс24",
-    "Health Score от 0 до 100",
+    "Health Score по продажам, финансам и команде",
     "Бенчмарки по нишам: недвижимость, авто, клиники, B2B",
     "Readonly-доступ — ничего не изменяем в CRM",
-    "Отчёт за 30 минут",
+    "Pulse: ежедневные решения с конкретными суммами",
     "P&L, Cash Flow, unit-экономика",
-    "AI-бот 24/7 по вашим данным"
+    "AI-партнёр по вашим данным"
   ]
 }
 </script>
@@ -113,7 +117,7 @@
       "name": "Что такое Health Score?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Одно число от 0 до 100 — комплексная оценка бизнеса по 7 сферам. AI анализирует продажи, команду, финансы и ещё 4 направления. Вы ставите цель — AI помогает к ней прийти. Шаг за шагом."
+        "text": "Одно число от 0 до 100 — комплексная оценка бизнеса по трём ключевым сферам: продажи, финансы и команда. AGINE AI анализирует данные из CRM и помогает шаг за шагом расти в каждой сфере."
       }
     },
     {
@@ -137,7 +141,7 @@
       "name": "Сколько времени занимает анализ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "30 минут. Подключаете CRM — и через полчаса получаете Health Score, ключевые находки и первые решения с суммами."
+        "text": "Подключаете CRM — и получаете Health Score по продажам, финансам и команде, ключевые находки и первые решения с конкретными суммами. Без настроек, в режиме чтения."
       }
     },
     {
@@ -145,7 +149,7 @@
       "name": "Что входит в бесплатный экспресс-анализ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI-анализ всех сделок, задач и менеджеров. Отчёт с конкретными суммами и решениями. Health Score по 7 сферам. Без привязки карты и обязательств."
+        "text": "AI-анализ всех сделок, задач и менеджеров. Отчёт с конкретными суммами и решениями. Health Score по продажам, финансам и команде. Первые 7 дней Starter — бесплатно с привязкой карты."
       }
     },
     {
@@ -1649,7 +1653,7 @@ body{background:#111;color:#fff}
 
 /* ═══ Pricing ═══ */
 .pricing2{position:relative;z-index:1}
-.pricing2-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
+.pricing2-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:880px;margin:0 auto}
 .p2-card{
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
   border-radius:24px;padding:44px 36px;display:flex;flex-direction:column;
@@ -1776,14 +1780,14 @@ body{background:#111;color:#fff}
 <nav aria-label="Главная навигация">
   <a href="#" class="logo" aria-label="AGINE — На главную"><svg class="logo-icon" viewBox="0 0 40 36" fill="none" aria-hidden="true"><circle cx="20" cy="6" r="6" fill="#F0F4FF"/><circle cx="9" cy="26" r="6" fill="#F0F4FF"/><circle cx="31" cy="26" r="6" fill="#F0F4FF"/></svg><span class="logo-text">AGINE</span></a>
   <ul class="nav-links">
-    <li><a href="#results">Возможности</a></li>
+    <li><a href="#health">Возможности</a></li>
     <li><a href="#how">Как работает</a></li>
     <li><a href="#pricing">Тарифы</a></li>
     <li><a href="#faq">Вопросы</a></li>
   </ul>
   <div class="nav-pill" id="navPill">
     <div class="tubelight" id="tubelight"></div>
-    <a href="#results" data-nav>Возможности</a>
+    <a href="#health" data-nav>Возможности</a>
     <a href="#how" data-nav>Как работает</a>
     <a href="#pricing" data-nav>Тарифы</a>
     <a href="#faq" data-nav>Вопросы</a>
@@ -1795,7 +1799,7 @@ body{background:#111;color:#fff}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#results" class="mm-link">Возможности</a>
+  <a href="#health" class="mm-link">Возможности</a>
   <a href="#how" class="mm-link">Как работает</a>
   <a href="#pricing" class="mm-link">Тарифы</a>
   <a href="#faq" class="mm-link">Вопросы</a>
@@ -1824,7 +1828,7 @@ body{background:#111;color:#fff}
             Увидеть свои цифры
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
           </a>
-          <div style="text-align:center;margin-top:12px;font-size:14px;opacity:0.5;letter-spacing:0.02em">30 минут до первых выводов &middot; amoCRM &middot; Битрикс24</div>
+          <div style="text-align:center;margin-top:12px;font-size:14px;opacity:0.5;letter-spacing:0.02em">Превращаем данные в решения &middot; amoCRM &middot; Битрикс24</div>
         </div>
       </div>
     </div>
@@ -1961,31 +1965,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- ═══ 1. NUMBERS ═══ -->
-<section class="numbers-sec sec-light" id="results">
-  <div class="sec-center">
-    <h2 class="sec-title fade-in">30 минут —<br>и вы видите всё</h2>
-    <p class="sec-sub fade-in d1">Реальные данные из <span class="cycle-wrap" id="numCycleWrap"><span class="cycle-word">вашей CRM</span></span> после подключения AGINE</p>
-  </div>
-  <div class="numbers-grid">
-    <div class="num-card fade-in">
-      <div class="num-value">52</div>
-      <div class="num-label">сделки, 23+ дней<br><b>без контакта</b></div>
-      <div class="num-meta">Каждая сделка &mdash; потенциал закрытия &middot; данные одного подключения</div>
-    </div>
-    <div class="num-card fade-in d1">
-      <div class="num-value">6.8&times;</div>
-      <div class="num-label">разница в нагрузке<br><b>между менеджерами</b></div>
-      <div class="num-meta">Один ведёт 42 сделки, другой &mdash; 6</div>
-    </div>
-    <div class="num-card fade-in d2">
-      <div class="num-value">1.6 <span style="font-size:0.6em">млрд &#8381;</span></div>
-      <div class="num-label">в сделках без движения<br><b>потенциал, который видит нейросеть</b></div>
-      <div class="num-meta">Readonly &middot; ничего не меняем &middot; без настроек</div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══ 2. PULSE ═══ -->
 <section class="pulse-sec sec-dark">
   <div class="pulse-inner">
@@ -2042,15 +2021,13 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="hs-ring-num" id="hsNum">0</div>
   </div>
   <h2 class="hs-subtitle fade-in d1">Одно число.<br>Весь бизнес.</h2>
-  <p class="hs-desc fade-in d2">Health Score &mdash; комплексная оценка по 7 сферам. От продаж до операционки. С конкретными шагами роста по каждой</p>
+  <p class="hs-desc fade-in d2">Health Score &mdash; комплексная оценка по трём ключевым сферам: продажи, финансы и команда. С конкретными шагами роста по каждой.</p>
 
   <!-- Slider tabs -->
   <div class="hs-tabs fade-in d2" id="hsTabs">
     <button class="hs-tab active" data-slide="0"><span class="hs-tab-lamp"></span>Продажи</button>
-    <button class="hs-tab" data-slide="1"><span class="hs-tab-lamp"></span>Маркетинг</button>
+    <button class="hs-tab" data-slide="1"><span class="hs-tab-lamp"></span>Финансы</button>
     <button class="hs-tab" data-slide="2"><span class="hs-tab-lamp"></span>Команда</button>
-    <button class="hs-tab" data-slide="3"><span class="hs-tab-lamp"></span>Финансы</button>
-    <button class="hs-tab" data-slide="4"><span class="hs-tab-lamp"></span>Операционка</button>
   </div>
 
   <!-- Slider cards — one visible at a time -->
@@ -2097,40 +2074,39 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
 
-    <!-- 1: Маркетинг -->
+    <!-- 1: Финансы -->
     <div class="hs-slide" data-idx="1">
       <div class="hs-slide-inner">
-        <div class="hs-slide-head"><div class="hs-slide-title">Маркетинг</div></div>
-        <div class="hs-slide-desc">Какие каналы приносят результат?</div>
+        <div class="hs-slide-head"><div class="hs-slide-title">Финансы</div></div>
+        <div class="hs-slide-desc">Где деньги? Что ожидать?</div>
         <div class="hs-slide-grid">
           <div class="hs-metrics">
-            <div class="hs-metrics-title">Метрики маркетинга</div>
-            <div class="hs-metric-row"><span class="hml">ROMI (средний)</span><span class="hmv">1.2x <span class="hm-arrow down"></span></span></div>
-            <div class="hs-metric-row"><span class="hml">Цель ROMI</span><span class="hmv">3.5x</span></div>
-            <div class="hs-metric-row"><span class="hml">CAC</span><span class="hmv">47K ₽ <span class="hm-arrow up"></span></span></div>
-            <div class="hs-metric-row"><span class="hml">Цель CAC</span><span class="hmv">28K ₽</span></div>
-            <div class="hs-metric-row"><span class="hml">Бюджет / мес</span><span class="hmv">2.8M ₽</span></div>
+            <div class="hs-metrics-title">Метрики</div>
+            <div class="hs-metric-row"><span class="hml">Замороженные</span><span class="hmv">8.2M ₽</span></div>
+            <div class="hs-metric-row"><span class="hml">Потенциал</span><span class="hmv">+196M / мес</span></div>
+            <div class="hs-metric-row"><span class="hml">Дебиторка</span><span class="hmv">14.7M ₽</span></div>
+            <div class="hs-metric-row"><span class="hml">Маржинальность</span><span class="hmv">34%</span></div>
           </div>
           <div class="hs-solutions">
             <div class="hs-solution">
-              <div class="hs-sol-text">Перераспределить 15% бюджета с Instagram на Telegram — потенциал ROMI 6.8x</div>
+              <div class="hs-sol-text">Разморозить 8.2M ₽ — назначить next step по 47 зависшим сделкам</div>
               <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Посмотреть расчёт</button>
                 <button type="button" class="hs-sol-btn">Делегировать</button>
+                <button type="button" class="hs-sol-btn">Отчёт</button>
               </div>
             </div>
             <div class="hs-solution">
-              <div class="hs-sol-text">Запустить реферальную программу — рекомендации дают 34% конверсии</div>
+              <div class="hs-sol-text">Отправить напоминания по дебиторке — 6 контрагентов, 14.7M ₽</div>
               <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">План запуска</button>
-                <button type="button" class="hs-sol-btn">Детали</button>
+                <button type="button" class="hs-sol-btn">Отправить</button>
+                <button type="button" class="hs-sol-btn">Шаблон</button>
               </div>
             </div>
             <div class="hs-solution">
-              <div class="hs-sol-text">Отключить 3 канала с ROMI ниже 0.5x — экономия 420K / мес</div>
+              <div class="hs-sol-text">Пересмотреть ценообразование в 3 категориях — потенциал +2.1% маржи</div>
               <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Отключить</button>
                 <button type="button" class="hs-sol-btn">Анализ</button>
+                <button type="button" class="hs-sol-btn">Детали</button>
               </div>
             </div>
           </div>
@@ -2178,95 +2154,11 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
 
-    <!-- 3: Финансы -->
-    <div class="hs-slide" data-idx="3">
-      <div class="hs-slide-inner">
-        <div class="hs-slide-head"><div class="hs-slide-title">Финансы</div></div>
-        <div class="hs-slide-desc">Где деньги? Что ожидать?</div>
-        <div class="hs-slide-grid">
-          <div class="hs-metrics">
-            <div class="hs-metrics-title">Метрики</div>
-            <div class="hs-metric-row"><span class="hml">Замороженные</span><span class="hmv">8.2M ₽</span></div>
-            <div class="hs-metric-row"><span class="hml">Потенциал</span><span class="hmv">+196M / мес</span></div>
-            <div class="hs-metric-row"><span class="hml">Дебиторка</span><span class="hmv">14.7M ₽</span></div>
-            <div class="hs-metric-row"><span class="hml">Маржинальность</span><span class="hmv">34%</span></div>
-          </div>
-          <div class="hs-solutions">
-            <div class="hs-solution">
-              <div class="hs-sol-text">Разморозить 8.2M ₽ — назначить next step по 47 зависшим сделкам</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Делегировать</button>
-                <button type="button" class="hs-sol-btn">Отчёт</button>
-              </div>
-            </div>
-            <div class="hs-solution">
-              <div class="hs-sol-text">Отправить напоминания по дебиторке — 6 контрагентов, 14.7M ₽</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Отправить</button>
-                <button type="button" class="hs-sol-btn">Шаблон</button>
-              </div>
-            </div>
-            <div class="hs-solution">
-              <div class="hs-sol-text">Пересмотреть ценообразование в 3 категориях — потенциал +2.1% маржи</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Анализ</button>
-                <button type="button" class="hs-sol-btn">Детали</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4: Операционка -->
-    <div class="hs-slide" data-idx="4">
-      <div class="hs-slide-inner">
-        <div class="hs-slide-head"><div class="hs-slide-title">Операционка</div></div>
-        <div class="hs-slide-desc">Где команда тратит время впустую?</div>
-        <div class="hs-slide-grid">
-          <div class="hs-metrics">
-            <div class="hs-metrics-title">Метрики</div>
-            <div class="hs-metric-row"><span class="hml">Время ответа</span><span class="hmv">4.2 часа</span></div>
-            <div class="hs-metric-row"><span class="hml">Цель</span><span class="hmv">18 минут</span></div>
-            <div class="hs-metric-row"><span class="hml">SLA нарушений</span><span class="hmv">23 за неделю</span></div>
-            <div class="hs-metric-row"><span class="hml">Ручные операции</span><span class="hmv">340 / мес</span></div>
-          </div>
-          <div class="hs-solutions">
-            <div class="hs-solution">
-              <div class="hs-sol-text">Автоматизировать 340 ручных операций — экономия 56 часов / мес</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">План</button>
-                <button type="button" class="hs-sol-btn">Расчёт</button>
-              </div>
-            </div>
-            <div class="hs-solution">
-              <div class="hs-sol-text">SLA: 23 нарушения за неделю — настроить авто-эскалацию</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Настроить</button>
-                <button type="button" class="hs-sol-btn">Детали</button>
-              </div>
-            </div>
-            <div class="hs-solution">
-              <div class="hs-sol-text">Время ответа 4.2ч vs 18 мин — внедрить шаблоны быстрых ответов</div>
-              <div class="hs-sol-actions">
-                <button type="button" class="hs-sol-btn">Шаблоны</button>
-                <button type="button" class="hs-sol-btn">Анализ</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Progress dots -->
     <div class="hs-progress" id="hsProgress">
       <span class="hs-dot active" data-slide="0"></span>
       <span class="hs-dot" data-slide="1"></span>
       <span class="hs-dot" data-slide="2"></span>
-      <span class="hs-dot" data-slide="3"></span>
-      <span class="hs-dot" data-slide="4"></span>
-      <span class="hs-dot" data-slide="5"></span>
-      <span class="hs-dot" data-slide="6"></span>
     </div>
   </div>
 
@@ -2329,8 +2221,8 @@ document.addEventListener('DOMContentLoaded', function() {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
         </div>
         <div class="ai-pf-text">
-          <div class="ai-pf-title">Анализирует 7 сфер</div>
-          <div class="ai-pf-desc">Продажи, финансы, команда, маркетинг, операционка</div>
+          <div class="ai-pf-title">Анализирует 3 сферы</div>
+          <div class="ai-pf-desc">Продажи, финансы, команда — глубоко по каждой</div>
         </div>
       </div>
       <div class="ai-pf-item">
@@ -2442,7 +2334,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="how2-step fade-in d1">
       <div class="how2-num">2</div>
       <h3 class="how2-title">Нейросеть анализирует</h3>
-      <p class="how2-desc">7 сфер бизнеса. Находит точки роста с конкретными суммами.</p>
+      <p class="how2-desc">Продажи, финансы и команда. Находит точки роста с конкретными суммами.</p>
       <span class="how2-time">Автоматически</span>
     </div>
     <div class="how2-step fade-in d2">
@@ -2491,27 +2383,12 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="p2-annual">499 000 &#8381;/год (&#8722;17%)</div>
       <ul class="p2-features">
         <li>1 пользователь</li>
-        <li>Health Score по всем 7 сферам</li>
+        <li>Health Score по 3 сферам</li>
         <li>Полный Pulse + проактивные алерты</li>
         <li>Нейросеть без лимитов</li>
         <li>P&L, Cash Flow, юнит-экономика</li>
       </ul>
       <a href="https://app.agineai.com/auth" class="p2-btn">Подключить за 49 900 &#8381;/мес</a>
-    </div>
-    <div class="p2-card fade-in d2">
-      <div class="p2-name">Team</div>
-      <p class="p2-desc">Вся команда принимает решения</p>
-      <div class="p2-price">89 900<span> &#8381;/мес</span></div>
-      <div class="p2-annual">899 000 &#8381;/год (&#8722;17%)</div>
-      <ul class="p2-features">
-        <li>До 5 пользователей</li>
-        <li>Health Score по всем 7 сферам</li>
-        <li>Полный Pulse + назначение задач</li>
-        <li>Нейросеть для всей команды</li>
-        <li>Кросс-анализ между отделами</li>
-        <li>+9 900 &#8381;/мес за доп. место</li>
-      </ul>
-      <a href="https://app.agineai.com/auth" class="p2-btn">Подключить за 89 900 &#8381;/мес</a>
     </div>
   </div>
   <p class="p2-note fade-in">Нужна кастомная интеграция? <a href="https://t.me/AgineAi_bot" target="_blank">Напишите в Telegram</a></p>
@@ -2525,7 +2402,7 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="faq2-list">
     <div class="faq2-item fade-in">
       <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Как работает Health Score?</span><span class="faq2-arrow">+</span></div>
-      <div class="faq2-a"><p class="faq2-a-text">Одно число от 0 до 100 &mdash; комплексная оценка бизнеса по 7 сферам. Нейросеть анализирует продажи, команду, финансы и ещё 4 направления. Вы видите, где вы сейчас и куда можно вырасти.</p></div>
+      <div class="faq2-a"><p class="faq2-a-text">Одно число от 0 до 100 &mdash; комплексная оценка бизнеса по трём ключевым сферам: продажи, финансы и команда. Нейросеть видит метрики в каждой из них и предлагает шаги роста. Вы видите, где вы сейчас и куда можно вырасти.</p></div>
     </div>
     <div class="faq2-item fade-in d1">
       <div class="faq2-q" role="button" tabindex="0" aria-expanded="false"><span class="faq2-q-text">Какие CRM поддерживаются?</span><span class="faq2-arrow">+</span></div>
@@ -2561,7 +2438,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══ 10. FINAL CTA ═══ -->
 <section class="final2">
   <div class="sec-center" style="margin-bottom:0">
-    <h2 class="sec-title fade-in">Через 30 минут вы будете знать,<br>что делать завтра</h2>
+    <h2 class="sec-title fade-in">Превращаем ваши данные<br>в решения уже сегодня</h2>
     <p class="sec-sub fade-in d1">Подключите данные &mdash; и завтра утром откроете Pulse с готовыми решениями. С суммами. По именам.</p>
     <div class="fade-in d2" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:48px">
       <a href="https://app.agineai.com/auth" class="glow-btn">Попробовать бесплатно</a>
@@ -2581,7 +2458,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <span class="footer2-logo">AGINE&nbsp;AI</span>
 
     <div class="footer2-links">
-      <a href="#results">Возможности</a>
+      <a href="#health">Возможности</a>
       <a href="#how">Как работает</a>
       <a href="#pricing">Тарифы</a>
       <a href="#faq">Вопросы</a>
