@@ -4,30 +4,92 @@ Disallow: /health
 
 Sitemap: https://agineai.com/sitemap.xml
 
-# AI Crawlers welcome
+# ─── AI / LLM crawlers (GEO) ───
+
+# OpenAI
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Google-Extended
+User-agent: OAI-SearchBot
 Allow: /
 
+# Anthropic
 User-agent: anthropic-ai
 Allow: /
 
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: CCBot
+User-agent: Claude-Web
 Allow: /
 
+# Google
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Perplexity
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Perplexity-User
+Allow: /
+
+# Meta / Llama
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# DuckDuckGo AI
+User-agent: DuckAssistBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+User-agent: cohere-training-data-crawler
+Allow: /
+
+# Common Crawl (питает большинство open-source LLM)
+User-agent: CCBot
+Allow: /
+
+# Bytedance / Doubao
 User-agent: Bytespider
 Allow: /
 
-User-agent: cohere-ai
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# ─── Russian search & AI ───
+
+User-agent: Yandex
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: YandexAdditional
+Allow: /
+
+User-agent: YandexNeuroSummary
+Allow: /
+
+User-agent: Mail.RU_Bot
 Allow: /

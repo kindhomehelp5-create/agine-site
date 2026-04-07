@@ -172,21 +172,83 @@
 }
 </script>
 
-<!-- Structured Data: WebSite (for Bing/Google search box) -->
+<!-- Structured Data: WebSite -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "AGINE",
+  "name": "AGINE AI",
+  "alternateName": ["AGINE", "AgineAI"],
   "url": "https://agineai.com",
-  "description": "Нейросеть для руководителя",
+  "description": "AGINE AI — превращаем данные в решения. AI-аналитика CRM, Health Score бизнеса, ежедневные решения для руководителя.",
   "inLanguage": "ru-RU",
-  "potentialAction": {
-    "@type": "ReadAction",
-    "target": "https://agineai.com"
+  "publisher": {
+    "@type": "Organization",
+    "name": "AGINE AI",
+    "url": "https://agineai.com"
   }
 }
 </script>
+
+<!-- Structured Data: Product (для LLM/SERP rich results) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "AGINE AI",
+  "description": "AI-аналитика CRM для руководителя. Подключается к amoCRM и Битрикс24, считает Health Score по продажам, финансам и команде, каждое утро даёт конкретные решения с суммами.",
+  "brand": {
+    "@type": "Brand",
+    "name": "AGINE AI"
+  },
+  "image": "https://agineai.com/og.png",
+  "url": "https://agineai.com",
+  "category": "BusinessIntelligenceSoftware",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "RUB",
+    "lowPrice": "19900",
+    "highPrice": "49900",
+    "offerCount": "2",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "AGINE AI"
+    }
+  }
+}
+</script>
+
+<!-- Structured Data: BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://agineai.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Тарифы",
+      "item": "https://agineai.com/#pricing"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Платформа",
+      "item": "https://app.agineai.com"
+    }
+  ]
+}
+</script>
+
+<!-- LLM hint for AI crawlers -->
+<link rel="alternate" type="text/markdown" href="https://agineai.com/llms.txt" title="AGINE AI — LLM-friendly summary">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
