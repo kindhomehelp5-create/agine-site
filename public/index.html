@@ -1033,9 +1033,9 @@ footer{background:var(--black);color:rgba(255,255,255,0.4);padding:60px 40px 40p
    ═══════════════════════════ */
 /* Burger button */
 .burger{
-  display:none;width:40px;height:40px;border:none;background:none;
+  display:none;width:44px;height:44px;border:none;background:none;
   cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;
-  padding:8px;z-index:102;
+  padding:10px;z-index:102;
 }
 .burger span{display:block;width:22px;height:2px;background:#F0F4FF;border-radius:2px;transition:all .3s}
 nav.scrolled .burger span{background:#F0F4FF}
@@ -1185,7 +1185,31 @@ nav.menu-open .logo b{color:#fff !important}
   .footer-links{justify-content:center;flex-wrap:wrap}
 
   /* STICKY CTA */
-  .sticky-cta{font-size:14px;height:48px;padding:0 24px;bottom:20px;min-width:auto}
+  .sticky-cta{font-size:14px;height:48px;padding:0 24px;bottom:24px;min-width:auto}
+
+  /* DASH PANEL — узкий padding чтобы не вылезал на 375px */
+  .dash-panel{padding:12px !important}
+}
+
+/* ═══ Small phones (≤600px) ═══ */
+@media(max-width:600px){
+  section{padding-left:16px;padding-right:16px}
+  .sec-dark,.sec-light{padding:60px 16px}
+  .sec-title{font-size:clamp(26px,7vw,34px)}
+  .sec-sub{font-size:14px}
+  .hero-title{font-size:clamp(28px,8.5vw,38px)}
+  .hero-sub{font-size:15px}
+  /* iOS zoom fix: inputs ≥16px */
+  input,textarea,select{font-size:16px !important}
+  /* Touch targets ≥44px */
+  .hs-tab{padding:10px 16px;font-size:12px;min-height:40px}
+  .ai-cw-topic{padding:12px 18px;font-size:12px;min-height:40px}
+  .footer2-links{gap:14px;font-size:12px}
+  .footer2-links a{font-size:12px}
+  /* Sticky CTA — выше футера */
+  .sticky-cta{bottom:16px;height:46px;padding:0 22px}
+  /* Pricing card — компактнее */
+  .p2-card{padding:28px 22px}
 }
 
 /* ═══════════════════════════
@@ -2994,7 +3018,7 @@ document.querySelectorAll('.faq2-q').forEach(function(q) {
   window._onScrollCallbacks.push(function() {
     var y = window.scrollY;
     var footerTop = footer ? footer.getBoundingClientRect().top + window.scrollY : Infinity;
-    var show = y > 600 && (y + window.innerHeight) < footerTop + 60;
+    var show = y > 600 && (y + window.innerHeight) < footerTop - 80;
     sticky.classList.toggle('visible', show);
   });
 })();
