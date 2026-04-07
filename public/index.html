@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGINE — нейросеть для руководителя</title>
-<meta name="description" content="Нейросеть для руководителя. Подключается к CRM и финансам — каждое утро говорит, с чего начать день. 30 минут до первых выводов.">
+<title>AGINE AI — превращаем данные в решения</title>
+<meta name="description" content="AGINE AI — превращаем данные в решения. Подключаем CRM, считаем Health Score по продажам, финансам и команде, каждое утро даём конкретные шаги для роста бизнеса.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://agineai.com/">
-<meta property="og:title" content="AGINE — нейросеть для руководителя">
-<meta property="og:description" content="Нейросеть для руководителя. Подключается к CRM и финансам — каждое утро говорит, с чего начать день. 30 минут до первых выводов.">
+<meta property="og:title" content="AGINE AI — превращаем данные в решения">
+<meta property="og:description" content="Подключаем CRM, считаем Health Score по продажам, финансам и команде, каждое утро даём конкретные шаги для роста бизнеса.">
 <meta property="og:image" content="https://agineai.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AGINE — нейросеть для руководителя">
-<meta name="twitter:description" content="Нейросеть для руководителя. Подключается к CRM и финансам — каждое утро говорит, с чего начать день. 30 минут до первых выводов.">
+<meta name="twitter:title" content="AGINE AI — превращаем данные в решения">
+<meta name="twitter:description" content="Подключаем CRM, считаем Health Score по продажам, финансам и команде, каждое утро даём конкретные шаги для роста бизнеса.">
 <meta name="twitter:image" content="https://agineai.com/og.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -1727,13 +1727,16 @@ body{background:#111;color:#fff}
 .glow-btn-dark:hover{background:#333}
 
 /* ═══ Footer ═══ */
-.footer2{background:#080808;color:rgba(255,255,255,0.3);padding:60px 40px 40px;font-size:13px;position:relative;z-index:1}
-.footer2-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
-.footer2-logo{font-family:var(--font);font-size:18px;color:rgba(255,255,255,0.8)}
+.footer2{background:#080808;color:rgba(255,255,255,0.3);padding:64px 40px 40px;font-size:13px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)}
+.footer2-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.footer2-logo{font-family:var(--font);font-size:18px;color:rgba(255,255,255,0.85);letter-spacing:0.02em}
 .footer2-logo b{color:#fff}
-.footer2-links{display:flex;gap:24px}
-.footer2-links a{color:rgba(255,255,255,0.3);text-decoration:none;transition:color .3s}
+.footer2-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:center}
+.footer2-links a{color:rgba(255,255,255,0.45);text-decoration:none;transition:color .2s}
 .footer2-links a:hover{color:#fff}
+.footer2-divider{width:100%;max-width:720px;height:1px;background:rgba(255,255,255,0.06);margin:4px 0}
+.footer2-legal{font-size:11px;line-height:1.7;color:rgba(255,255,255,0.28);max-width:720px}
+.footer2-copy{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.02em}
 
 /* ═══ Scroll animations ═══ */
 @keyframes revealUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
@@ -2575,23 +2578,30 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══ FOOTER ═══ -->
 <footer class="footer2">
   <div class="footer2-inner">
-    <span class="footer2-logo">AGINE</span>
+    <span class="footer2-logo">AGINE&nbsp;AI</span>
+
     <div class="footer2-links">
-      <a href="#health">Возможности</a>
+      <a href="#results">Возможности</a>
       <a href="#how">Как работает</a>
       <a href="#pricing">Тарифы</a>
-      <a href="https://t.me/AgineAi_bot" target="_blank">Написать в Telegram</a>
+      <a href="#faq">Вопросы</a>
+      <a href="https://t.me/AgineAi_bot" target="_blank" rel="noopener">Telegram</a>
     </div>
-    <div class="footer2-links" style="margin-top:12px">
-      <a href="https://app.agineai.com/offer" target="_blank">Оферта</a>
-      <a href="https://app.agineai.com/privacy" target="_blank">Политика конфиденциальности</a>
-      <a href="https://app.agineai.com/terms" target="_blank">Условия использования</a>
+
+    <div class="footer2-divider"></div>
+
+    <div class="footer2-links">
+      <a href="https://app.agineai.com/offer" target="_blank" rel="noopener">Оферта</a>
+      <a href="https://app.agineai.com/privacy" target="_blank" rel="noopener">Политика конфиденциальности</a>
+      <a href="https://app.agineai.com/terms" target="_blank" rel="noopener">Условия использования</a>
     </div>
-    <div style="margin-top:16px;font-size:11px;line-height:1.6;color:rgba(255,255,255,0.25)">
-      ИП Леховицкая Александра Евгеньевна · ИНН 502413449099 · ОГРНИП 324508100621131<br>
-      143403, Московская обл., г. Красногорск, ул. Первомайская, д. 5, кв. 29 · hello@agineai.com
-    </div>
-    <span>&copy; 2024&ndash;2026 AGINE. Все права защищены.</span>
+
+    <p class="footer2-legal">
+      ИП Леховицкая Александра Евгеньевна&nbsp;·&nbsp;ИНН 502413449099&nbsp;·&nbsp;ОГРНИП 324508100621131<br>
+      143403, Московская обл., г. Красногорск, ул. Первомайская, д. 5, кв. 29&nbsp;·&nbsp;hello@agineai.com
+    </p>
+
+    <span class="footer2-copy">&copy; 2024&ndash;2026 AGINE AI. Все права защищены.</span>
   </div>
 </footer>
 
