@@ -76,22 +76,32 @@
       "name": "Starter",
       "price": "19900",
       "priceCurrency": "RUB",
-      "priceSpecification": {
-        "@type": "UnitPriceSpecification",
-        "billingDuration": "P1M"
-      },
-      "description": "Health Score по 3 сферам, базовый Pulse, нейросеть 5 запросов/день. 7 дней бесплатно с привязкой карты."
+      "priceSpecification": {"@type": "UnitPriceSpecification","billingDuration": "P1M"},
+      "description": "До 500 сделок. Health Score по 3 сферам, Pulse 1 раз/неделю, AI Partner 10 запросов/день."
     },
     {
       "@type": "Offer",
       "name": "Pro",
       "price": "49900",
       "priceCurrency": "RUB",
-      "priceSpecification": {
-        "@type": "UnitPriceSpecification",
-        "billingDuration": "P1M"
-      },
-      "description": "Полный Pulse, нейросеть без лимитов, проактивные алерты, P&L и Cash Flow."
+      "priceSpecification": {"@type": "UnitPriceSpecification","billingDuration": "P1M"},
+      "description": "До 2000 сделок. Полный Pulse, AI Partner 30 запросов/день, P&L и Cash Flow."
+    },
+    {
+      "@type": "Offer",
+      "name": "Business",
+      "price": "99900",
+      "priceCurrency": "RUB",
+      "priceSpecification": {"@type": "UnitPriceSpecification","billingDuration": "P1M"},
+      "description": "До 10000 сделок. Полный Pulse, AI Partner 50 запросов/день, приоритетная поддержка."
+    },
+    {
+      "@type": "Offer",
+      "name": "Enterprise",
+      "price": "199900",
+      "priceCurrency": "RUB",
+      "priceSpecification": {"@type": "UnitPriceSpecification","billingDuration": "P1M"},
+      "description": "10000+ сделок. Ежедневный Pulse, AI Partner без лимитов, выделенный менеджер, кастомные интеграции."
     }
   ],
   "featureList": [
@@ -208,8 +218,8 @@
     "@type": "AggregateOffer",
     "priceCurrency": "RUB",
     "lowPrice": "19900",
-    "highPrice": "49900",
-    "offerCount": "2",
+    "highPrice": "199900",
+    "offerCount": "4",
     "availability": "https://schema.org/InStock",
     "seller": {
       "@type": "Organization",
@@ -1739,7 +1749,11 @@ body{background:#111;color:#fff}
 
 /* ═══ Pricing ═══ */
 .pricing2{position:relative;z-index:1}
-.pricing2-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:880px;margin:0 auto}
+.pricing2-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.pricing2-grid .p2-card{padding:36px 28px}
+.pricing2-grid .p2-price{font-size:36px}
+@media(max-width:960px){.pricing2-grid{grid-template-columns:repeat(2,1fr);gap:20px;max-width:880px}}
+@media(max-width:600px){.pricing2-grid{grid-template-columns:1fr}}
 .p2-card{
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
   border-radius:24px;padding:44px 36px;display:flex;flex-direction:column;
@@ -1852,12 +1866,26 @@ body{background:#111;color:#fff}
   .decisions-timeline::before{display:block;top:28px;bottom:28px;left:50%;right:auto;width:2px;height:auto;transform:translateX(-50%)}
   .integ-groups{grid-template-columns:1fr;gap:16px}
   .how2-grid{grid-template-columns:1fr;gap:16px}
-  .pricing2-grid{grid-template-columns:1fr;gap:16px}
+  .pricing2-grid{grid-template-columns:1fr !important;gap:16px}
   .final2{padding:80px 16px}
   .final2-cta,.final2-secondary{display:block;margin:16px auto 0;text-align:center;max-width:320px}
   .footer2-inner{flex-direction:column;gap:20px;text-align:center}
   .footer2-links{justify-content:center;flex-wrap:wrap}
 }
+
+/* ═══════════════════════════
+   PAIN CARDS
+   ═══════════════════════════ */
+.pain-cols-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:stretch}
+.pain-cols-grid .hs-slide-inner{height:100%;box-sizing:border-box}
+.pain-cols-grid .hs-slide-title{font-size:clamp(22px,2.5vw,32px);margin-bottom:6px}
+.pain-cols-grid .hs-slide-desc{margin-bottom:24px}
+.pain-col-divider{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0 0 16px}
+.pain-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.pain-item:last-child{border-bottom:none;padding-bottom:0}
+.pain-item-title{font-size:13px;font-weight:500;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:3px}
+.pain-item-sub{font-size:11px;font-weight:300;color:rgba(255,255,255,0.28);line-height:1.4}
+@media(max-width:900px){.pain-cols-grid{grid-template-columns:1fr;gap:20px}}
 </style>
 </head>
 <body>
@@ -1900,7 +1928,7 @@ body{background:#111;color:#fff}
   <div class="cs-wrap">
     <div class="cs-header" id="csHeader">
       <h1 class="cycle-line">Каждое утро — ясность.</h1>
-      <div style="font-size:clamp(15px,2vw,20px);font-weight:400;opacity:0.55;margin-top:20px;letter-spacing:0;line-height:1.6;text-align:center">Нейросеть для руководителя. Знает ваш бизнес и говорит, с чего начать день</div>
+      <div style="font-size:clamp(15px,2vw,20px);font-weight:400;opacity:0.55;margin-top:20px;letter-spacing:0;line-height:1.6;text-align:center">Знает ваш бизнес. Советует, что делать.</div>
       <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:36px;flex-wrap:wrap">
         <a href="#pricing" class="hero-cta">Начать бесплатно</a>
         <span style="font-size:13px;letter-spacing:0.04em;color:rgba(255,255,255,0.4);font-weight:400">Starter — 7 дней бесплатно</span>
@@ -2050,6 +2078,75 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 2400);
 });
 </script>
+
+<!-- ═══ 1.5. PAIN CARDS ═══ -->
+<section class="sec-light" id="pain">
+  <div class="sec-center fade-in">
+    <h2 class="sec-title">Польза для<br>вашего бизнеса.</h2>
+    <p class="sec-sub">Три сферы — конкретные результаты каждый день</p>
+  </div>
+
+  <div class="pain-cols-grid fade-in d2">
+
+    <!-- Продажи -->
+    <div class="hs-slide-inner">
+      <div class="hs-slide-head"><div class="hs-slide-title">Увеличение продаж</div></div>
+      <div class="hs-slide-desc">Находит скрытые деньги внутри текущей воронки</div>
+      <hr class="pain-col-divider">
+      <div class="pain-item">
+        <div class="pain-item-title">Рост — не в новых продажах, а в деньгах внутри воронки</div>
+        <div class="pain-item-sub">Находит скрытые деньги в вашем бизнесе</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Находит этап где сделки умирают — и показывает почему</div>
+        <div class="pain-item-sub">Показывает где теряется конверсия — и что с этим делать</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Говорит какие сделки взять в работу сегодня — с суммами</div>
+        <div class="pain-item-sub">Не список задач. Конкретные действия, которые приносят деньги</div>
+      </div>
+    </div>
+
+    <!-- Финансы -->
+    <div class="hs-slide-inner">
+      <div class="hs-slide-head"><div class="hs-slide-title">Экономия бюджета</div></div>
+      <div class="hs-slide-desc">Показывает где деньги уходят впустую — и как это остановить</div>
+      <hr class="pain-col-divider">
+      <div class="pain-item">
+        <div class="pain-item-title">Предупреждает о кассовом разрыве — до того как он случится</div>
+        <div class="pain-item-sub">Не в тот день. Заранее — когда ещё можно что-то изменить</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Знает, какой продукт реально приносит деньги</div>
+        <div class="pain-item-sub">А какой только создаёт иллюзию занятости</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Знает где лежит дебиторка — и кто сколько должен</div>
+        <div class="pain-item-sub">Ваши деньги у клиентов. Каждое утро — конкретный список</div>
+      </div>
+    </div>
+
+    <!-- Команда -->
+    <div class="hs-slide-inner">
+      <div class="hs-slide-head"><div class="hs-slide-title">Грамотное распределение нагрузки</div></div>
+      <div class="hs-slide-desc">Показывает кто и как работает — на цифрах, без ощущений</div>
+      <hr class="pain-col-divider">
+      <div class="pain-item">
+        <div class="pain-item-title">Показывает кто реально работает — на цифрах, не на ощущениях</div>
+        <div class="pain-item-sub">Честная картина по каждому менеджеру</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Подсвечивает риск ухода ключевых сотрудников — заранее</div>
+        <div class="pain-item-sub">Видит перегруз до того как человек начнёт искать другую работу</div>
+      </div>
+      <div class="pain-item">
+        <div class="pain-item-title">Анализирует лучшего менеджера. Даёт рекомендации всей команде.</div>
+        <div class="pain-item-sub">Один продаёт лучше — теперь это можно тиражировать</div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <!-- ═══ 2. PULSE ═══ -->
 <section class="pulse-sec sec-dark">
@@ -2438,14 +2535,14 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="pricing2-grid">
     <div class="p2-card fade-in">
       <div class="p2-name">Starter</div>
-      <p class="p2-desc">Увидеть аналитику по 3 сферам</p>
+      <p class="p2-desc">Первый взгляд на бизнес</p>
       <div class="p2-price">19 900<span> &#8381;/мес</span></div>
       <div class="p2-annual">199 000 &#8381;/год (&#8722;17%)</div>
       <ul class="p2-features">
-        <li>1 пользователь</li>
+        <li>До 500 сделок в CRM</li>
         <li>Health Score по 3 сферам</li>
-        <li>Базовый Pulse-отчёт</li>
-        <li>Нейросеть: 5 запросов/день</li>
+        <li>Pulse 1 раз в неделю</li>
+        <li>AI Partner: 10 запросов/день</li>
         <li>amoCRM или Битрикс24</li>
       </ul>
       <a href="https://app.agineai.com/request" class="p2-btn">Попробовать 7 дней бесплатно</a>
@@ -2453,20 +2550,48 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="p2-card featured fade-in d1">
       <div class="p2-badge">&#9733; Популярный</div>
       <div class="p2-name">Pro</div>
-      <p class="p2-desc">Принимать решения каждый день</p>
+      <p class="p2-desc">Решения каждый день</p>
       <div class="p2-price">49 900<span> &#8381;/мес</span></div>
       <div class="p2-annual">499 000 &#8381;/год (&#8722;17%)</div>
       <ul class="p2-features">
-        <li>1 пользователь</li>
+        <li>До 2 000 сделок в CRM</li>
         <li>Health Score по 3 сферам</li>
-        <li>Полный Pulse + проактивные алерты</li>
-        <li>Нейросеть без лимитов</li>
+        <li>Pulse 1 раз в 3 дня + алерты</li>
+        <li>AI Partner: 30 запросов/день</li>
         <li>P&L, Cash Flow, юнит-экономика</li>
       </ul>
       <a href="https://app.agineai.com/request" class="p2-btn">Подключить за 49 900 &#8381;/мес</a>
     </div>
+    <div class="p2-card fade-in d2">
+      <div class="p2-name">Business</div>
+      <p class="p2-desc">Для крупных команд продаж</p>
+      <div class="p2-price">99 900<span> &#8381;/мес</span></div>
+      <div class="p2-annual">999 000 &#8381;/год (&#8722;17%)</div>
+      <ul class="p2-features">
+        <li>До 10 000 сделок в CRM</li>
+        <li>Health Score по 3 сферам</li>
+        <li>Pulse 1 раз в 3 дня + алерты</li>
+        <li>AI Partner: 50 запросов/день</li>
+        <li>Приоритетная поддержка</li>
+      </ul>
+      <a href="https://app.agineai.com/request" class="p2-btn">Подключить</a>
+    </div>
+    <div class="p2-card fade-in d3">
+      <div class="p2-name">Enterprise</div>
+      <p class="p2-desc">Индивидуальное решение</p>
+      <div class="p2-price" style="font-size:28px;letter-spacing:-0.02em">По запросу</div>
+      <div class="p2-annual">Обсудим под ваш масштаб</div>
+      <ul class="p2-features">
+        <li>10 000+ сделок в CRM</li>
+        <li>Ежедневный Pulse</li>
+        <li>AI Partner без лимитов</li>
+        <li>Выделенный менеджер</li>
+        <li>Кастомные интеграции</li>
+      </ul>
+      <a href="https://t.me/AgineAi_bot" target="_blank" class="p2-btn">Написать в Telegram</a>
+    </div>
   </div>
-  <p class="p2-note fade-in">Нужна кастомная интеграция? <a href="https://t.me/AgineAi_bot" target="_blank">Напишите в Telegram</a></p>
+  <p class="p2-note fade-in">Все тарифы включают readonly-доступ — ничего не меняем в вашей CRM</p>
 </section>
 
 <!-- ═══ 9. FAQ ═══ -->
@@ -2621,6 +2746,7 @@ document.querySelectorAll('.fade-in,.scale-in,.slide-left,.slide-right').forEach
   var slider = document.getElementById('hsSlider');
   if (slider) sliderObs.observe(slider);
 })();
+
 
 // Number counter animation
 var numObs = new IntersectionObserver(function(entries) {
