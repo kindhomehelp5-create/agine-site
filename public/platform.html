@@ -13027,14 +13027,17 @@ function renderDecisionTimeline() {
   container.innerHTML = h;
 }
 
-// #21 P2: Persist decision status changes to localStorage
+// #21 P2: Persist decision status changes to localStorage.
+// lsGet/lsSet helpers were dropped from this snapshot during copy from saas;
+// switch to direct localStorage with try/catch (private mode / quota errors).
 function saveDecisionStates() {
   var states = {};
   DECISIONS.forEach(function(d) { states[d.id] = { status: d.status, completedDate: d.completedDate || null }; });
-  lsSet('agine_decision_states', JSON.stringify(states));
+  try { localStorage.setItem('agine_decision_states', JSON.stringify(states)); } catch(e) {}
 }
 function loadDecisionStates() {
-  var raw = lsGet('agine_decision_states');
+  var raw;
+  try { raw = localStorage.getItem('agine_decision_states'); } catch(e) { return; }
   if (!raw) return;
   try {
     var states = JSON.parse(raw);
