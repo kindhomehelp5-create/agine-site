@@ -386,6 +386,19 @@ nav{
   background:#e5e5e5 !important;
   color:#111 !important;
 }
+/* Mobile-only "Войти" CTA — sits next to the burger so users on phones don't
+   have to discover login via the menu. Hidden on desktop (the .nav-pill version
+   is the canonical surface there). */
+.nav-cta-mobile{
+  display:none;
+  font-family:'Wix Madefor Display',sans-serif;
+  font-size:14px;font-weight:600;
+  background:#fff;color:#111;
+  text-decoration:none;
+  padding:8px 18px;border-radius:9999px;
+  transition:background .2s;
+}
+.nav-cta-mobile:hover{background:#e5e5e5}
 
 /* ═══════════════════════════
    HERO
@@ -1077,10 +1090,11 @@ nav.menu-open .logo b{color:#fff !important}
 
 @media(max-width:900px){
   /* NAV */
-  nav{padding:0 16px}
+  nav{padding:0 16px;gap:10px}
   .nav-links{display:none}
   .nav-pill{display:none}
   .burger{display:flex}
+  .nav-cta-mobile{display:inline-flex;align-items:center;margin-left:auto}
 
   .hero{
     flex-direction:column;
@@ -1908,6 +1922,7 @@ body{background:#111;color:#fff}
     <span class="nav-pill-sep"></span>
     <a href="https://app.agineai.com/auth" class="nav-pill-cta nav-pill-cta-fill">Войти</a>
   </div>
+  <a href="https://app.agineai.com/auth" class="nav-cta-mobile" aria-label="Войти в платформу">Войти</a>
   <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
 </nav>
 
